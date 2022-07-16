@@ -1,5 +1,5 @@
 import style from '../css/chessboard-1.0.0.css';
-import $ from 'jquery';
+// import $ from 'jquery'; This didn't work
 // var $ = require( "jquery" );
 
 
@@ -26,6 +26,7 @@ const images = importAll(require.context('../img/chesspieces/wikipedia/', false,
 
 var board = null
 var game = new Chess() //default chess position with no parameters
+//later use game.reset() when restarting to initial position
 
 //when highlighted, color white or black squares will turn to:
 var whiteSquareGrey = '#a9a9a9' 
@@ -34,18 +35,26 @@ var blackSquareGrey = '#696969'
 
 //done in chessboard/UI (not using chess.js in this function)
 function removeGreySquares () {
-  $('#htmlBoard .square-55d63').css('background', '')
+  //all square classes have class 'square-55d63'
+  $('#htmlBoard .square-55d63').css('background-color', '') //using jquery remove gray highlight of all squares
 }
 
+/**
+ * Highlight the square given to gray (light & dark gray)
+ * @param {String} square the square name eg. e2
+ */
 function greySquare (square) {
-  var $square = $('#htmlBoard .square-' + square) //on hover highlights the legal moves 
+  var $square = $('#htmlBoard .square-' + square) //on hover highlights the legal moves
 
+  // console.log($square);
+
+  //set background color to dark gray if black, OR light gray if white
   var background = whiteSquareGrey
   if ($square.hasClass('black-3c85d')) {
     background = blackSquareGrey
   }
 
-  $square.css('background', background)
+  $square.css('background-color', background)
 }
 
 
@@ -105,6 +114,7 @@ function onDrop (source, target) {
 function onMouseoverSquare (square, piece) {
 
   // get list of possible moves for highlighted square
+  //gets an array of objects (object includes info of possible move)
   var moves = game.moves({
     square: square, //wihtout square it would list all possible moves, for all pieces
     verbose: true //gives all legal possibilities of that piece
@@ -129,7 +139,9 @@ function onMouseoutSquare (square, piece) {
 }
 
 function onSnapEnd () {
-  board.position(game.fen())
+  //sets curr board(UI) position to the curr game FEN
+  //Neccesorly as makes sure UI & backend logic are at same position in moves such as enpasent
+  board.position(game.fen());
 }
 
 var config = {
