@@ -1,0 +1,61 @@
+html {
+  height: 100%;
+}
+
+body {
+  /* background-color: #262421 */
+  /* background: rgb(15, 15, 15);
+  background: linear-gradient(95deg, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 66%, rgba(52, 52, 52, 1) 100%); */
+
+  background: rgb(15, 15, 15);
+  background: linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 66%, rgba(52, 52, 52, 1) 100%);
+  height: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font: serif;
+}
+
+#htmlBoard {
+  width: 35%;
+  margin: 0 auto;
+  /* margin-top: 100px; */
+}
+
+#restart-btn{
+  /* background-color: white */
+  padding: 10px;
+  font-weight: bold;
+  text-align: center;  
+  display:block;
+  width: 300px;
+  margin: 0 auto;
+  /* margin-top: 20px; */
+  /* background-color: #262421; */
+  background-color: #262524;
+  color: #999;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+
+#restart-btn:hover{
+  background: #313030;
+}
+
+.interface{
+  /* used padding, instead of margin as I don't want website to be scrollable */
+  padding-top: 100px;
+}
+
+
+.board-container{
+  display: flex;
+}
+
+.player-turn-text{
+  color: white;
+  font-weight: bold;
+}

@@ -1,17 +1,15 @@
 import style from '../css/chessboard-1.0.0.css';
-// import $ from 'jquery'; This didn't work
-// var $ = require( "jquery" );
-
-
-import chessboard from './chessboard-1.0.0.js';
+import favicon from '../img/faviconHorse.jpg'
+import chessboard from './chessboard-1.0.0.js'; //doesn't matter what we name it, no using the name
 import {Chess} from 'chess.js'
+import css from '../css/main.css'
+import {evaluateBoard} from './ai.js'
 
 //imoprt all images from the chesspieces folder
 function importAll(r) {
   return r.keys().map(r); //run the function passed in
 }
-// basically does this 40 times, import k from '../img/chesspieces/wikipedia/wK.png'
-const images = importAll(require.context('../img/chesspieces/wikipedia/', false, /\.(png|jpe?g|svg)$/));
+const images = importAll(require.context('../img/chesspieces/wikipedia/', false, /\.(png|jpe?g|svg)$/)); // basically does this 40 times, import k from '../img/chesspieces/wikipedia/wK.png'
 
 
 //since ChessBoard name is set in the file above, we get access to it here
@@ -26,6 +24,8 @@ const images = importAll(require.context('../img/chesspieces/wikipedia/', false,
 
 var board = null
 var game = new Chess() //default chess position with no parameters
+let positionPoints = 0;
+
 //later use game.reset() when restarting to initial position
 
 //when highlighted, color white or black squares will turn to:
@@ -73,10 +73,26 @@ function onDragStart (source, piece) {
   if (game.game_over()) return false
 
   // or if it's not that side's turn
-  if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-      (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
-    return false
-  }
+  // if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+  //     (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+  //   return false
+  // }
+
+  //USE WHEN YOU ONLY WANNA USE WHITE ⬜️
+  // if (piece.search(/^b/) !== -1) return false
+}
+
+function makeRandomMove () {
+  const possibleMoves = game.moves()
+
+  console.log(possibleMoves);
+
+  // game over
+  if (possibleMoves.length === 0) return
+
+  var randomIdx = Math.floor(Math.random() * possibleMoves.length)
+  game.move(possibleMoves[randomIdx])
+  board.position(game.fen())
 }
 
 /**
@@ -103,6 +119,14 @@ function onDrop (source, target) {
   //if move was illegal it would have value of null, otherwise it will have an object containing info about that move
   // illegal move
   if (move === null) return 'snapback' //piece will return to original/source square
+
+
+  console.log(move);
+  positionPoints = evaluateBoard(game, move, positionPoints, move.color)
+  console.log(positionPoints);
+
+  // make random legal move for black
+  // window.setTimeout(makeRandomMove, 250)
 }
 
 /**
@@ -113,14 +137,15 @@ function onDrop (source, target) {
  */
 function onMouseoverSquare (square, piece) {
 
+  //USE WHEN YOU ONLY WANNA USE WHITE ⬜️
+  // if (piece === false || piece.search(/^b/) !== -1) return;
+
   // get list of possible moves for highlighted square
   //gets an array of objects (object includes info of possible move)
   var moves = game.moves({
     square: square, //wihtout square it would list all possible moves, for all pieces
     verbose: true //gives all legal possibilities of that piece
   })
-
-  // console.log(moves);
 
   // exit if there are no moves available for this square
   if (moves.length === 0) return
@@ -151,6 +176,6 @@ var config = {
   onDrop: onDrop, //When a piece is dropped
   onMouseoverSquare: onMouseoverSquare, //run function whenver mouse enters a square
   onMouseoutSquare: onMouseoutSquare, //when mouse leaves square
-  onSnapEnd: onSnapEnd
+  onSnapEnd: onSnapEnd //when piece snap animation is complete
 }
-board = Chessboard('htmlBoard', config)
+board = Chessboard('htmlBoard', config) //ChessBoard is a variable in chessboard-1.0.0.js

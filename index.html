@@ -6,7 +6,10 @@
   <!-- <link rel="stylesheet" href="css/chessboard-1.0.0.min.css"> -->
   <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 
-  <link rel="icon" type="image/x-icon" href="img/chesspieces/wikipedia/wK.png">
+  <link rel="icon" type="image/x-icon" href="img/faviconHorse.jpg">
+  <!-- <link rel="icon" type="image/x-icon" href="img/faviconHorse.png"> -->
+  <!-- <link rel="icon" type="image/x-icon" href="img/chesspieces/wikipedia/wK.png"> -->
+
 
   <!-- <script src="js/chessboard-1.0.0.min.js"></script> -->
 
@@ -17,10 +20,26 @@
   <!-- <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
     integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD" crossorigin="anonymous">
   </script> -->
-</head>
+  </head>
 
-<body>
-  <div id="htmlBoard" style="width: 400px"></div>
+  <body>
+
+    <div class="interface">
+
+      <div class="board-container">
+
+        <div id="htmlBoard"></div>
+        <div>
+          <img src="img/chesspieces/wikipedia/wK.png">
+          <p class="player-turn-text">White's Turn</p>
+          <button id="restart-btn">Restart Game</button>
+
+        </div>
+
+      </div>
+
+    </div>
+  <!-- style="width: 400px" -->
 
   <!-- <script>
     var board1 = ChessBoard('board1', {
