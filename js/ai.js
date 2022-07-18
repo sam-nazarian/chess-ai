@@ -102,45 +102,30 @@ var pst_b = {
  * using the material weights and piece square tables.
  * 
  * @param {obj} game chess obj eg. game = new Chess()
- * @param {obj} move move obj - includes info on curr location & future position of piece 
- * @param {Number} prevSum sum of points(0 at beginning)
- * @param {*} color 'b'(black) or 'w'(white) but we only use this function when evaluating black as that's the computer
- * @returns updated prevSum
+ * @param {String} turn 'b'(black) or 'w'(white) but we only use this function when evaluating black as that's the computer
+ * @returns {Number} positionPoint value of position, posetive is good for white, negative is bad for black
  **/
-export function evaluateBoard(game, move, prevSum, color) {
+export function evaluateBoard(game, turn) {
 
-	// console.log('game',game);
-	// console.log('move',move);
-	// console.log('prevSum',prevSum);
-	// console.log('color',color);
+	// console.log(turn);
+	let positionPoint = 0
 
 	if (game.in_checkmate()) {
-
-		// Opponent is in checkmate (good for us)
-		if (move.color === color) {
-			return 10 ** 10;
-		}
-		// Our king's in checkmate (bad for us)
-		else {
-			return -(10 ** 10);
-		}
+		if (turn === 'w') return -(10 ** 10); //if it's checkmate & white is supposed to move (so white loses)
+		if (turn === 'b') return (10 ** 10);
 	}
 
 	if (game.in_draw() || game.in_threefold_repetition() || game.in_stalemate()) {
-		return 0;
+		return 0; //position is equal
 	}
 
+	// If the side to move is in check
 	if (game.in_check()) {
-		// Opponent is in check (good for us)
-		if (move.color === color) {
-			prevSum += 50; //posetive prevSum, good for white
-		}
-		// Our king's in check (bad for us)
-		else {
-			prevSum -= 50;
-		}
+		if (turn === 'w') positionPoint -= 50;  //white is in check
+		if (turn === 'b') positionPoint += 50;  //black is in check
 	}
-
+	
+/*
 	//convert it to 0-bsed so it could be used in an array
 
 	//[row][col]
@@ -214,8 +199,9 @@ export function evaluateBoard(game, move, prevSum, color) {
 			prevSum += pstSelf[move.color][move.piece][to[0]][to[1]];
 		}
 	}
+	*/
 
-	return prevSum;
+	return positionPoint;
 }
 
 export function evaluateBoard2(game, move, prevSum, color) {

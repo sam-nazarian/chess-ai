@@ -72,20 +72,24 @@ function onDragStart (source, piece) {
   // do not pick up pieces if the game is over
   if (game.game_over()) return false
 
+  // console.log(game.turn());
+
   // or if it's not that side's turn
-  // if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-  //     (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
-  //   return false
-  // }
+  if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+      (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+    return false
+  }
 
   //USE WHEN YOU ONLY WANNA USE WHITE ⬜️
   // if (piece.search(/^b/) !== -1) return false
 }
 
+/**
+ * Black making a move 
+ */
 function makeRandomMove () {
   const possibleMoves = game.moves()
-
-  console.log(possibleMoves);
+  // console.log(possibleMoves);
 
   // game over
   if (possibleMoves.length === 0) return
@@ -93,10 +97,16 @@ function makeRandomMove () {
   var randomIdx = Math.floor(Math.random() * possibleMoves.length)
   game.move(possibleMoves[randomIdx])
   board.position(game.fen())
+
+
+  console.log('Black made a move',evaluateBoard(game, game.turn()));
+
+
+  //now that black moved it's wnite's turn
 }
 
 /**
- * When a piece is dropped 
+ * When a WHITE piece is dropped 
  * @param {String} source curr location of piece, eg.e2
  * @param {String} target  where piece was dropped, eg.e5
  * @returns 
@@ -113,6 +123,7 @@ function onDrop (source, target) {
     to: target,
     promotion: 'q' // NOTE: always promote to a queen (for simplicity)
   })
+  //evaluate the board here - so that positionPoints gets updated
 
   // console.log(move);
 
@@ -121,12 +132,12 @@ function onDrop (source, target) {
   if (move === null) return 'snapback' //piece will return to original/source square
 
 
-  console.log(move);
-  positionPoints = evaluateBoard(game, move, positionPoints, move.color)
-  console.log(positionPoints);
+  // console.log(move);
+  // positionPoints = evaluateBoard(game, move, positionPoints, move.color)
+  // console.log(positionPoints);
 
   // make random legal move for black
-  // window.setTimeout(makeRandomMove, 250)
+  window.setTimeout(makeRandomMove, 250)
 }
 
 /**
@@ -164,6 +175,8 @@ function onMouseoutSquare (square, piece) {
 }
 
 function onSnapEnd () {
+  console.log('White Made Move:', evaluateBoard(game, game.turn())); //after white makes a move, it's black's turn
+
   //sets curr board(UI) position to the curr game FEN
   //Neccesorly as makes sure UI & backend logic are at same position in moves such as enpasent
   board.position(game.fen());
