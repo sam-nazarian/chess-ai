@@ -3,7 +3,7 @@
  * https://github.com/thomasahle/sunfish/blob/master/sunfish.py
  */
 
-var weights = { p: 100, n: 280, b: 320, r: 479, q: 929, k: 60000, k_e: 60000 };
+const weights = { p: 100, n: 280, b: 320, r: 479, q: 929, k: 60000, k_e: 60000 };
 var pst_w = {
   p: [
     [100, 100, 100, 100, 105, 100, 100, 100],
@@ -107,7 +107,6 @@ var pst_b = {
  **/
 export function evaluateBoard(game, turn) {
 
-	// console.log(turn);
 	let positionPoint = 0
 
 	if (game.in_checkmate()) {
@@ -124,6 +123,19 @@ export function evaluateBoard(game, turn) {
 		if (turn === 'w') positionPoint -= 50;  //white is in check
 		if (turn === 'b') positionPoint += 50;  //black is in check
 	}
+
+
+	console.log(game.fen());
+
+	//select the 1st part of Fen
+	//seperate fen by '/'
+
+
+
+	// Remember to change endgame behavior for kings
+
+
+	
 	
 /*
 	//convert it to 0-bsed so it could be used in an array

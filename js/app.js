@@ -1,6 +1,6 @@
 import style from '../css/chessboard-1.0.0.css';
 import favicon from '../img/faviconHorse.jpg'
-import chessboard from './chessboard-1.0.0.js'; //doesn't matter what we name it, no using the name
+import chessboard from './chessboard-1.0.0.js'; //doesn't matter what we name it, not using the name
 import {Chess} from 'chess.js'
 import css from '../css/main.css'
 import {evaluateBoard} from './ai.js'
@@ -99,7 +99,8 @@ function makeRandomMove () {
   board.position(game.fen())
 
 
-  console.log('Black made a move',evaluateBoard(game, game.turn()));
+  // console.log('Black made a move',evaluateBoard(game, game.turn()));
+  evaluateBoard(game, game.turn())
 
 
   //now that black moved it's wnite's turn
@@ -175,7 +176,8 @@ function onMouseoutSquare (square, piece) {
 }
 
 function onSnapEnd () {
-  console.log('White Made Move:', evaluateBoard(game, game.turn())); //after white makes a move, it's black's turn
+  // console.log('White Made Move:', evaluateBoard(game, game.turn())); //after white makes a move, it's black's turn
+  evaluateBoard(game, game.turn())
 
   //sets curr board(UI) position to the curr game FEN
   //Neccesorly as makes sure UI & backend logic are at same position in moves such as enpasent
