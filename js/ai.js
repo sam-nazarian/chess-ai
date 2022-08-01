@@ -124,8 +124,23 @@ export function evaluateBoard(game, turn) {
 		if (turn === 'b') positionPoint += 50;  //black is in check
 	}
 
+	const fenArr = game.fen().split(/([^\s]+)/)[1].split('/');
+  positionPoint += calcWeight(fenArr);
 
-	console.log(game.fen());
+  console.log(positionPoint);
+
+  // console.log('white', wWeight);
+  // console.log('black', bWeight);
+
+
+
+
+
+  // console.log(fenArr);
+
+
+  // console.log(game.fen());
+  // ''.
 
 	//select the 1st part of Fen
 	//seperate fen by '/'
@@ -214,6 +229,53 @@ export function evaluateBoard(game, turn) {
 	*/
 
 	return positionPoint;
+}
+
+
+function calcWeight(fenArr){
+  // let wWeight = 0;
+  // let bWeight = 0;
+  let positionPoint = 0;
+
+  for(let i=0; i<fenArr.length; i++){
+    let col = 0;
+    for(let j=0; j<fenArr[i].length; j++){
+
+      /** @type String*/
+      const char = fenArr[i][j];
+
+      //char is White
+      if(char === char.toUpperCase() && isNaN(char)){
+        positionPoint += weights[char.toLowerCase()];
+        // console.log(weights[char.toLowerCase()]);
+
+        positionPoint += pst_w[char.toLowerCase()][i][col];
+
+        // console.log(pst_w[char.toLowerCase()][i][col]);
+      }
+
+      //Char is Black
+      if(char === char.toLowerCase() && isNaN(char)){
+        positionPoint -= weights[char.toLowerCase()];
+
+        positionPoint -= pst_b[char.toLowerCase()][i][col];
+      }
+
+      //if char is number
+      if(char === !isNaN(char)) {
+        // console.log(char);
+        col += char;
+      }else{
+        col++;
+      }
+
+      // console.log('col', col);
+      // console.log(col);
+    }
+  }
+
+  return positionPoint;
+
 }
 
 export function evaluateBoard2(game, move, prevSum, color) {
