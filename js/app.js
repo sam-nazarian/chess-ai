@@ -25,6 +25,7 @@ const images = importAll(require.context('../img/chesspieces/wikipedia/', false,
 var board = null
 var game = new Chess() //default chess position with no parameters
 let positionPoints = 0;
+const progressDom = document.querySelector('.progress');
 
 //later use game.reset() when restarting to initial position
 
@@ -100,7 +101,7 @@ function makeRandomMove () {
 
 
   // console.log('Black made a move',evaluateBoard(game, game.turn()));
-  evaluateBoard(game, game.turn())
+  evaluateBoard(game, game.turn());
 
 
   //now that black moved it's wnite's turn
@@ -177,7 +178,19 @@ function onMouseoutSquare (square, piece) {
 
 function onSnapEnd () {
   // console.log('White Made Move:', evaluateBoard(game, game.turn())); //after white makes a move, it's black's turn
-  evaluateBoard(game, game.turn())
+  const positionPoint = evaluateBoard(game, game.turn())
+  let percentPosition = (positionPoint - (-3887)) / (3887-(-3887)) * 100;
+  if(percentPosition>100) percentPosition=100;
+  if(percentPosition<0) percentPosition=0;
+
+  console.log('positionPoint', positionPoint);
+  console.log('percentPosition', percentPosition );
+
+  //END THE GAME, AND SHOW MESSAGE ON WEBSITE
+
+
+  progressDom.style.width = `${percentPosition}%`; //formula to calc percentage based on max & min
+
 
   //sets curr board(UI) position to the curr game FEN
   //Neccesorly as makes sure UI & backend logic are at same position in moves such as enpasent

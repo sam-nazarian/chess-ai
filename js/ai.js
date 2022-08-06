@@ -127,17 +127,12 @@ export function evaluateBoard(game, turn) {
 	const fenArr = game.fen().split(/([^\s]+)/)[1].split('/');
   positionPoint += calcWeight(fenArr);
 
-  console.log(positionPoint);
+  // console.log(positionPoint);
 
   // console.log('white', wWeight);
   // console.log('black', bWeight);
 
-
-
-
-
   // console.log(fenArr);
-
 
   // console.log(game.fen());
   // ''.
@@ -145,13 +140,8 @@ export function evaluateBoard(game, turn) {
 	//select the 1st part of Fen
 	//seperate fen by '/'
 
-
-
 	// Remember to change endgame behavior for kings
 
-
-	
-	
 /*
 	//convert it to 0-bsed so it could be used in an array
 

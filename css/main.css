@@ -17,8 +17,10 @@ body {
 }
 
 #htmlBoard {
-  width: 35%;
+  /* width: 35%; */
   margin: 0 auto;
+  flex: 1;
+
   /* margin-top: 100px; */
 }
 
@@ -48,6 +50,9 @@ body {
 .interface{
   /* used padding, instead of margin as I don't want website to be scrollable */
   padding-top: 100px;
+
+  /* position: relative; */
+
 }
 
 
@@ -58,4 +63,63 @@ body {
 .player-turn-text{
   color: white;
   font-weight: bold;
+}
+
+
+
+.right-side{
+  flex: 1;
+}
+
+.chessboard-63f37{
+  position: relative;
+}
+
+
+
+  /* (height of inner div) / 2 + padding */
+  /* transform-origin: 100% 0; */
+
+/* .progressbar {
+  background-color: black;
+  border-radius: 13px;
+  position: absolute;
+
+  padding: 3px;
+  transform:rotate(-90deg);
+
+  width: 300px;
+  height: 20px;
+  top: 0px;
+  right: 0px;
+} */
+
+
+
+.progressbar-container{
+  flex: 1;
+  background-color: rgb(119, 16, 16);
+
+}
+
+
+.progressbar {
+  background-color: #000;
+  border-radius: 13px;
+  height: 300px;
+  width: 20px;
+
+}
+
+.progress {
+  transition : width 1000ms ease-out;
+  background-color: #fff;
+
+  /* Adjust width using JS */
+  width: 20px;
+
+  /* also sets the hegiht of parent */
+  height: 50%;
+
+  border-radius: 10px;
 }
