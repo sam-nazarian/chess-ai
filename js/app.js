@@ -11,14 +11,6 @@ function importAll(r) {
 }
 const images = importAll(require.context('../img/chesspieces/wikipedia/', false, /\.(png|jpe?g|svg)$/)); // basically does this 40 times, import k from '../img/chesspieces/wikipedia/wK.png'
 
-
-//since ChessBoard name is set in the file above, we get access to it here
-// var board1 = ChessBoard('board1', {
-//   position: 'start',
-//   draggable: true
-// })
-
-
 // NOTE: this example uses the chess.js library:
 // https://github.com/jhlywa/chess.js
 
@@ -31,12 +23,9 @@ const playerTurnTextDom = document.querySelector('.player-turn-text');
 const whiteKingDom = document.querySelector('.white-king');
 const blackKingDom = document.querySelector('.black-king');
 
-//later use game.reset() when restarting to initial position
-
 //when highlighted, color white or black squares will turn to:
 var whiteSquareGrey = '#a9a9a9' 
 var blackSquareGrey = '#696969'
-
 
 //done in chessboard/UI (not using chess.js in this function)
 function removeGreySquares () {
@@ -62,10 +51,6 @@ function greySquare (square) {
   $square.css('background-color', background)
 }
 
-
-
-
-
 /**
  * Fires when a piece is picked up
  * If game is over, or it's black's turn piece can't be picked up
@@ -79,14 +64,14 @@ function onDragStart (source, piece) {
 
   // console.log(game.turn());
 
-  // or if it's not that side's turn
-  if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-      (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
-    return false
-  }
+  // USE WHEN YOU WANNA USE BOTH SIDES ⬜️⬛️
+  // if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+  //     (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+  //   return false
+  // }
 
   //USE WHEN YOU ONLY WANNA USE WHITE ⬜️
-  // if (piece.search(/^b/) !== -1) return false
+  if (piece.search(/^b/) !== -1) return false
 }
 
 /**
@@ -107,9 +92,7 @@ function makeRandomMove () {
   // console.log('Black made a move',evaluateBoard(game, game.turn()));
   // evaluateBoard(game, game.turn());
   updateUI()
-  // test();
   // console.log('top', game.turn());
-
   //now that black moved it's wnite's turn
 }
 
@@ -122,18 +105,13 @@ function makeRandomMove () {
 function onDrop (source, target) {
   removeGreySquares()
 
-  // console.log('source', typeof source);
-  // console.log('target', typeof target);
-
   // Make the move
-  var move = game.move({
+  const move = game.move({
     from: source,
     to: target,
     promotion: 'q' // NOTE: always promote to a queen (for simplicity)
   })
   //evaluate the board here - so that positionPoints gets updated
-
-  // console.log(move);
 
   //if move was illegal it would have value of null, otherwise it will have an object containing info about that move
   // illegal move
@@ -156,8 +134,8 @@ function onDrop (source, target) {
  */
 function onMouseoverSquare (square, piece) {
 
-  //USE WHEN YOU ONLY WANNA USE WHITE ⬜️
-  // if (piece === false || piece.search(/^b/) !== -1) return;
+  //USE WHEN YOU ONLY WANNA USE WHITE ⬜️ , COMMENT WHEN YOU WANNA USE BOTH SIDES ⬜️⬛️
+  if (piece === false || piece.search(/^b/) !== -1) return;
 
   // get list of possible moves for highlighted square
   //gets an array of objects (object includes info of possible move)
@@ -184,30 +162,12 @@ function onMouseoutSquare (square, piece) {
 
 function onSnapEnd () {
   // console.log('White Made Move:', evaluateBoard(game, game.turn())); //after white makes a move, it's black's turn
-
-
   updateUI()
-  // test()
-  // console.log('buttom', game.turn());
-
-  //TODO END THE GAME, AND SHOW MESSAGE ON WEBSITE
-  //TODO ADD EVAL BAR FOR BLACK
-
-
-
 
   //sets curr board(UI) position to the curr game FEN
   //Neccesorly as makes sure UI & backend logic are at same position in moves such as enpasent
   board.position(game.fen());
 }
-
-
-
-// function test(){
-//   winnerTextDom.classList.add('winner-text-active');
-//   if (game.turn() === 'w') winnerTextDom.innerHTML = 'White Won!'; //if it's checkmate & white is supposed to move (so white loses)
-//   if (game.turn() === 'b') winnerTextDom.innerHTML = 'Black Won!';
-// }
 
 /**
  * {void} 
@@ -279,4 +239,5 @@ var config = {
   onMouseoutSquare: onMouseoutSquare, //when mouse leaves square
   onSnapEnd: onSnapEnd //when piece snap animation is complete
 }
-board = Chessboard('htmlBoard', config) //ChessBoard is a variable in chessboard-1.0.0.js
+
+board = Chessboard('htmlBoard', config) //ChessBoard is a variable in chessboard-1.0.0.js already imported
