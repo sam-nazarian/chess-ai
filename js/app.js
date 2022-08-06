@@ -24,9 +24,12 @@ const images = importAll(require.context('../img/chesspieces/wikipedia/', false,
 
 var board = null
 var game = new Chess() //default chess position with no parameters
-let positionPoints = 0;
+
 const progressDom = document.querySelector('.progress');
-const winnerText = document.querySelector('.winner-text');
+const winnerTextDom = document.querySelector('.winner-text');
+const playerTurnTextDom = document.querySelector('.player-turn-text');
+const whiteKingDom = document.querySelector('.white-king');
+const blackKingDom = document.querySelector('.black-king');
 
 //later use game.reset() when restarting to initial position
 
@@ -201,9 +204,9 @@ function onSnapEnd () {
 
 
 // function test(){
-//   winnerText.classList.add('winner-text-active');
-//   if (game.turn() === 'w') winnerText.innerHTML = 'White Won!'; //if it's checkmate & white is supposed to move (so white loses)
-//   if (game.turn() === 'b') winnerText.innerHTML = 'Black Won!';
+//   winnerTextDom.classList.add('winner-text-active');
+//   if (game.turn() === 'w') winnerTextDom.innerHTML = 'White Won!'; //if it's checkmate & white is supposed to move (so white loses)
+//   if (game.turn() === 'b') winnerTextDom.innerHTML = 'Black Won!';
 // }
 
 /**
@@ -229,18 +232,42 @@ function updateUI(){
 
   //UDPATE WINNER TEXT
 	if (game.in_checkmate()) {
+    // if(winnerTextDom.classList.contains('winner-text-active')) return; //exit function if there was already a winner
 
-    // if(winnerText.classList.contains('winner-text-active')) return; //exit function if there was already a winner
+    winnerTextDom.classList.add('winner-text-active');
 
-    winnerText.classList.add('winner-text-active');
+		if (game.turn() === 'w') winnerTextDom.innerHTML = 'Black Wins!'; //if it's checkmate & white is supposed to move (so white loses)
+		if (game.turn() === 'b') winnerTextDom.innerHTML = 'White Wins!';
 
-		if (game.turn() === 'w') winnerText.innerHTML = 'Black Wins!'; //if it's checkmate & white is supposed to move (so white loses)
-		if (game.turn() === 'b') winnerText.innerHTML = 'White Wins!';
+
+    whiteKingDom.classList.add('hide')
+    blackKingDom.classList.add('hide')
+    playerTurnTextDom.classList.add('hide')
+
+    return
 	}
 
   if (game.in_draw() || game.in_threefold_repetition() || game.in_stalemate()) {
-		winnerText.innerHTML = 'Draw!'; //position is equal
+		winnerTextDom.innerHTML = 'Draw!'; //position is equal
+
+    whiteKingDom.classList.add('hide')
+    blackKingDom.classList.remove('hide')
 	}
+
+
+  //UPDATE THE PLAYER TURN
+  if (game.turn() === 'w') {
+    playerTurnTextDom.innerHTML = `White's<br>Turn`;
+    whiteKingDom.classList.remove('hide')
+    blackKingDom.classList.add('hide')
+  }
+
+  if (game.turn() === 'b') {
+    playerTurnTextDom.innerHTML = `Black's<br>Turn`;
+    blackKingDom.classList.remove('hide')
+    whiteKingDom.classList.add('hide')
+  }
+
 }
 
 var config = {

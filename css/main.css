@@ -149,6 +149,10 @@ body {
   transition: opacity 1s ease-in;
 }
 
+.hide{
+  display: none;
+}
+
 
 
 
