@@ -38,14 +38,28 @@ body {
   /* margin-top: 100px; */
 }
 
-.progressbar-container{
+
+/* flex: 1; */
+/* flex: 0 1 auto; */
+/* .progressbar-container{
   margin-left: 100px;
-  /* flex: 1; */
   height: 500px;
   background-color: rgb(159, 41, 41);
 
   align-self: stretch;
-  /* flex: 0 1 auto; */
+} */
+
+.progressbar {
+
+  margin-left: 100px;
+
+  /* height: 600px; */
+  align-self: stretch;
+
+
+  background-color: #000;
+  border-radius: 13px;
+  width: 20px;
 
 }
 
@@ -66,13 +80,6 @@ body {
   position: relative;
 } */
 
-.progressbar {
-  background-color: #000;
-  border-radius: 13px;
-  height: 100%;
-  width: 20px;
-
-}
 .progress {
   transition : width 1000ms ease-out;
   background-color: #fff;
