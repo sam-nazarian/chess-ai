@@ -26,6 +26,7 @@ var board = null
 var game = new Chess() //default chess position with no parameters
 let positionPoints = 0;
 const progressDom = document.querySelector('.progress');
+const winnerText = document.querySelector('.winner-text');
 
 //later use game.reset() when restarting to initial position
 
@@ -101,8 +102,10 @@ function makeRandomMove () {
 
 
   // console.log('Black made a move',evaluateBoard(game, game.turn()));
-  evaluateBoard(game, game.turn());
-
+  // evaluateBoard(game, game.turn());
+  updateUI()
+  // test();
+  // console.log('top', game.turn());
 
   //now that black moved it's wnite's turn
 }
@@ -178,23 +181,66 @@ function onMouseoutSquare (square, piece) {
 
 function onSnapEnd () {
   // console.log('White Made Move:', evaluateBoard(game, game.turn())); //after white makes a move, it's black's turn
-  const positionPoint = evaluateBoard(game, game.turn())
-  let percentPosition = (positionPoint - (-3887)) / (3887-(-3887)) * 100;
-  if(percentPosition>100) percentPosition=100;
-  if(percentPosition<0) percentPosition=0;
-
-  console.log('positionPoint', positionPoint);
-  console.log('percentPosition', percentPosition );
-
-  //END THE GAME, AND SHOW MESSAGE ON WEBSITE
 
 
-  progressDom.style.height = `${percentPosition}%`; //formula to calc percentage based on max & min
+  updateUI()
+  // test()
+  // console.log('buttom', game.turn());
+
+  //TODO END THE GAME, AND SHOW MESSAGE ON WEBSITE
+  //TODO ADD EVAL BAR FOR BLACK
+
+
 
 
   //sets curr board(UI) position to the curr game FEN
   //Neccesorly as makes sure UI & backend logic are at same position in moves such as enpasent
   board.position(game.fen());
+}
+
+
+
+// function test(){
+//   winnerText.classList.add('winner-text-active');
+//   if (game.turn() === 'w') winnerText.innerHTML = 'White Won!'; //if it's checkmate & white is supposed to move (so white loses)
+//   if (game.turn() === 'b') winnerText.innerHTML = 'Black Won!';
+// }
+
+/**
+ * {void} 
+ * updates evaluation bar based on positionPoint
+ * how winner text at the end
+ */
+function updateUI(){
+
+  //UPDATE UI
+  const positionPoint = evaluateBoard(game, game.turn())
+
+  let percentPosition = (positionPoint - (-3887)) / (3887-(-3887)) * 100;
+  if(percentPosition>100) percentPosition=100;
+  if(percentPosition<0) percentPosition=0;
+
+  // console.log('positionPoint', positionPoint);
+  // console.log('percentPosition', percentPosition );
+
+  progressDom.style.height = `${percentPosition}%`; //formula to calc percentage based on max & min
+
+
+
+  //UDPATE WINNER TEXT
+	if (game.in_checkmate()) {
+
+    // if(winnerText.classList.contains('winner-text-active')) return; //exit function if there was already a winner
+
+    winnerText.classList.add('winner-text-active');
+
+		if (game.turn() === 'w') winnerText.innerHTML = 'Black Wins!'; //if it's checkmate & white is supposed to move (so white loses)
+		if (game.turn() === 'b') winnerText.innerHTML = 'White Wins!';
+	}
+
+  if (game.in_draw() || game.in_threefold_repetition() || game.in_stalemate()) {
+		winnerText.innerHTML = 'Draw!'; //position is equal
+	}
 }
 
 var config = {
