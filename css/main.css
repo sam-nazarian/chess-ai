@@ -38,17 +38,6 @@ body {
   /* margin-top: 100px; */
 }
 
-
-/* flex: 1; */
-/* flex: 0 1 auto; */
-/* .progressbar-container{
-  margin-left: 100px;
-  height: 500px;
-  background-color: rgb(159, 41, 41);
-
-  align-self: stretch;
-} */
-
 .progressbar {
 
   margin-left: 100px;
@@ -61,6 +50,8 @@ body {
   border-radius: 13px;
   width: 20px;
 
+  /* try to only use the 180deg, 90deg, gets complex with the positioning */
+  transform: rotate(180deg);
 }
 
 .right-side{
@@ -74,14 +65,12 @@ body {
 }
 
 
-
-
 /* .chessboard-63f37{
   position: relative;
 } */
 
 .progress {
-  transition : width 1000ms ease-out;
+  transition : height 1000ms ease-out;
   background-color: #fff;
 
   /* Adjust width using JS */
@@ -162,8 +151,22 @@ body {
 
 
 
-  /* (height of inner div) / 2 + padding */
-  /* transform-origin: 100% 0; */
+
+/* flex: 1; */
+/* flex: 0 1 auto; */
+/* .progressbar-container{
+  margin-left: 100px;
+  height: 500px;
+  background-color: rgb(159, 41, 41);
+
+  align-self: stretch;
+} */
+
+
+
+
+/* (height of inner div) / 2 + padding */
+/* transform-origin: 100% 0; */
 
 /* .progressbar {
   background-color: black;

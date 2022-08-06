@@ -189,7 +189,7 @@ function onSnapEnd () {
   //END THE GAME, AND SHOW MESSAGE ON WEBSITE
 
 
-  progressDom.style.width = `${percentPosition}%`; //formula to calc percentage based on max & min
+  progressDom.style.height = `${percentPosition}%`; //formula to calc percentage based on max & min
 
 
   //sets curr board(UI) position to the curr game FEN
