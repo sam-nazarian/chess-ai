@@ -16,15 +16,97 @@ body {
   font: serif;
 }
 
+.interface{
+  /* used padding, instead of margin as I don't want website to be scrollable */
+  padding-top: 100px;
+
+  /* position: relative; */
+
+}
+
+.board-container{
+  display: flex;
+  align-items: flex-start;
+  /* align-items: stretch; */
+}
+
 #htmlBoard {
   /* width: 35%; */
-  margin: 0 auto;
-  flex: 1;
+  /* margin: 0 auto; */
+  flex: 1 0 13%;
 
   /* margin-top: 100px; */
 }
 
-#restart-btn{
+.progressbar-container{
+  margin-left: 100px;
+  /* flex: 1; */
+  height: 500px;
+  background-color: rgb(159, 41, 41);
+
+  align-self: stretch;
+  /* flex: 0 1 auto; */
+
+}
+
+.right-side{
+  margin-left: 400px;
+  flex: 1;
+
+  /* align-self: center; */
+  /* justify-content: center; */
+   /* align-items: center;      */
+  /* align-content: center;  */
+}
+
+
+
+
+/* .chessboard-63f37{
+  position: relative;
+} */
+
+.progressbar {
+  background-color: #000;
+  border-radius: 13px;
+  height: 100%;
+  width: 20px;
+
+}
+.progress {
+  transition : width 1000ms ease-out;
+  background-color: #fff;
+
+  /* Adjust width using JS */
+  width: 20px;
+
+  /* also sets the hegiht of parent */
+  height: 50%;
+
+  border-radius: 10px;
+}
+
+
+.turn-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chess-img{
+  /* display: block; */
+  /* margin: 0 auto; */
+}
+
+.player-turn-text{
+  color: white;
+  font-weight: bold;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+}
+
+.restart-btn{
+
   /* background-color: white */
   padding: 10px;
   font-weight: bold;
@@ -32,6 +114,9 @@ body {
   display:block;
   width: 300px;
   margin: 0 auto;
+  margin-top: 20px;
+
+
   /* margin-top: 20px; */
   /* background-color: #262421; */
   background-color: #262524;
@@ -43,36 +128,29 @@ body {
 }
 
 
-#restart-btn:hover{
+.restart-btn:hover{
   background: #313030;
 }
 
-.interface{
-  /* used padding, instead of margin as I don't want website to be scrollable */
-  padding-top: 100px;
-
-  /* position: relative; */
-
-}
-
-
-.board-container{
-  display: flex;
-}
-
-.player-turn-text{
-  color: white;
+.winner-text{
+  /* margin-top: 200px; */
+  margin: 0;
+  color:#fff;
+  text-align: center;
   font-weight: bold;
+  font-size: 48.83px;
+  font-family: 'Inter', sans-serif;
+  /* display: none; */
+  opacity: 0;
+
+  /* Transition for the opacity right above */
+  /* transition: opacity 1s ease-in; */ 
 }
 
-
-
-.right-side{
-  flex: 1;
-}
-
-.chessboard-63f37{
-  position: relative;
+.winner-text-active{
+  opacity: 1;
+  display: block;
+  transition: opacity 1s ease-in;
 }
 
 
@@ -96,30 +174,3 @@ body {
 
 
 
-.progressbar-container{
-  flex: 1;
-  background-color: rgb(119, 16, 16);
-
-}
-
-
-.progressbar {
-  background-color: #000;
-  border-radius: 13px;
-  height: 300px;
-  width: 20px;
-
-}
-
-.progress {
-  transition : width 1000ms ease-out;
-  background-color: #fff;
-
-  /* Adjust width using JS */
-  width: 20px;
-
-  /* also sets the hegiht of parent */
-  height: 50%;
-
-  border-radius: 10px;
-}
