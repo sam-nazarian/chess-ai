@@ -280,7 +280,7 @@ function calcWeight(fenArr){
  */
 export function minimax(game, isMaximizing, bestMoveParam, level){
   //base case
-  if(level === 0 || game.game_over()) return evaluateBoard(game, game.turn());
+  if(level === 0 || game.game_over()) return [evaluateBoard(game, game.turn()), bestMoveParam];
 
   //we're maximizing player
   if(isMaximizing === true){
@@ -301,10 +301,12 @@ export function minimax(game, isMaximizing, bestMoveParam, level){
       copyGame.move(possibleMoves[i])
 
 
-      const evalRes = minimax(copyGame, false, bestMove, level-1);
+      const [evalRes] = minimax(copyGame, false, bestMove, level-1);
       maxEval = Math.max(maxEval, evalRes);
     }
-    return maxEval;
+
+    console.log(bestMoveParam);
+    return [maxEval, bestMoveParam];
   }
 
   //we're minimizing here
@@ -326,10 +328,13 @@ export function minimax(game, isMaximizing, bestMoveParam, level){
       copyGame.move(possibleMoves[i])
 
 
-      const evalRes = minimax(copyGame, true, bestMove, level-1);
+      const [evalRes] = minimax(copyGame, true, bestMove, level-1);
+
       maxEval = Math.min(maxEval, evalRes);
     }
-    return maxEval;
+
+    console.log(bestMoveParam);
+    return [maxEval, bestMoveParam];
   }
 
 }
