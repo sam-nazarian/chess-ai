@@ -79,19 +79,23 @@ function onDragStart (source, piece) {
  */
 function makeRandomMove () {
 
-  const bestMove = minimax(game, false, 'test', 3); //will see 3 moves ahead, (2 to 0, is 3 moves)
+  const [maxVal, bestMove] = minimax(game, false, 'nothing', 3); //will see 3 moves ahead, (2 to 0, is 3 moves)
   console.log(bestMove);
 
 
-  const possibleMoves = game.moves()
+  // const possibleMoves = game.moves()
 
   // console.log(possibleMoves);
 
   // game over
-  if (possibleMoves.length === 0) return
+  // if (possibleMoves.length === 0) return
+  if(bestMove === 'nothing') return;
 
-  const randomIdx = Math.floor(Math.random() * possibleMoves.length)
-  game.move(possibleMoves[randomIdx])
+  // const randomIdx = Math.floor(Math.random() * possibleMoves.length)
+  // game.move(possibleMoves[randomIdx])
+
+
+  game.move(bestMove)
   board.position(game.fen())
 
 

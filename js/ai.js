@@ -301,8 +301,13 @@ export function minimax(game, isMaximizing, bestMoveParam, level){
       copyGame.move(possibleMoves[i])
 
 
-      const [evalRes] = minimax(copyGame, false, bestMove, level-1);
-      maxEval = Math.max(maxEval, evalRes);
+      const [evalRes, possibleBestMove] = minimax(copyGame, false, bestMove, level-1);
+
+      if(evalRes > maxEval){
+        maxEval = evalRes;
+        bestMoveParam = possibleBestMove;
+      }
+      // maxEval = Math.max(maxEval, evalRes);
     }
 
     console.log(bestMoveParam);
@@ -328,9 +333,15 @@ export function minimax(game, isMaximizing, bestMoveParam, level){
       copyGame.move(possibleMoves[i])
 
 
-      const [evalRes] = minimax(copyGame, true, bestMove, level-1);
+      const [evalRes, possibleBestMove] = minimax(copyGame, true, bestMove, level-1);
 
-      maxEval = Math.min(maxEval, evalRes);
+
+      if(evalRes < maxEval){
+        maxEval = evalRes;
+        bestMoveParam = possibleBestMove;
+      }
+
+      // maxEval = Math.min(maxEval, evalRes);
     }
 
     console.log(bestMoveParam);
