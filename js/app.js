@@ -79,7 +79,7 @@ function onDragStart (source, piece) {
  */
 function makeRandomMove () {
 
-  const [maxVal, bestMove] = minimax(game, false, 'nothing', 3); //will see 3 moves ahead, (2 to 0, is 3 moves)
+  const [maxVal, bestMove] = minimax(game, false, 'nothing', 3, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
   console.log(bestMove);
 
 

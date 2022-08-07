@@ -271,6 +271,8 @@ function calcWeight(fenArr){
 }
 
 
+let count = 0;
+
 /**
  * Used by AI/black to find best possible move using minimax algorithm
  * @param {Chess obj} game 
@@ -278,9 +280,13 @@ function calcWeight(fenArr){
  * @param {string} bestMove 
  * @param {number} level 
  */
-export function minimax(game, isMaximizing, bestMoveParam, level){
+export function minimax(game, isMaximizing, bestMoveParam, level, alpha, beta){
   //base case
-  if(level === 0 || game.game_over()) return [evaluateBoard(game, game.turn()), bestMoveParam];
+  if(level === 0 || game.game_over()) {
+    count++;
+    console.log(count);
+    return [evaluateBoard(game, game.turn()), bestMoveParam]
+  }
 
   //we're maximizing player
   if(isMaximizing === true){
@@ -301,22 +307,26 @@ export function minimax(game, isMaximizing, bestMoveParam, level){
       copyGame.move(possibleMoves[i])
 
 
-      const [evalRes, possibleBestMove] = minimax(copyGame, false, bestMove, level-1);
+      const [evalRes, possibleBestMove] = minimax(copyGame, false, bestMove, level-1, alpha, beta);
 
       if(evalRes > maxEval){
         maxEval = evalRes;
         bestMoveParam = possibleBestMove;
       }
+
+      alpha = Math.max(alpha, evalRes);
+      if(beta <= alpha) break;
+
       // maxEval = Math.max(maxEval, evalRes);
     }
 
-    console.log(bestMoveParam);
+    // console.log(bestMoveParam);
     return [maxEval, bestMoveParam];
   }
 
   //we're minimizing here
   if(isMaximizing === false){
-    let maxEval = +Infinity;
+    let minEval = +Infinity;
 
     //get all possible legal moves for black
     /** @type array */
@@ -333,19 +343,22 @@ export function minimax(game, isMaximizing, bestMoveParam, level){
       copyGame.move(possibleMoves[i])
 
 
-      const [evalRes, possibleBestMove] = minimax(copyGame, true, bestMove, level-1);
+      const [evalRes, possibleBestMove] = minimax(copyGame, true, bestMove, level-1, alpha, beta);
 
 
-      if(evalRes < maxEval){
-        maxEval = evalRes;
-        bestMoveParam = possibleBestMove;
+      if(evalRes < minEval){
+        minEval = evalRes;
+        bestMoveParam = possibleBestMove; //this is only neccesorly for level 3 node as, bestMoveParam is set to 'nothing' there
       }
 
-      // maxEval = Math.min(maxEval, evalRes);
+      beta = Math.min(beta, evalRes);
+      if(beta <= alpha) break;
+
+      // minEval = Math.min(minEval, evalRes);
     }
 
-    console.log(bestMoveParam);
-    return [maxEval, bestMoveParam];
+    // console.log(bestMoveParam);
+    return [minEval, bestMoveParam];
   }
 
 }
