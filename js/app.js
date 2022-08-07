@@ -3,7 +3,7 @@ import favicon from '../img/faviconHorse.jpg'
 import chessboard from './chessboard-1.0.0.js'; //doesn't matter what we name it, not using the name
 import {Chess} from 'chess.js'
 import css from '../css/main.css'
-import {evaluateBoard} from './ai.js'
+import {evaluateBoard, minimax} from './ai.js'
 
 //imoprt all images from the chesspieces folder
 function importAll(r) {
@@ -14,8 +14,8 @@ const images = importAll(require.context('../img/chesspieces/wikipedia/', false,
 // NOTE: this example uses the chess.js library:
 // https://github.com/jhlywa/chess.js
 
-var board = null
-var game = new Chess() //default chess position with no parameters
+let board = null
+const game = new Chess() //default chess position with no parameters
 
 const progressDom = document.querySelector('.progress');
 const winnerTextDom = document.querySelector('.winner-text');
@@ -24,8 +24,8 @@ const whiteKingDom = document.querySelector('.white-king');
 const blackKingDom = document.querySelector('.black-king');
 
 //when highlighted, color white or black squares will turn to:
-var whiteSquareGrey = '#a9a9a9' 
-var blackSquareGrey = '#696969'
+const whiteSquareGrey = '#a9a9a9' 
+const blackSquareGrey = '#696969'
 
 //done in chessboard/UI (not using chess.js in this function)
 function removeGreySquares () {
@@ -38,12 +38,12 @@ function removeGreySquares () {
  * @param {String} square the square name eg. e2
  */
 function greySquare (square) {
-  var $square = $('#htmlBoard .square-' + square) //on hover highlights the legal moves
+  const $square = $('#htmlBoard .square-' + square) //on hover highlights the legal moves
 
   // console.log($square);
 
   //set background color to dark gray if black, OR light gray if white
-  var background = whiteSquareGrey
+  let background = whiteSquareGrey
   if ($square.hasClass('black-3c85d')) {
     background = blackSquareGrey
   }
@@ -78,13 +78,19 @@ function onDragStart (source, piece) {
  * Black making a move 
  */
 function makeRandomMove () {
+
+  const bestMove = minimax(game, false, '', 3); //will see 3 moves ahead, (2 to 0, is 3 moves)
+  console.log(bestMove);
+
+
   const possibleMoves = game.moves()
+
   // console.log(possibleMoves);
 
   // game over
   if (possibleMoves.length === 0) return
 
-  var randomIdx = Math.floor(Math.random() * possibleMoves.length)
+  const randomIdx = Math.floor(Math.random() * possibleMoves.length)
   game.move(possibleMoves[randomIdx])
   board.position(game.fen())
 
@@ -139,7 +145,7 @@ function onMouseoverSquare (square, piece) {
 
   // get list of possible moves for highlighted square
   //gets an array of objects (object includes info of possible move)
-  var moves = game.moves({
+  const moves = game.moves({
     square: square, //wihtout square it would list all possible moves, for all pieces
     verbose: true //gives all legal possibilities of that piece
   })
@@ -151,7 +157,7 @@ function onMouseoverSquare (square, piece) {
   greySquare(square)
 
   // highlight the possible squares for this piece
-  for (var i = 0; i < moves.length; i++) {
+  for (let i = 0; i < moves.length; i++) {
     greySquare(moves[i].to)
   }
 }
@@ -230,7 +236,7 @@ function updateUI(){
 
 }
 
-var config = {
+const config = {
   draggable: true, //allow pieces to be dragged
   position: 'start', //position all pieces like normal chess
   onDragStart: onDragStart, //When a piece is picked up

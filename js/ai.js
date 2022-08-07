@@ -1,3 +1,5 @@
+import {Chess} from 'chess.js'
+
 /*
  * Piece Square Tables, adapted from Sunfish.py:
  * https://github.com/thomasahle/sunfish/blob/master/sunfish.py
@@ -267,6 +269,79 @@ function calcWeight(fenArr){
   return positionPoint;
 
 }
+
+
+/**
+ * Used by AI/black to find best possible move using minimax algorithm
+ * @param {Chess obj} game 
+ * @param {boolean} isMaximizing 
+ * @param {string} bestMove 
+ * @param {number} level 
+ */
+export function minimax(game, isMaximizing, bestMoveParam, level){
+  //base case
+  if(level === 0 || game.game_over()) return evaluateBoard(game, game.turn());
+
+  //we're maximizing player
+  if(isMaximizing === true){
+    let maxEval = -Infinity; //worst possible val
+
+    //get all possible legal moves for white
+    /** @type array */
+    const possibleMoves = game.moves()
+
+    for(let i=0; i<possibleMoves.length; i++){
+
+      let bestMove = '';
+      if(level === 3) bestMove = possibleMoves[i]; //if we just made move
+      if(level !== 3) bestMove = bestMoveParam;
+
+      //copy old game, add new random move
+      const copyGame = new Chess(game.fen());
+      copyGame.move(possibleMoves[i])
+
+
+      const evalRes = minimax(copyGame, false, bestMove, level-1);
+      maxEval = Math.max(maxEval, evalRes);
+    }
+    return maxEval;
+  }
+
+  //we're minimizing here
+  if(isMaximizing === false){
+    let maxEval = +Infinity;
+
+    //get all possible legal moves for black
+    /** @type array */
+    const possibleMoves = game.moves()
+
+    for(let i=0; i<possibleMoves.length; i++){
+
+      let bestMove = '';
+      if(level === 3) bestMove = possibleMoves[i]; //if we just made move
+      if(level !== 3) bestMove = bestMoveParam;
+
+      //copy old game, add new random move
+      const copyGame = new Chess(game.fen());
+      copyGame.move(possibleMoves[i])
+
+
+      const evalRes = minimax(copyGame, true, bestMove, level-1);
+      maxEval = Math.min(maxEval, evalRes);
+    }
+    return maxEval;
+  }
+
+}
+
+// if(level === 3) {
+//   //store best move
+// }else{
+//   //don't store best move
+// }
+
+// console.log(possibleMoves);
+// game.move(possibleMoves[randomIdx])
 
 export function evaluateBoard2(game, move, prevSum, color) {
 
