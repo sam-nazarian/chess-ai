@@ -3,7 +3,7 @@ import favicon from '../img/faviconHorse.jpg'
 import chessboard from './chessboard-1.0.0.js'; //doesn't matter what we name it, not using the name
 import {Chess} from 'chess.js'
 import css from '../css/main.css'
-import {evaluateBoard, minimax} from './ai.js'
+import {evaluateBoard, minimax, minimaxDefault} from './ai.js'
 
 //imoprt all images from the chesspieces folder
 function importAll(r) {
@@ -82,7 +82,9 @@ function onDragStart (source, piece) {
  */
 function makeRandomMove () {
 
-  const [maxVal, bestMove] = minimax(game, false, 'nothing', 3, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
+  // const [maxVal, bestMove] = minimax(game, false, 'nothing', 3, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
+  const [maxVal, bestMove] = minimaxDefault(game);
+
   // console.log(bestMove);
 
   // const possibleMoves = game.moves()
@@ -269,6 +271,8 @@ function submitFen(e){
     //show err message
     return;
   }
+
+  //if it's black's turn -> make black move
 
   board.position(game.fen());
 

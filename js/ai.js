@@ -270,96 +270,143 @@ function calcWeight(fenArr){
 
 }
 
-
-let count = 0;
-
 /**
- * Used by AI/black to find best possible move using minimax algorithm
- * @param {Chess obj} game 
- * @param {boolean} isMaximizing 
- * @param {string} bestMove 
- * @param {number} level 
+ * acts like a namespace, that just calls minimax, with default vals, allows count to be set to 0, every time func is called
+ * @param {obj} game 
+ * @returns [maxVal, bestMove]
  */
-export function minimax(game, isMaximizing, bestMoveParam, level, alpha, beta){
-  //base case
-  if(level === 0 || game.game_over()) {
-    count++;
-    console.log(count);
-    return [evaluateBoard(game, game.turn()), bestMoveParam]
-  }
+export function minimaxDefault(game) {
+  let count = 0;
+  const [maxVal, bestMove] = minimax(game, false, 'nothing', 3, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
+  console.log(count);
 
-  //we're maximizing player
-  if(isMaximizing === true){
-    let maxEval = -Infinity; //worst possible val
+  return [maxVal, bestMove];
 
-    //get all possible legal moves for white
-    /** @type array */
-    const possibleMoves = game.moves()
-    console.log(possibleMoves);
-
-    for(let i=0; i<possibleMoves.length; i++){
-
-      let bestMove = '';
-      if(level === 3) bestMove = possibleMoves[i]; //if we just made move
-      if(level !== 3) bestMove = bestMoveParam;
-
-      //copy old game, add new random move
-      const copyGame = new Chess(game.fen());
-      copyGame.move(possibleMoves[i])
-
-
-      const [evalRes, possibleBestMove] = minimax(copyGame, false, bestMove, level-1, alpha, beta);
-
-      if(evalRes > maxEval){
-        maxEval = evalRes;
-        bestMoveParam = possibleBestMove;
-      }
-
-      alpha = Math.max(alpha, evalRes);
-      if(beta <= alpha) break;
-
-      // maxEval = Math.max(maxEval, evalRes);
+  /**
+   * Used by AI/black to find best possible move using minimax algorithm
+   * @param {Chess obj} game 
+   * @param {boolean} isMaximizing 
+   * @param {string} bestMove 
+   * @param {number} level 
+   */
+  function minimax(game, isMaximizing, bestMoveParam, level, alpha, beta) {
+    //base case
+    if (level === 0 || game.game_over()) {
+      count++;
+      // console.log(count);
+      return [evaluateBoard(game, game.turn()), bestMoveParam]
     }
 
-    // console.log(bestMoveParam);
-    return [maxEval, bestMoveParam];
-  }
+    //we're maximizing player
+    if (isMaximizing === true) {
+      let maxEval = -Infinity; //worst possible val
 
-  //we're minimizing here
-  if(isMaximizing === false){
-    let minEval = +Infinity;
+      //get all possible legal moves for white
+      /** @type array */
+      // const possibleMoves = game.moves()
+      const possibleMoves = movesOrderedByImportance(game)      //SORT THE MOVES HERE
 
-    //get all possible legal moves for black
-    /** @type array */
-    const possibleMoves = game.moves()
+      for (let i = 0; i < possibleMoves.length; i++) {
 
-    for(let i=0; i<possibleMoves.length; i++){
+        let bestMove = '';
+        if (level === 3) bestMove = possibleMoves[i]; //if we just made move
+        if (level !== 3) bestMove = bestMoveParam;
 
-      let bestMove = '';
-      if(level === 3) bestMove = possibleMoves[i]; //if we just made move
-      if(level !== 3) bestMove = bestMoveParam;
-
-      //copy old game, add new random move
-      const copyGame = new Chess(game.fen());
-      copyGame.move(possibleMoves[i])
+        //copy old game, add new random move
+        const copyGame = new Chess(game.fen());
+        copyGame.move(possibleMoves[i])
 
 
-      const [evalRes, possibleBestMove] = minimax(copyGame, true, bestMove, level-1, alpha, beta);
+        const [evalRes, possibleBestMove] = minimax(copyGame, false, bestMove, level - 1, alpha, beta);
 
+        if (evalRes > maxEval) {
+          maxEval = evalRes;
+          bestMoveParam = possibleBestMove;
+        }
 
-      if(evalRes < minEval){
-        minEval = evalRes;
-        bestMoveParam = possibleBestMove; //this is only neccesorly for level 3 node as, bestMoveParam is set to 'nothing' there
+        alpha = Math.max(alpha, evalRes);
+        if (beta <= alpha) break;
+
+        // maxEval = Math.max(maxEval, evalRes);
       }
 
-      beta = Math.min(beta, evalRes);
-      if(beta <= alpha) break;
-
-      // minEval = Math.min(minEval, evalRes);
+      // console.log(bestMoveParam);
+      return [maxEval, bestMoveParam];
     }
 
-    // console.log(bestMoveParam);
-    return [minEval, bestMoveParam];
+    //we're minimizing here
+    if (isMaximizing === false) {
+      let minEval = +Infinity;
+
+      //get all possible legal moves for black
+      // const possibleMoves = game.moves()
+      /** @type array */
+      const possibleMoves = movesOrderedByImportance(game)
+
+
+      for (let i = 0; i < possibleMoves.length; i++) {
+
+        let bestMove = '';
+        if (level === 3) bestMove = possibleMoves[i]; //if we just made move
+        if (level !== 3) bestMove = bestMoveParam;
+
+        //copy old game, add new random move
+        const copyGame = new Chess(game.fen());
+        copyGame.move(possibleMoves[i])
+
+
+        const [evalRes, possibleBestMove] = minimax(copyGame, true, bestMove, level - 1, alpha, beta);
+
+
+        if (evalRes < minEval) {
+          minEval = evalRes;
+          bestMoveParam = possibleBestMove; //this is only neccesorly for level 3 node as, bestMoveParam is set to 'nothing' there
+        }
+
+        beta = Math.min(beta, evalRes);
+        if (beta <= alpha) break;
+
+        // minEval = Math.min(minEval, evalRes);
+      }
+
+      // console.log(bestMoveParam);
+      return [minEval, bestMoveParam];
+    }
+
+  }
+
+
+  /**
+   * 
+   * @param {obj} game GameObj
+   */
+  function movesOrderedByImportance(game) {
+    let entireArr = game.moves();
+
+    //order of importance is from 1(highest) to 3(lowest)
+    const arr1 = [];
+    const arr2 = [];
+    const arr3 = [];
+    const arr4 = [];
+
+    for (let i = 0; i<entireArr.length; i++) {
+      /** @type String */
+      const move = entireArr[i];
+      // console.log(move);
+
+      if (move.includes('#')) arr1.push(move)
+      else if (move.includes('x')) arr2.push(move)
+      else if (move.includes('+')) arr3.push(move)
+      else arr4.push(move); //every other move
+    }
+
+    // console.log(arr1);
+    // console.log(arr2);
+    // console.log(arr3);
+    // console.log(arr4);
+
+    entireArr = arr1.concat(arr2).concat(arr3).concat(arr4);
+    return entireArr;
   }
 
 }
