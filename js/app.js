@@ -3,7 +3,7 @@ import favicon from '../img/faviconHorse.jpg'
 import chessboard from './chessboard-1.0.0.js'; //doesn't matter what we name it, not using the name
 import {Chess} from 'chess.js'
 import css from '../css/main.css'
-import {evaluateBoard, minimax, minimaxDefault, calcWeightBothSidesTest, calcWeightTest} from './ai.js'
+import {evaluateBoard, minimax, minimaxDefault} from './ai.js'
 
 //imoprt all images from the chesspieces folder
 function importAll(r) {
@@ -187,7 +187,7 @@ function updateUI(){
   // const posTestPoint = calcWeightTest(game.fen());
   // console.log(posTestPoint);
 
-  console.log( calcWeightBothSidesTest(game.fen()) );
+  // console.log( calcWeightBothSidesTest(game.fen()) );
 
 
   //UPDATE UI

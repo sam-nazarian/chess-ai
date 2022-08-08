@@ -127,105 +127,14 @@ export function evaluateBoard(game, turn) {
 	}
 
 	const fenArr = game.fen().split(/([^\s]+)/)[1].split('/');
-  positionPoint += calcWeight(fenArr);
-
-  // console.log(positionPoint);
-
-  // console.log('white', wWeight);
-  // console.log('black', bWeight);
-
-  // console.log(fenArr);
-
-  // console.log(game.fen());
-  // ''.
-
-	//select the 1st part of Fen
-	//seperate fen by '/'
-
-	// Remember to change endgame behavior for kings
-
-/*
-	//convert it to 0-bsed so it could be used in an array
-
-	//[row][col]
-	var from = [
-		8 - parseInt(move.from[1]), //eg.e2,  row will be 8-2=6 (this is 0-based, used for arrs)
-		move.from.charCodeAt(0) - 'a'.charCodeAt(0), //eg.e to 4 (this is 0-based, used for arrs)
-	];
-	var to = [
-		8 - parseInt(move.to[1]),
-		move.to.charCodeAt(0) - 'a'.charCodeAt(0),
-	];
-
-	// console.log('from', from);
-	// console.log('to', to);
-
-	//   console.log(move);
-	// Change endgame behavior for kings
-	if (prevSum < -1500) {
-		if (move.piece === 'k') {
-			move.piece = 'k_e'; //change piece name to k_e(will use k_e pst instead)
-		}
-		// Kings can never be captured
-		// else if (move.captured === 'k') {
-		//   move.captured = 'k_e';
-		// }
-	}
-
-	//if property 'captured' is in 'move object' eg. captured: 'p'
-	if ('captured' in move) {
-		// Opponent piece was captured (good for us)
-		if (move.color === color) {
-			prevSum +=
-				weights[move.captured] +
-				pstOpponent[move.color][move.captured][to[0]][to[1]];
-		}
-		// Our piece was captured (bad for us)
-		else {
-			prevSum -=
-				weights[move.captured] +
-				pstSelf[move.color][move.captured][to[0]][to[1]];
-		}
-	}
-
-	if (move.flags.includes('p')) {
-		// NOTE: promote to queen for simplicity
-		move.promotion = 'q';
-
-		// Our piece was promoted (good for us)
-		if (move.color === color) {
-			prevSum -=
-				weights[move.piece] + pstSelf[move.color][move.piece][from[0]][from[1]];
-			prevSum +=
-				weights[move.promotion] +
-				pstSelf[move.color][move.promotion][to[0]][to[1]];
-		}
-		// Opponent piece was promoted (bad for us)
-		else {
-			prevSum +=
-				weights[move.piece] + pstSelf[move.color][move.piece][from[0]][from[1]];
-			prevSum -=
-				weights[move.promotion] +
-				pstSelf[move.color][move.promotion][to[0]][to[1]];
-		}
-	} else {
-		// The moved piece still exists on the updated board, so we only need to update the position value
-		if (move.color !== color) {
-			prevSum += pstSelf[move.color][move.piece][from[0]][from[1]];
-			prevSum -= pstSelf[move.color][move.piece][to[0]][to[1]];
-		} else {
-			prevSum -= pstSelf[move.color][move.piece][from[0]][from[1]];
-			prevSum += pstSelf[move.color][move.piece][to[0]][to[1]];
-		}
-	}
-	*/
-
+  positionPoint += calcWeightAndPosition(fenArr);
+   
 	return positionPoint;
 }
 
 
-function calcWeight(fenArr){
-  const [whiteAndBlackWeightSum, difference] = calcWeightBothSides(fenArr);
+function calcWeightAndPosition(fenArr){
+  const [whiteAndBlackWeightSum, difference] = calcWeight(fenArr);
   let positionPoint = difference;
 
   for(let i=0; i<fenArr.length; i++){
@@ -268,67 +177,9 @@ function calcWeight(fenArr){
   }
 
   return positionPoint;
-
 }
 
-
-export function calcWeightTest(fen){
-	const fenArr = fen.split(/([^\s]+)/)[1].split('/');
-
-  console.log(fenArr);
-
-  const [whiteAndBlackWeightSum, difference] = calcWeightBothSides(fenArr);
-  let positionPoint = difference;
-
-  for(let i=0; i<fenArr.length; i++){
-    let col = 0;
-    for(let j=0; j<fenArr[i].length; j++){
-
-      /** @type String*/
-      const char = fenArr[i][j];
-
-      //CHAR IS WHITE
-      if(char === char.toUpperCase() && isNaN(char)){
-        //TODO CHANGE FOR K_E if weight is less than a certain amount
-        if(char === 'K' && whiteAndBlackWeightSum <= 121870) {
-          positionPoint += pst_w['k_e'][i][col]
-          console.log('iWHITE', i);
-          console.log('colWHITE', col);
-        }
-        else{
-          positionPoint += pst_w[char.toLowerCase()][i][col];
-        }
-      }
-
-      //CHAR IS BLACK
-      if(char === char.toLowerCase() && isNaN(char)){
-        if(char === 'k' && whiteAndBlackWeightSum <= 121870) {
-          positionPoint -= pst_b['k_e'][i][col]
-          console.log('iBLACK', i);
-          console.log('colBLACK', col);
-        }
-        else{
-          positionPoint -= pst_b[char.toLowerCase()][i][col];
-        }
-      }
-
-      //IF CHAR IS NUMBER
-      if(parseInt(char)) {
-        // console.log(char);
-        col += char * 1;
-      }else{
-        col++;
-      }
-
-    }
-  }
-
-  return positionPoint;
-}
-
-
-
-export function calcWeightBothSides(fenArr) {
+function calcWeight(fenArr) {
   // const fenArr = fen.split(/([^\s]+)/)[1].split('/');
   // console.log(fenArr);
 
@@ -349,9 +200,8 @@ export function calcWeightBothSides(fenArr) {
         //if it's BLACK
         blackWeight += weights[char.toLowerCase()];
       }
-
-      //if char is a number, skip that amount of numbers forward
-      // if(parseInt(char)) j+= char*1; //THERE'S NOTHING TO SKIP AS THE NUMBER DOES NOT REPEAT
+      
+      //THERE'S NOTHING TO SKIP AS THE NUMBER DOES NOT REPEAT
     }
   }
 
@@ -365,42 +215,96 @@ export function calcWeightBothSides(fenArr) {
 }
 
 
+// export function calcWeightTest(fen){
+// 	const fenArr = fen.split(/([^\s]+)/)[1].split('/');
 
-export function calcWeightBothSidesTest(fen) {
-  const fenArr = fen.split(/([^\s]+)/)[1].split('/');
-  // console.log(fenArr);
+//   console.log(fenArr);
 
-  let whiteWeight = 0;
-  let blackWeight = 0;
+//   const [whiteAndBlackWeightSum, difference] = calcWeightBothSides(fenArr);
+//   let positionPoint = difference;
 
-  for (let i = 0; i < fenArr.length; i++) {
+//   for(let i=0; i<fenArr.length; i++){
+//     let col = 0;
+//     for(let j=0; j<fenArr[i].length; j++){
 
-    for (let j = 0; j < fenArr[i].length; j++) {
-      const char = fenArr[i][j];
+//       /** @type String*/
+//       const char = fenArr[i][j];
 
-      if(char === char.toUpperCase() && isNaN(char)){
-        //if it's WHITE
-        whiteWeight += weights[char.toLowerCase()];
-      }
+//       //CHAR IS WHITE
+//       if(char === char.toUpperCase() && isNaN(char)){
+//         //TODO CHANGE FOR K_E if weight is less than a certain amount
+//         if(char === 'K' && whiteAndBlackWeightSum <= 121870) {
+//           positionPoint += pst_w['k_e'][i][col]
+//           console.log('iWHITE', i);
+//           console.log('colWHITE', col);
+//         }
+//         else{
+//           positionPoint += pst_w[char.toLowerCase()][i][col];
+//         }
+//       }
 
-      if(char === char.toLowerCase() && isNaN(char)){
-        //if it's BLACK
-        blackWeight += weights[char.toLowerCase()];
-      }
+//       //CHAR IS BLACK
+//       if(char === char.toLowerCase() && isNaN(char)){
+//         if(char === 'k' && whiteAndBlackWeightSum <= 121870) {
+//           positionPoint -= pst_b['k_e'][i][col]
+//           console.log('iBLACK', i);
+//           console.log('colBLACK', col);
+//         }
+//         else{
+//           positionPoint -= pst_b[char.toLowerCase()][i][col];
+//         }
+//       }
 
-      //if char is a number, skip that amount of numbers forward
-      if(parseInt(char)) console.log(char);
-    }
-  }
+//       //IF CHAR IS NUMBER
+//       if(parseInt(char)) {
+//         // console.log(char);
+//         col += char * 1;
+//       }else{
+//         col++;
+//       }
 
-  const whiteAndBlackWeightSum = whiteWeight + blackWeight;
-  const difference = whiteWeight - blackWeight;
+//     }
+//   }
 
-  // console.log('white', whiteWeight);
-  // console.log('black', blackWeight);
+//   return positionPoint;
+// }
+
+
+// export function calcWeightBothSidesTest(fen) {
+//   const fenArr = fen.split(/([^\s]+)/)[1].split('/');
+//   // console.log(fenArr);
+
+//   let whiteWeight = 0;
+//   let blackWeight = 0;
+
+//   for (let i = 0; i < fenArr.length; i++) {
+
+//     for (let j = 0; j < fenArr[i].length; j++) {
+//       const char = fenArr[i][j];
+
+//       if(char === char.toUpperCase() && isNaN(char)){
+//         //if it's WHITE
+//         whiteWeight += weights[char.toLowerCase()];
+//       }
+
+//       if(char === char.toLowerCase() && isNaN(char)){
+//         //if it's BLACK
+//         blackWeight += weights[char.toLowerCase()];
+//       }
+
+//       //if char is a number, skip that amount of numbers forward
+//       if(parseInt(char)) console.log(char);
+//     }
+//   }
+
+//   const whiteAndBlackWeightSum = whiteWeight + blackWeight;
+//   const difference = whiteWeight - blackWeight;
+
+//   // console.log('white', whiteWeight);
+//   // console.log('black', blackWeight);
   
-  return [whiteAndBlackWeightSum, difference]
-}
+//   return [whiteAndBlackWeightSum, difference]
+// }
 
 /**
  * acts like a namespace, that just calls minimax, with default vals, allows count to be set to 0, every time func is called
@@ -410,7 +314,7 @@ export function calcWeightBothSidesTest(fen) {
 export function minimaxDefault(game) {
   let count = 0;
   const [maxVal, bestMove] = minimax(game, false, 'nothing', 3, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
-  // console.log(count);
+  console.log(count);
 
   return [maxVal, bestMove];
 
