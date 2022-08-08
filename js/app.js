@@ -86,27 +86,18 @@ function makeRandomMove () {
   const [maxVal, bestMove] = minimaxDefault(game);
 
   // console.log(bestMove);
-
   // const possibleMoves = game.moves()
-
   // console.log(possibleMoves);
 
   // game over
   // if (possibleMoves.length === 0) return
+
   if(bestMove === 'nothing') return;
-
-  // const randomIdx = Math.floor(Math.random() * possibleMoves.length)
-  // game.move(possibleMoves[randomIdx])
-
 
   game.move(bestMove)
   board.position(game.fen())
 
-
-  // console.log('Black made a move',evaluateBoard(game, game.turn()));
-  // evaluateBoard(game, game.turn());
   updateUI()
-  // console.log('top', game.turn());
   //now that black moved it's wnite's turn
 }
 
@@ -137,7 +128,7 @@ function onDrop (source, target) {
   // console.log(positionPoints);
 
   // make random legal move for black
-  window.setTimeout(makeRandomMove, 250)
+  window.setTimeout(makeRandomMove, 100) //LOWER THIS LATER
 }
 
 /**
@@ -149,7 +140,7 @@ function onDrop (source, target) {
 function onMouseoverSquare (square, piece) {
 
   //USE WHEN YOU ONLY WANNA USE WHITE ⬜️ , COMMENT WHEN YOU WANNA USE BOTH SIDES ⬜️⬛️
-  if (piece === false || piece.search(/^b/) !== -1) return;
+  if (piece === false || piece.search(/^b/) !== -1 || game.game_over()) return;
 
   // get list of possible moves for highlighted square
   //gets an array of objects (object includes info of possible move)
@@ -218,14 +209,19 @@ function updateUI(){
     blackKingDom.classList.add('hide')
     playerTurnTextDom.classList.add('hide')
 
-    return
+    return;
 	}
 
   if (game.in_draw() || game.in_threefold_repetition() || game.in_stalemate()) {
+
+    winnerTextDom.classList.add('winner-text-active');
 		winnerTextDom.innerHTML = 'Draw!'; //position is equal
 
     whiteKingDom.classList.add('hide')
-    blackKingDom.classList.remove('hide')
+    blackKingDom.classList.add('hide')
+    playerTurnTextDom.classList.add('hide')
+
+    return;
 	}
 
 
