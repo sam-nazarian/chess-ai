@@ -225,15 +225,7 @@ export function evaluateBoard(game, turn) {
 
 
 function calcWeight(fenArr){
-  // let wWeight = 0;
-  // let bWeight = 0;
-  // console.log(fenArr);
-
   const [whiteAndBlackWeightSum, difference] = calcWeightBothSides(fenArr);
-  // console.log('whiteAndBlackWeightSum', whiteAndBlackWeightSum);
-  // console.log('difference', difference);
-
-  //TODO THIS CAN JUST BE SET TO DIFFERENCE BETWEEN WHITE & BLACK WEIGHT
   let positionPoint = difference;
 
   for(let i=0; i<fenArr.length; i++){
@@ -243,54 +235,35 @@ function calcWeight(fenArr){
       /** @type String*/
       const char = fenArr[i][j];
 
-      //char is White
+      //CHAR IS WHITE
       if(char === char.toUpperCase() && isNaN(char)){
-        // positionPoint += weights[char.toLowerCase()];
-        // console.log(weights[char.toLowerCase()]);
-        // console.log('KING ENDING', pst_w['k_e'][i][col]);
-
         //TODO CHANGE FOR K_E if weight is less than a certain amount
         if(char === 'K' && whiteAndBlackWeightSum <= 121870) {
           positionPoint += pst_w['k_e'][i][col]
-
-          // console.log(pst_w['k_e']);
         }
         else{
           positionPoint += pst_w[char.toLowerCase()][i][col];
         }
-
-
-        // console.log(pst_w[char.toLowerCase()][i][col]);
       }
 
-      //Char is Black
+      //CHAR IS BLACK
       if(char === char.toLowerCase() && isNaN(char)){
-        // positionPoint -= weights[char.toLowerCase()];
-
-        // console.log('KING ENDING');
-
         if(char === 'k' && whiteAndBlackWeightSum <= 121870) {
           positionPoint -= pst_b['k_e'][i][col]
-
-          // console.log(pst_b['k_e']);
-          console.log(fenArr);
         }
         else{
           positionPoint -= pst_b[char.toLowerCase()][i][col];
         }
-
       }
 
-      //if char is number
-      if(char === !isNaN(char)) {
+      //IF CHAR IS NUMBER
+      if(parseInt(char)) {
         // console.log(char);
-        col += char;
+        col += char * 1;
       }else{
         col++;
       }
 
-      // console.log('col', col);
-      // console.log(col);
     }
   }
 
@@ -298,6 +271,60 @@ function calcWeight(fenArr){
 
 }
 
+
+export function calcWeightTest(fen){
+	const fenArr = fen.split(/([^\s]+)/)[1].split('/');
+
+  console.log(fenArr);
+
+  const [whiteAndBlackWeightSum, difference] = calcWeightBothSides(fenArr);
+  let positionPoint = difference;
+
+  for(let i=0; i<fenArr.length; i++){
+    let col = 0;
+    for(let j=0; j<fenArr[i].length; j++){
+
+      /** @type String*/
+      const char = fenArr[i][j];
+
+      //CHAR IS WHITE
+      if(char === char.toUpperCase() && isNaN(char)){
+        //TODO CHANGE FOR K_E if weight is less than a certain amount
+        if(char === 'K' && whiteAndBlackWeightSum <= 121870) {
+          positionPoint += pst_w['k_e'][i][col]
+          console.log('iWHITE', i);
+          console.log('colWHITE', col);
+        }
+        else{
+          positionPoint += pst_w[char.toLowerCase()][i][col];
+        }
+      }
+
+      //CHAR IS BLACK
+      if(char === char.toLowerCase() && isNaN(char)){
+        if(char === 'k' && whiteAndBlackWeightSum <= 121870) {
+          positionPoint -= pst_b['k_e'][i][col]
+          console.log('iBLACK', i);
+          console.log('colBLACK', col);
+        }
+        else{
+          positionPoint -= pst_b[char.toLowerCase()][i][col];
+        }
+      }
+
+      //IF CHAR IS NUMBER
+      if(parseInt(char)) {
+        // console.log(char);
+        col += char * 1;
+      }else{
+        col++;
+      }
+
+    }
+  }
+
+  return positionPoint;
+}
 
 
 
@@ -324,7 +351,7 @@ export function calcWeightBothSides(fenArr) {
       }
 
       //if char is a number, skip that amount of numbers forward
-      if(char === !isNaN(char)) j+= char;
+      // if(parseInt(char)) j+= char*1;
     }
   }
 

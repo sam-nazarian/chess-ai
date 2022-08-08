@@ -3,7 +3,7 @@ import favicon from '../img/faviconHorse.jpg'
 import chessboard from './chessboard-1.0.0.js'; //doesn't matter what we name it, not using the name
 import {Chess} from 'chess.js'
 import css from '../css/main.css'
-import {evaluateBoard, minimax, minimaxDefault, calcWeightBothSides} from './ai.js'
+import {evaluateBoard, minimax, minimaxDefault, calcWeightBothSides, calcWeightTest} from './ai.js'
 
 //imoprt all images from the chesspieces folder
 function importAll(r) {
@@ -184,10 +184,14 @@ function onSnapEnd () {
  */
 function updateUI(){
 
+  const posTestPoint = calcWeightTest(game.fen());
+  console.log(posTestPoint);
+
+
   //UPDATE UI
   const positionPoint = evaluateBoard(game, game.turn())
 
-  console.log(positionPoint);
+  // console.log(positionPoint);
 
   let percentPosition = (positionPoint - (-3887)) / (3887-(-3887)) * 100;
   if(percentPosition>100) percentPosition=100;
