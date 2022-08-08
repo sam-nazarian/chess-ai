@@ -351,7 +351,45 @@ export function calcWeightBothSides(fenArr) {
       }
 
       //if char is a number, skip that amount of numbers forward
-      // if(parseInt(char)) j+= char*1;
+      // if(parseInt(char)) j+= char*1; //THERE'S NOTHING TO SKIP AS THE NUMBER DOES NOT REPEAT
+    }
+  }
+
+  const whiteAndBlackWeightSum = whiteWeight + blackWeight;
+  const difference = whiteWeight - blackWeight;
+
+  // console.log('white', whiteWeight);
+  // console.log('black', blackWeight);
+  
+  return [whiteAndBlackWeightSum, difference]
+}
+
+
+
+export function calcWeightBothSidesTest(fen) {
+  const fenArr = fen.split(/([^\s]+)/)[1].split('/');
+  // console.log(fenArr);
+
+  let whiteWeight = 0;
+  let blackWeight = 0;
+
+  for (let i = 0; i < fenArr.length; i++) {
+
+    for (let j = 0; j < fenArr[i].length; j++) {
+      const char = fenArr[i][j];
+
+      if(char === char.toUpperCase() && isNaN(char)){
+        //if it's WHITE
+        whiteWeight += weights[char.toLowerCase()];
+      }
+
+      if(char === char.toLowerCase() && isNaN(char)){
+        //if it's BLACK
+        blackWeight += weights[char.toLowerCase()];
+      }
+
+      //if char is a number, skip that amount of numbers forward
+      if(parseInt(char)) console.log(char);
     }
   }
 
