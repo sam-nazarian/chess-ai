@@ -295,6 +295,7 @@ export function minimax(game, isMaximizing, bestMoveParam, level, alpha, beta){
     //get all possible legal moves for white
     /** @type array */
     const possibleMoves = game.moves()
+    console.log(possibleMoves);
 
     for(let i=0; i<possibleMoves.length; i++){
 

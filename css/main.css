@@ -154,6 +154,27 @@ body {
 }
 
 
+.form{
+  margin-top: 60px;
+  text-align: center;
+}
+
+.label-text-info{
+  color: white;
+  font-weight: bold;
+  font-family: 'Inter', sans-serif;
+  font-size: 10.24px;
+  text-align: left;
+}
+
+.label-text-err{
+  color: rgb(187, 0, 0);
+  font-weight: bold;
+  font-family: 'Inter', sans-serif;
+  font-size: 12.80px;
+}
+
+
 
 
 /* flex: 1; */

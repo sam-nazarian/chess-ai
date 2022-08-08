@@ -22,6 +22,9 @@ const winnerTextDom = document.querySelector('.winner-text');
 const playerTurnTextDom = document.querySelector('.player-turn-text');
 const whiteKingDom = document.querySelector('.white-king');
 const blackKingDom = document.querySelector('.black-king');
+const fenInputDom = document.querySelector('.fen-input');
+const fenInputSubmitDom = document.querySelector('.fen-input-submit');
+const formDom = document.querySelector('.form');
 
 //when highlighted, color white or black squares will turn to:
 const whiteSquareGrey = '#a9a9a9' 
@@ -80,8 +83,7 @@ function onDragStart (source, piece) {
 function makeRandomMove () {
 
   const [maxVal, bestMove] = minimax(game, false, 'nothing', 3, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
-  console.log(bestMove);
-
+  // console.log(bestMove);
 
   // const possibleMoves = game.moves()
 
@@ -251,3 +253,36 @@ const config = {
 }
 
 board = Chessboard('htmlBoard', config) //ChessBoard is a variable in chessboard-1.0.0.js already imported
+
+fenInputSubmitDom.addEventListener('click', submitFen);
+formDom.addEventListener('submit', submitFen)
+
+
+function submitFen(e){
+  e.preventDefault();
+  // console.log(fenInputDom.value);
+
+  const ans = game.load(fenInputDom.value)
+  formDom.reset();
+
+  if(ans === false){
+    //show err message
+    return;
+  }
+
+  board.position(game.fen());
+
+
+  //load the fen position on game
+  //then sync it view
+
+}
+
+
+
+// function getInputValue(){
+//   // Selecting the input element and get its value 
+  
+//   // Displaying the value
+//   alert(inputVal);
+// }
