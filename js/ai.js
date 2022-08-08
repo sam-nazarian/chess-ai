@@ -227,7 +227,14 @@ export function evaluateBoard(game, turn) {
 function calcWeight(fenArr){
   // let wWeight = 0;
   // let bWeight = 0;
-  let positionPoint = 0;
+  // console.log(fenArr);
+
+  const [whiteAndBlackWeightSum, difference] = calcWeightBothSides(fenArr);
+  // console.log('whiteAndBlackWeightSum', whiteAndBlackWeightSum);
+  // console.log('difference', difference);
+
+  //TODO THIS CAN JUST BE SET TO DIFFERENCE BETWEEN WHITE & BLACK WEIGHT
+  let positionPoint = difference;
 
   for(let i=0; i<fenArr.length; i++){
     let col = 0;
@@ -238,19 +245,40 @@ function calcWeight(fenArr){
 
       //char is White
       if(char === char.toUpperCase() && isNaN(char)){
-        positionPoint += weights[char.toLowerCase()];
+        // positionPoint += weights[char.toLowerCase()];
         // console.log(weights[char.toLowerCase()]);
+        // console.log('KING ENDING', pst_w['k_e'][i][col]);
 
-        positionPoint += pst_w[char.toLowerCase()][i][col];
+        //TODO CHANGE FOR K_E if weight is less than a certain amount
+        if(char === 'K' && whiteAndBlackWeightSum <= 121870) {
+          positionPoint += pst_w['k_e'][i][col]
+
+          // console.log(pst_w['k_e']);
+        }
+        else{
+          positionPoint += pst_w[char.toLowerCase()][i][col];
+        }
+
 
         // console.log(pst_w[char.toLowerCase()][i][col]);
       }
 
       //Char is Black
       if(char === char.toLowerCase() && isNaN(char)){
-        positionPoint -= weights[char.toLowerCase()];
+        // positionPoint -= weights[char.toLowerCase()];
 
-        positionPoint -= pst_b[char.toLowerCase()][i][col];
+        // console.log('KING ENDING');
+
+        if(char === 'k' && whiteAndBlackWeightSum <= 121870) {
+          positionPoint -= pst_b['k_e'][i][col]
+
+          // console.log(pst_b['k_e']);
+          console.log(fenArr);
+        }
+        else{
+          positionPoint -= pst_b[char.toLowerCase()][i][col];
+        }
+
       }
 
       //if char is number
@@ -270,6 +298,45 @@ function calcWeight(fenArr){
 
 }
 
+
+
+
+export function calcWeightBothSides(fenArr) {
+  // const fenArr = fen.split(/([^\s]+)/)[1].split('/');
+  // console.log(fenArr);
+
+  let whiteWeight = 0;
+  let blackWeight = 0;
+
+  for (let i = 0; i < fenArr.length; i++) {
+
+    for (let j = 0; j < fenArr[i].length; j++) {
+      const char = fenArr[i][j];
+
+      if(char === char.toUpperCase() && isNaN(char)){
+        //if it's WHITE
+        whiteWeight += weights[char.toLowerCase()];
+      }
+
+      if(char === char.toLowerCase() && isNaN(char)){
+        //if it's BLACK
+        blackWeight += weights[char.toLowerCase()];
+      }
+
+      //if char is a number, skip that amount of numbers forward
+      if(char === !isNaN(char)) j+= char;
+    }
+  }
+
+  const whiteAndBlackWeightSum = whiteWeight + blackWeight;
+  const difference = whiteWeight - blackWeight;
+
+  // console.log('white', whiteWeight);
+  // console.log('black', blackWeight);
+  
+  return [whiteAndBlackWeightSum, difference]
+}
+
 /**
  * acts like a namespace, that just calls minimax, with default vals, allows count to be set to 0, every time func is called
  * @param {obj} game 
@@ -278,7 +345,7 @@ function calcWeight(fenArr){
 export function minimaxDefault(game) {
   let count = 0;
   const [maxVal, bestMove] = minimax(game, false, 'nothing', 3, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
-  console.log(count);
+  // console.log(count);
 
   return [maxVal, bestMove];
 
