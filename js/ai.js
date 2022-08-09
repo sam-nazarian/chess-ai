@@ -179,7 +179,17 @@ function calcWeightAndPosition(fenArr){
   return positionPoint;
 }
 
-function calcWeight(fenArr) {
+/**
+ * Calculates weight of pieces that white and black have
+ * @param {String || Array} fen fen str
+ * @param {obj} options if fenStr = true, then convert fen to fenArr, default is false, which sends an arr instead of a string for fen
+ * @returns [whiteAndBlackWeightSum, difference], white and black pieces weight sum, and their difference
+ */
+export function calcWeight(fen, options) {
+
+  let fenArr = fen; //by default assume an arr was given to fen
+  if(options && options.fenStr === true) fenArr = fen.split(/([^\s]+)/)[1].split('/'); //if option 'fenStr' is given, convert fen to arr, and store it
+
   // const fenArr = fen.split(/([^\s]+)/)[1].split('/');
   // console.log(fenArr);
 
@@ -316,7 +326,7 @@ export function minimaxDefault(game) {
   const [maxVal, bestMove] = minimax(game, false, 'nothing', 3, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
   console.log(count);
 
-  return [maxVal, bestMove];
+  return [maxVal, bestMove, count];
 
   /**
    * Used by AI/black to find best possible move using minimax algorithm

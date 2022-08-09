@@ -3,7 +3,7 @@ import favicon from '../img/faviconHorse.jpg'
 import chessboard from './chessboard-1.0.0.js'; //doesn't matter what we name it, not using the name
 import {Chess} from 'chess.js'
 import css from '../css/main.css'
-import {evaluateBoard, minimax, minimaxDefault} from './ai.js'
+import {evaluateBoard, minimax, minimaxDefault, calcWeight} from './ai.js'
 
 //imoprt all images from the chesspieces folder
 function importAll(r) {
@@ -84,6 +84,10 @@ function makeRandomMove () {
 
   // const [maxVal, bestMove] = minimax(game, false, 'nothing', 3, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
   const [maxVal, bestMove] = minimaxDefault(game);
+
+  //sum of black & white weights
+  //based on this val adjust difficulty for players, the lower the more diffuclt as there's less positions needing to be analyzed, thus faster minimax
+  const [sumWeightBW] = calcWeight(game.fen(), {fenStr:true});
 
   // console.log(bestMove);
   // const possibleMoves = game.moves()
@@ -188,6 +192,8 @@ function updateUI(){
   // console.log(posTestPoint);
 
   // console.log( calcWeightBothSidesTest(game.fen()) );
+
+  // console.log(  )
 
 
   //UPDATE UI
