@@ -25,6 +25,7 @@ const blackKingDom = document.querySelector('.black-king');
 const fenInputDom = document.querySelector('.fen-input');
 const fenInputSubmitDom = document.querySelector('.fen-input-submit');
 const formLoadPosDom = document.querySelector('.form-load-position');
+const formDifficultyDom = document.querySelector('.form-difficulty');
 
 //when highlighted, color white or black squares will turn to:
 const whiteSquareGrey = '#a9a9a9' 
@@ -300,6 +301,15 @@ function submitFen(e){
 
 }
 
+formDifficultyDom.addEventListener('click',(e)=>{
+  // console.log(e.target);
+  // console.log(e.target.tagName);
+
+  //select correct target
+  if(!e.target.value) return;
+
+  userLevel = e.target.value;
+})
 
 
 // function getInputValue(){
