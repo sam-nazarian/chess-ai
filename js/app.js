@@ -16,6 +16,7 @@ const images = importAll(require.context('../img/chesspieces/wikipedia/', false,
 
 let board = null
 const game = new Chess() //default chess position with no parameters
+let redoArr = [];
 
 const progressDom = document.querySelector('.progress');
 const winnerTextDom = document.querySelector('.winner-text');
@@ -26,6 +27,9 @@ const fenInputDom = document.querySelector('.fen-input');
 const fenInputSubmitDom = document.querySelector('.fen-input-submit');
 const formLoadPosDom = document.querySelector('.form-load-position');
 const formDifficultyDom = document.querySelector('.form-difficulty');
+const btnUndoDom = document.querySelector('.btn-undo');
+const btnRedoDom = document.querySelector('.btn-redo');
+
 
 //when highlighted, color white or black squares will turn to:
 const whiteSquareGrey = '#a9a9a9' 
@@ -281,8 +285,9 @@ formLoadPosDom.addEventListener('submit', submitFen)
 
 function submitFen(e){
   e.preventDefault();
-  // console.log(fenInputDom.value);
 
+  //load the fen position on game
+  //then sync it view
   const ans = game.load(fenInputDom.value)
   formLoadPosDom.reset();
 
@@ -291,14 +296,12 @@ function submitFen(e){
     return;
   }
 
+  redoArr = [];
+
   //if it's black's turn -> make black move
+  if(game.fen().includes('b')) window.setTimeout(makeRandomMove, 250)
 
   board.position(game.fen());
-
-
-  //load the fen position on game
-  //then sync it view
-
 }
 
 formDifficultyDom.addEventListener('click',(e)=>{
@@ -309,6 +312,41 @@ formDifficultyDom.addEventListener('click',(e)=>{
   if(!e.target.value) return;
 
   userLevel = e.target.value;
+})
+
+btnUndoDom.addEventListener('click',(e)=>{
+  e.preventDefault();
+
+  //waits while black, makes the moves then undos, so it will always be white's turn after the undo
+
+  game.undo(); //undos black
+  const whiteUndo = game.undo(); //undos white
+  if(!whiteUndo) return; //if it's null stop
+
+  redoArr.push([whiteUndo.from, whiteUndo.to])
+
+  board.position(game.fen());
+})
+
+
+btnRedoDom.addEventListener('click',(e)=>{
+  e.preventDefault();
+  if(redoArr.length === 0) return;
+
+  const redo = redoArr.pop()
+
+  // const move =
+  game.move({
+    from: redo[0],
+    to: redo[1],
+    promotion: 'q' // NOTE: always promote to a queen (for simplicity)
+  })
+
+  // if (move === null) return 'snapback'
+
+  board.position(game.fen());
+
+  window.setTimeout(makeRandomMove, 250);//make move for black
 })
 
 
