@@ -77,34 +77,39 @@ function onDragStart (source, piece) {
   if (piece.search(/^b/) !== -1) return false
 }
 
+
+let userLevel = 3; //set it by user
+let prevPosAnalyzed = 0;
+
 /**
  * Black making a move 
  */
 function makeRandomMove () {
+  let resMiniMax = [];
 
-  // const [maxVal, bestMove] = minimax(game, false, 'nothing', 3, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
-  const [maxVal, bestMove] = minimaxDefault(game);
-
-  //sum of black & white weights
-  //based on this val adjust difficulty for players, the lower the more diffuclt as there's less positions needing to be analyzed, thus faster minimax
   const [sumWeightBW] = calcWeight(game.fen(), {fenStr:true});
 
-  // console.log(bestMove);
-  // const possibleMoves = game.moves()
-  // console.log(possibleMoves);
+  //if endgame & processeing is fast then, go 6 moves deep
+  if(sumWeightBW <= 121870 && prevPosAnalyzed<80000 && userLevel<5){
+    //[maxVal, bestMove, posAnalyzed]
+    resMiniMax = minimaxDefault(game, 5);
+  }else{
+    resMiniMax = minimaxDefault(game, userLevel);
+  }
 
-  // game over
-  // if (possibleMoves.length === 0) return
+  const bestMove = resMiniMax[1];
+  const posAnalyzed = resMiniMax[2];
+
+  prevPosAnalyzed = posAnalyzed;
+  console.log(posAnalyzed);
+
+
 
   if(bestMove === 'nothing') return;
-
   game.move(bestMove)
   board.position(game.fen())
-
-
-  // console.log(calcWeightBothSides(game.fen()));
-
   updateUI()
+
   //now that black moved it's wnite's turn
 }
 

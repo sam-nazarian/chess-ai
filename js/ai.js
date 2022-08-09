@@ -321,10 +321,10 @@ export function calcWeight(fen, options) {
  * @param {obj} game 
  * @returns [maxVal, bestMove]
  */
-export function minimaxDefault(game) {
+export function minimaxDefault(game, maxLevel) {
   let count = 0;
-  const [maxVal, bestMove] = minimax(game, false, 'nothing', 3, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
-  console.log(count);
+  const [maxVal, bestMove] = minimax(game, false, 'nothing', maxLevel, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
+  // console.log(count);x
 
   return [maxVal, bestMove, count];
 
@@ -355,8 +355,8 @@ export function minimaxDefault(game) {
       for (let i = 0; i < possibleMoves.length; i++) {
 
         let bestMove = '';
-        if (level === 3) bestMove = possibleMoves[i]; //if we just made move
-        if (level !== 3) bestMove = bestMoveParam;
+        if (level === maxLevel) bestMove = possibleMoves[i]; //if we just made move
+        if (level !== maxLevel) bestMove = bestMoveParam;
 
         //copy old game, add new random move
         const copyGame = new Chess(game.fen());
@@ -393,8 +393,8 @@ export function minimaxDefault(game) {
       for (let i = 0; i < possibleMoves.length; i++) {
 
         let bestMove = '';
-        if (level === 3) bestMove = possibleMoves[i]; //if we just made move
-        if (level !== 3) bestMove = bestMoveParam;
+        if (level === maxLevel) bestMove = possibleMoves[i]; //if we just made move
+        if (level !== maxLevel) bestMove = bestMoveParam;
 
         //copy old game, add new random move
         const copyGame = new Chess(game.fen());
@@ -406,7 +406,7 @@ export function minimaxDefault(game) {
 
         if (evalRes < minEval) {
           minEval = evalRes;
-          bestMoveParam = possibleBestMove; //this is only neccesorly for level 3 node as, bestMoveParam is set to 'nothing' there
+          bestMoveParam = possibleBestMove; //this is only neccesorly for level 3(maxLevel) node as, bestMoveParam is set to 'nothing' there
         }
 
         beta = Math.min(beta, evalRes);
