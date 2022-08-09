@@ -324,7 +324,7 @@ export function calcWeight(fen, options) {
 export function minimaxDefault(game, maxLevel) {
   let count = 0;
   const [maxVal, bestMove] = minimax(game, false, 'nothing', maxLevel, -Infinity, Infinity); //will see 3 moves ahead, (2 to 0, is 3 moves)
-  // console.log(count);x
+  // console.log(count);
 
   return [maxVal, bestMove, count];
 

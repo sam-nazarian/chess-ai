@@ -24,7 +24,7 @@ const whiteKingDom = document.querySelector('.white-king');
 const blackKingDom = document.querySelector('.black-king');
 const fenInputDom = document.querySelector('.fen-input');
 const fenInputSubmitDom = document.querySelector('.fen-input-submit');
-const formDom = document.querySelector('.form');
+const formLoadPosDom = document.querySelector('.form-load-position');
 
 //when highlighted, color white or black squares will turn to:
 const whiteSquareGrey = '#a9a9a9' 
@@ -275,7 +275,7 @@ const config = {
 board = Chessboard('htmlBoard', config) //ChessBoard is a variable in chessboard-1.0.0.js already imported
 
 fenInputSubmitDom.addEventListener('click', submitFen);
-formDom.addEventListener('submit', submitFen)
+formLoadPosDom.addEventListener('submit', submitFen)
 
 
 function submitFen(e){
@@ -283,7 +283,7 @@ function submitFen(e){
   // console.log(fenInputDom.value);
 
   const ans = game.load(fenInputDom.value)
-  formDom.reset();
+  formLoadPosDom.reset();
 
   if(ans === false){
     //show err message
