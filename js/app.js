@@ -319,11 +319,11 @@ btnUndoDom.addEventListener('click',(e)=>{
 
   //waits while black, makes the moves then undos, so it will always be white's turn after the undo
 
-  game.undo(); //undos black
+  const blackUndo = game.undo(); //undos black
   const whiteUndo = game.undo(); //undos white
   if(!whiteUndo) return; //if it's null stop
 
-  redoArr.push([whiteUndo.from, whiteUndo.to])
+  redoArr.push([blackUndo.from, blackUndo.to,whiteUndo.from, whiteUndo.to])
 
   board.position(game.fen());
 })
@@ -331,22 +331,28 @@ btnUndoDom.addEventListener('click',(e)=>{
 
 btnRedoDom.addEventListener('click',(e)=>{
   e.preventDefault();
-  if(redoArr.length === 0) return;
+  if(redoArr.length === 0) {
+    //show an err
+    return;
+  }
 
   const redo = redoArr.pop()
 
-  // const move =
+  //White makes move
+  game.move({
+    from: redo[2],
+    to: redo[3],
+    promotion: 'q' // NOTE: always promote to a queen (for simplicity)
+  })
+
+  //Black makes move
   game.move({
     from: redo[0],
     to: redo[1],
     promotion: 'q' // NOTE: always promote to a queen (for simplicity)
   })
 
-  // if (move === null) return 'snapback'
-
   board.position(game.fen());
-
-  window.setTimeout(makeRandomMove, 250);//make move for black
 })
 
 
