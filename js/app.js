@@ -29,6 +29,9 @@ const formLoadPosDom = document.querySelector('.form-load-position');
 const formDifficultyDom = document.querySelector('.form-difficulty');
 const btnUndoDom = document.querySelector('.btn-undo');
 const btnRedoDom = document.querySelector('.btn-redo');
+const errMessageDom = document.querySelector('.err-message');
+const errContainerDom = document.querySelector('.err-container');
+const btnCloseErrContainerDom = document.querySelector('.btn-close-err-container');
 
 
 //when highlighted, color white or black squares will turn to:
@@ -254,13 +257,13 @@ function updateUI(){
 
   //UPDATE THE PLAYER TURN
   if (game.turn() === 'w') {
-    playerTurnTextDom.innerHTML = `White's<br>Turn`;
+    playerTurnTextDom.innerHTML = `Your<br>Turn`;
     whiteKingDom.classList.remove('hide')
     blackKingDom.classList.add('hide')
   }
 
   if (game.turn() === 'b') {
-    playerTurnTextDom.innerHTML = `Black's<br>Turn`;
+    playerTurnTextDom.innerHTML = `Wait, Black<br>Is Thinking...`;
     blackKingDom.classList.remove('hide')
     whiteKingDom.classList.add('hide')
   }
@@ -292,7 +295,7 @@ function submitFen(e){
   formLoadPosDom.reset();
 
   if(ans === false){
-    //show err message
+    showError('Invalid FEN!')
     return;
   }
 
@@ -321,7 +324,10 @@ btnUndoDom.addEventListener('click',(e)=>{
 
   const blackUndo = game.undo(); //undos black
   const whiteUndo = game.undo(); //undos white
-  if(!whiteUndo) return; //if it's null stop
+  if(!whiteUndo) {
+    showError('Nothing to undo!')
+    return; //if it's null stop
+  }
 
   redoArr.push([blackUndo.from, blackUndo.to,whiteUndo.from, whiteUndo.to])
 
@@ -332,7 +338,7 @@ btnUndoDom.addEventListener('click',(e)=>{
 btnRedoDom.addEventListener('click',(e)=>{
   e.preventDefault();
   if(redoArr.length === 0) {
-    //show an err
+    showError('Nothing to redo!')
     return;
   }
 
@@ -353,6 +359,27 @@ btnRedoDom.addEventListener('click',(e)=>{
   })
 
   board.position(game.fen());
+})
+
+let errTimeout = 0;
+function showError(text){
+
+  if(errTimeout>0) clearTimeout(errTimeout); //remove timer if it was already set below (which would have a val>0)
+
+  errMessageDom.innerHTML = text;
+
+  errContainerDom.classList.add('err-container-active');
+
+  errTimeout = window.setTimeout(()=>{
+    errContainerDom.classList.remove('err-container-active')
+  }, 2000) //errTimeout will be a posetive val
+
+  console.log(errTimeout);
+}
+
+
+btnCloseErrContainerDom.addEventListener('click',(e)=>{
+  errContainerDom.classList.remove('err-container-active')
 })
 
 
