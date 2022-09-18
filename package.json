@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "A chess engine",
   "scripts": {
-    "build": "webpack --mode production",
-    "dev": "webpack serve --mode development"
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production"
   },
   "author": "Saman Fathnazarian",
   "license": "ISC",
