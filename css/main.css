@@ -1,58 +1,3 @@
-/* 
---- 01 TYPOGRAPHY SYSTEM
-- FONT SIZE SYSTEM (px)
-10 / 12 / 14 / 16 / 18 / 20 / 24 / 30 / 36 / 44 / 52 / 62 / 74 / 86 / 98
-
-- FONT WEIGHTS:
-Default: 400
-Medium: 500
-Semi-bold: 600
-Bold: 700
-
-- LINE HEIGHTS:
-default: 1
-Small: 1.05
-Medium: 1.2
-Large: 1.8
-Paragraph default: 1.6
-
-- Letter spacing
--0.5px
-0.75px
-
---- 02 COLORS
-MAIN COLOR: #e67e22
-- Tints: 
-#fdf2e9
-#fae5d3
-#eb984e
-
-- Shades:
-#cf711f
-#45260a
-
-- Accents:
-- Grays:
-#888
-#767676 (lightest grey allowed on #fff)
-#6f6f6f (lightest grey allowed on #fdf2e9)
-#555
-#333
-
---- 03 SHADOWS
-0 2.4rem 4.8rem rgba(0,0,0,0.075);
-
-
---- 04 border-radius
-Default: 9px
-Medium: 11px
-
---- 05 WHITESPACE
-
---- 06 SPACING SYSTEM (px)
-2 / 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 80 / 96 / 128
-*/
-
 *{
   margin: 0;
   padding: 0;
@@ -73,6 +18,7 @@ body {
   background: rgb(15, 15, 15);
   background: linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 66%, rgba(52, 52, 52, 1) 100%);
   font-weight: 400;
+  color:#fff;
 
   /* line-height: 1; */
   /* color: #555; */
@@ -85,7 +31,7 @@ body {
 
 .interface{
   /* used padding, instead of margin as I don't want website to be scrollable */
-  padding-top: 100px;
+  padding-top: 10rem;
   /* position: relative; */
 }
 
@@ -98,174 +44,100 @@ body {
 
 .chessboard-container{
   display: grid;
-  /* column-gap: 0; */
-  /* row-gap: 0; */
+  column-gap: 0rem;
+  row-gap: 0rem;
   grid-template-columns: min-content 1fr;
   margin-left: 2rem;
 }
 
 #htmlBoard {
-  /* width: 35%; */
-  /* margin: 0 auto; */
-  /* flex: 1 0 13%; */
-  /* margin-top: 100px; */
-  /* width: 75vw; */
-  /* display: block; */
-  /* max-width: 200px; */
-  /* width: 40vw; */
   /* max-width does not work with this div */
-  width: 700px;
+  width: 70rem;
+  margin-left: 2px;
 }
 
 .progressbar {
+  /* height is streched */
   justify-self: end;
-  /* margin-left: 100px; */
-  /* height: 600px; */
-  align-self: stretch;
   background-color: #000;
-  border-radius: 13px;
-  width: 20px;
+  border-radius: 1.3rem;
+  width: 2rem;
   /* try to only use the 180deg, 90deg, gets complex with the positioning */
   transform: rotate(180deg);
 }
 
-/* .right-side{ */
-  /* margin-left: 400px; */
-  /* flex: 1; */
-  /* align-self: center; */
-  /* justify-content: center; */
-   /* align-items: center;      */
-  /* align-content: center;  */
-/* } */
-
-
-/* .chessboard-63f37{
-  position: relative;
-} */
-
 .progress {
   transition : height 1000ms ease-out;
   background-color: #fff;
-
-  /* Adjust width using JS */
-  width: 20px;
-
+  width: 2rem;
+  /* Adjust height using JS */
   /* also sets the hegiht of parent */
   height: 50%;
-
-  border-radius: 10px;
+  border-radius: 1.3rem;
 }
 
+.winner-text{
+  /* margin-top: 200px; */
+  text-align: center;
+  font-weight: 700;
+  font-size: 4.9rem;
 
-.turn-container{
+  /* 1) Hide it visually */
+  opacity: 0;
+  /*  2) make it unaccessible to mouse and keyboard */
+  pointer-events: none;
+  /* 3) Hide it from screen readers */
+  visibility: hidden;
+}
+
+.winner-text-active {
+  /* Show it visually */
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+
+  /* Only transition when class is added, not when it's removed */
+  transition: opacity 1s ease-in;
+}
+
+.turn-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.chess-img{
-  /* display: block; */
-  /* margin: 0 auto; */
-}
-
-.player-turn-text{
-  color: white;
-  font-weight: bold;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-}
-
-.restart-btn{
-
-  /* background-color: white */
-  padding: 10px;
-  font-weight: bold;
-  text-align: center;  
-  display:block;
-  width: 300px;
-  margin: 0 auto;
-
-
-  /* margin-top: 20px; */
-  /* background-color: #262421; */
-  background-color: #262524;
-  color: #999;
-  border: 0;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-bottom: 15px;
-}
-
-
-.restart-btn:hover{
-  background: #313030;
-}
-
-.winner-text{
-  /* margin-top: 200px; */
-  margin: 0;
-  color:#fff;
-  text-align: center;
-  font-weight: bold;
-  font-size: 48.83px;
-  font-family: 'Inter', sans-serif;
-  /* display: none; */
-  opacity: 0;
-
-  /* Transition for the opacity right above */
-  /* transition: opacity 1s ease-in; */ 
-}
-
-.winner-text-active{
-  opacity: 1;
-  display: block;
-  transition: opacity 1s ease-in;
-}
-
+/* applies to king pic next to "your turn" button */
 .hide{
   display: none;
 }
 
-
-.form-load-position{
-  /* margin-top: 60px; */
-  text-align: center;
-  margin-bottom: 70px;
+.player-turn-text {
+  font-weight: 700;
+  font-size: 1.2rem;
 }
 
-.label-text-info{
-  color: white;
-  font-weight: bold;
-  font-family: 'Inter', sans-serif;
+/* START OF - FORM TO SET DIFFICULTY */
+.form-difficulty {
+	/* USE TEXT-ALIGN CENTER, TO CENTER EVERYTHING INSIDE OF FORM */
+	text-align: center;
+	line-height: 1.625;
+  margin-bottom: 10px;
+  /* margin: 8px auto; */
+	/* padding: 16px; */
+}
+
+.form-difficulty-text{
   font-size: 10.24px;
-  text-align: left;
 }
 
-.label-text-err{
-  color: rgb(187, 0, 0);
-  font-weight: bold;
-  font-family: 'Inter', sans-serif;
-  font-size: 12.80px;
-}
-
-
-/* FORM TO SET DIFFICULTY */
-/* FORM TO SET DIFFICULTY */
 .switch-field {
 	display: inline-flex;
 	/* display: flex; */
 	overflow: hidden;
 }
 
+/* Hide radio button circles */
 .switch-field input {
-  /* Hide radio button */
-	/* position: absolute !important;
-	clip: rect(0, 0, 0, 0);
-	height: 1px;
-	width: 1px;
-	border: 0;
-	overflow: hidden; */
-
   position: fixed;
   opacity: 0;
   pointer-events: none;
@@ -273,14 +145,12 @@ body {
 
 .switch-field label {
 	background-color: #262524;
-	/* color: rgba(0, 0, 0, 0.6); */
   color: #999;
 	font-size: 14px;
 	line-height: 1;
 	text-align: center;
 	padding: 8px 16px;
 	margin-right: -1px;
-  /* border: 1px solid rgba(0, 0, 0, 0.8); */
   border: 1px solid rgba(0, 0, 0);
 	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
 	/* transition: background-color,color 100ms ease-in-out; */
@@ -288,8 +158,9 @@ body {
 
 .switch-field label:hover {
 	cursor: pointer;
-  background-color: #c9c9c993;
-  /* c7c6c6 */
+  /* transparancy fixes the color contrast */
+  background-color: rgba(201, 201, 201, 0.576);
+  color: #ccc;
 }
 
 .switch-field input:checked + label {
@@ -305,30 +176,10 @@ body {
 .switch-field label:last-of-type {
 	border-radius: 0 4px 4px 0;
 }
+/* END OF - FORM TO SET DIFFICULTY */
 
 
-.form-difficulty {
-	/* USE TEXT-ALIGN CENTER, TO CENTER EVERYTHING INSIDE OF FORM */
-	text-align: center;
-	font-family: "Lucida Grande", Tahoma, Verdana, sans-serif;
-	font-weight: normal;
-	line-height: 1.625;
-	/* margin: 8px auto; */
-	/* padding: 16px; */
-
-  margin-bottom: 10px;
-}
-
-.form-difficulty-text{
-  color: #fff;
-  font-size: 10.24px;
-}
-/* END OF FORM TO SET DIFFICULTY */
-
-
-
-/* START OF form-undo-redo */
-
+/* START OF - FORM-UNDO-REDO */
 .form-undo-redo{
   text-align: center;
   margin-bottom: 35px;
@@ -368,8 +219,35 @@ body {
   padding:7px;
   /* margin-bottom:10px; */
 }
+/* END OF - FORM-UNDO-REDO */
 
-/* END OF form-undo-redo */
+.restart-btn{
+  padding: 10px;
+  font-weight: 700;
+  text-align: center;  
+  display: block;
+  width: 300px;
+  margin: 0 auto;
+
+  /* margin-top: 20px; */
+  background-color: #262524;
+  color: #999;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.restart-btn:hover{
+  background: #313030;
+}
+
+.form-load-position{
+  /* margin-top: 60px; */
+  text-align: center;
+  margin-bottom: 70px;
+}
+
 .err-container {
   /* padding: 10px; */
   background-color: #e74c3c;
@@ -430,6 +308,37 @@ body {
 }
 
 
+/* .label-text-info{
+  color: white;
+  font-weight: bold;
+  font-size: 10.24px;
+  text-align: left;
+}
+.label-text-err{
+  color: rgb(187, 0, 0);
+  font-weight: bold;
+  font-size: 12.80px;
+} */
+
+/* .chess-img{
+  display: block;
+  margin: 0 auto;
+} */
+
+/* .settings-container{ */
+  /* margin-left: 400px; */
+  /* flex: 1; */
+  /* align-self: center; */
+  /* justify-content: center; */
+   /* align-items: center;      */
+  /* align-content: center;  */
+/* } */
+
+
+/* .chessboard-63f37{
+  position: relative;
+} */
+
 
 /* START ERROR MESSAGE */
 
@@ -445,7 +354,6 @@ body {
 
   align-self: stretch;
 } */
-
 
 
 
@@ -465,6 +373,3 @@ body {
   top: 0px;
   right: 0px;
 } */
-
-
-

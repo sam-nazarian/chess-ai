@@ -40,9 +40,10 @@
           <div id="htmlBoard"></div>
         </div>
 
-        <div class="right-side">
+        <div class="settings-container">
+
+          <!-- class="winner-text-active" -->
           <p class="winner-text">White Won!</p>
-          <!-- winner-text-active -->
 
           <div class="turn-container">
             <img class="chess-img white-king" src="img/chesspieces/wikipedia/wK.png" />
@@ -86,11 +87,9 @@
           </form>
 
           <form class="form-load-position">
-            <!-- <label class="label-text-info">Load Different Position:</label><br> -->
             <textarea type="text" placeholder="Paste FEN to Load a Different Position" class="fen-input"></textarea>
 
             <br /><button type="button" class="fen-input-submit btn-undo-redo">Load Position</button>
-            <!-- <br><label class="label-text-err">FEN entered is not valid!</label> -->
           </form>
 
           <button class="restart-btn btn" onClick="window.location.reload();">Restart Game</button>
@@ -99,6 +98,11 @@
     </div>
   </body>
 </html>
+
+
+<!-- This Was Inside of .form-load-position -->
+<!-- <label class="label-text-info">Load Different Position:</label><br> -->
+<!-- <br><label class="label-text-err">FEN entered is not valid!</label> -->
 
 <!-- this was inside of body -->
 <!-- <script>
