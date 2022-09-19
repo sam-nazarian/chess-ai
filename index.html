@@ -25,10 +25,11 @@
 
   <body>
     <div class="interface">
+
+      <!-- class="err-container-active" -->
       <div class="err-container">
-        <!-- err-container-active -->
         <p class="err-message">Refresh the page so that the message appears</p>
-        <button class="btn-close-err-container">X</button>
+        <!-- <button class="btn-close-err-container">X</button> -->
       </div>
 
       <div class="main-container">
@@ -82,14 +83,14 @@
           </form>
 
           <form class="form-undo-redo">
-            <button class="btn-undo btn-undo-redo">Undo</button>
-            <button class="btn-redo btn-undo-redo">Redo</button>
+            <button class="btn-undo btn">Undo</button>
+            <button class="btn-redo btn">Redo</button>
           </form>
 
           <form class="form-load-position">
             <textarea type="text" placeholder="Paste FEN to Load a Different Position" class="fen-input"></textarea>
 
-            <br /><button type="button" class="fen-input-submit btn-undo-redo">Load Position</button>
+            <br /><button type="button" class="fen-input-submit btn">Load Position</button>
           </form>
 
           <button class="restart-btn btn" onClick="window.location.reload();">Restart Game</button>

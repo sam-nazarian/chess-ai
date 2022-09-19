@@ -2,14 +2,16 @@ import style from '../css/chessboard-1.0.0.css';
 import favicon from '../img/faviconHorse.jpg'
 import chessboard from './chessboard-1.0.0.js'; //doesn't matter what we name it, not using the name
 import {Chess} from 'chess.js'
-import css from '../css/main.css'
+import generalCss from '../css/general.css'
+import mainCss from '../css/main.css'
 import {evaluateBoard, minimax, minimaxDefault, calcWeight} from './ai.js'
 
 //imoprt all images from the chesspieces folder
 function importAll(r) {
   return r.keys().map(r); //run the function passed in
 }
-const images = importAll(require.context('../img/chesspieces/wikipedia/', false, /\.(png|jpe?g|svg)$/)); // basically does this 40 times, import k from '../img/chesspieces/wikipedia/wK.png'
+const wikipediaPieces = importAll(require.context('../img/chesspieces/wikipedia/', false, /\.(png|jpe?g|svg)$/)); // basically does this 40 times, import k from '../img/chesspieces/wikipedia/wK.png'
+const alphaPieces = importAll(require.context('../img/chesspieces/alpha/', false, /\.(png|jpe?g|svg)$/));
 
 // NOTE: this example uses the chess.js library:
 // https://github.com/jhlywa/chess.js
@@ -273,6 +275,7 @@ function updateUI(){
 const config = {
   draggable: true, //allow pieces to be dragged
   position: 'start', //position all pieces like normal chess
+  pieceTheme: 'img/chesspieces/alpha/{piece}.png',
   onDragStart: onDragStart, //When a piece is picked up
   onDrop: onDrop, //When a piece is dropped
   onMouseoverSquare: onMouseoverSquare, //run function whenver mouse enters a square
@@ -378,9 +381,12 @@ function showError(text){
 }
 
 
+// Removed close error button
+/*
 btnCloseErrContainerDom.addEventListener('click',(e)=>{
   errContainerDom.classList.remove('err-container-active')
 })
+*/
 
 
 // function getInputValue(){

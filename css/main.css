@@ -1,34 +1,3 @@
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  height: 100vh;
-
-  /* 16px*0.625 = 10px */
-  /* we do this to respect browser's font size-setting that user choise for themselves, 1rem will be equal to 10px */
-  font-size: 62.5%;
-}
-
-body {
-  /* font-family: "Lucida Grande", Tahoma, Verdana, sans-serif; */
-  font-family: 'Inter', sans-serif;
-  background: rgb(15, 15, 15);
-  background: linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 66%, rgba(52, 52, 52, 1) 100%);
-  font-weight: 400;
-  color:#fff;
-
-  /* line-height: 1; */
-  /* color: #555; */
-  /* height: 100%; */
-  /* margin: 0; */
-  /* background-repeat: no-repeat; */
-  /* background-attachment: fixed; */
-  /* font: serif; */
-}
-
 .interface{
   /* used padding, instead of margin as I don't want website to be scrollable */
   padding-top: 10rem;
@@ -178,198 +147,85 @@ body {
 }
 /* END OF - FORM TO SET DIFFICULTY */
 
-
-/* START OF - FORM-UNDO-REDO */
 .form-undo-redo{
   text-align: center;
   margin-bottom: 35px;
 }
 
-.btn-undo-redo{
-  /* background-color: white */
-  padding: 4px 10px;
-  font-weight: bold;
-  text-align: center;  
-
-
-  margin: 0 auto;
-  /* margin-top: 20px; */
-
-  /* margin-top: 20px; */
-  /* background-color: #262421; */
-  background-color: #262524;
-  color: #999;
-  border: 0;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.btn-undo-redo:first-child{
+/* flex gap doesn't work in all safari browsers, instead use margin */
+.btn-undo:first-child{
   margin-right: 20px;
 }
 
-.fen-input{
-  background:#262524;
-  color:#fff;
-  text-shadow:1px 1px 0px rgba(0, 0, 0,0.3);
-
-  width: 300px;
-  /* display:block; */
-  /* width:269px; */
-  padding:7px;
-  /* margin-bottom:10px; */
-}
-/* END OF - FORM-UNDO-REDO */
-
-.restart-btn{
-  padding: 10px;
-  font-weight: 700;
-  text-align: center;  
-  display: block;
-  width: 300px;
-  margin: 0 auto;
-
-  /* margin-top: 20px; */
-  background-color: #262524;
-  color: #999;
-  border: 0;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-bottom: 15px;
-}
-
-.restart-btn:hover{
-  background: #313030;
-}
-
 .form-load-position{
-  /* margin-top: 60px; */
   text-align: center;
   margin-bottom: 70px;
 }
 
-.err-container {
-  /* padding: 10px; */
-  background-color: #e74c3c;
-  /* display: inline-flex; */
-  display: none;
-  align-items: center;
-
-  /* position: absolute; */
-
-  position: absolute;
-  top: 3px;
-  left: 50%;
-  border-radius: 2px;
-
-  font-size: 12px;
-
-  /* You must pull back the item with the half of its width and height. You can achieve this with - https://medium.com/front-end-weekly/absolute-centering-in-css-ea3a9d0ad72e */
-  transform: translate(-50%, 0);
-
+.fen-input{
+  background:#262524;
+  color: inherit;
+  text-shadow:1px 1px 0px rgba(0, 0, 0,0.3);
+  width:250px;
+  /* width: 300px; */
+  /* display:block; */
   /* margin: 0 auto; */
+  margin-bottom: 10px;
+  padding:7px;
+  border-radius: 4px;
+}
 
-  color: #000;
+.restart-btn, .restart-btn:link, .restart-btn:visited {
+  display: block;
+  margin: 0 auto;
+  padding: 10px;
+  font-weight: 700;
+  width: 300px;
+  background-color: #262524;
+  color: #999;
+  border-radius: 6px;
+  cursor: pointer;
+}
 
-  padding: 2px 9px;
+.restart-btn:hover {
+  background: #313030;
+}
+
+.err-container {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  z-index: 9999;
+  /* color: #000; */
+  font-size: 1.8rem;
+  font-weight: 600;
   text-align: center;
-
-
-  /* opacity: 0; */
-  /* transition: display 500ms ease-in-out; */
-  
-  /* top: 80px; */
-  /* right: -600px; */
-  /* z-index: 9999; */
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: 1.6rem 15rem;
+  -webkit-box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+  background-color: #eb4d4b;
+  display: none;
 }
 
-
-.btn-close-err-container{
-  /* background:  */
-
-  margin-left: 20px;
-  /* padding: 0px 9px; */
-
-  font-size: 14px;
-
-  cursor:pointer;
-
-
-  background-color: Transparent;
-  background-repeat:no-repeat;
-  border: none;
-}
-
-
-.err-container-active{
+.err-container-active {
   /* opacity: 1; */
   /* transition: display 1000ms ease-in; */
   display: inline-flex;
 }
 
 
-/* .label-text-info{
-  color: white;
-  font-weight: bold;
-  font-size: 10.24px;
-  text-align: left;
+/* Removed close error button */
+/*
+.btn-close-err-container {
+  margin-left: 20px;
+  font-size: 2rem;
+  cursor:pointer;
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  border: none;
 }
-.label-text-err{
-  color: rgb(187, 0, 0);
-  font-weight: bold;
-  font-size: 12.80px;
-} */
-
-/* .chess-img{
-  display: block;
-  margin: 0 auto;
-} */
-
-/* .settings-container{ */
-  /* margin-left: 400px; */
-  /* flex: 1; */
-  /* align-self: center; */
-  /* justify-content: center; */
-   /* align-items: center;      */
-  /* align-content: center;  */
-/* } */
-
-
-/* .chessboard-63f37{
-  position: relative;
-} */
-
-
-/* START ERROR MESSAGE */
-
-
-/* END ERROR MESSAGE */
-
-/* flex: 1; */
-/* flex: 0 1 auto; */
-/* .progressbar-container{
-  margin-left: 100px;
-  height: 500px;
-  background-color: rgb(159, 41, 41);
-
-  align-self: stretch;
-} */
-
-
-
-/* (height of inner div) / 2 + padding */
-/* transform-origin: 100% 0; */
-
-/* .progressbar {
-  background-color: black;
-  border-radius: 13px;
-  position: absolute;
-
-  padding: 3px;
-  transform:rotate(-90deg);
-
-  width: 300px;
-  height: 20px;
-  top: 0px;
-  right: 0px;
-} */
+*/

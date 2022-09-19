@@ -1,0 +1,100 @@
+.err-container {
+  /* padding: 10px; */
+  background-color: #e74c3c;
+  /* display: inline-flex; */
+  display: none;
+  align-items: center;
+
+  /* position: absolute; */
+
+  position: fixed;
+  top: 3px;
+  left: 50%;
+  border-radius: 2px;
+
+  font-size: 12px;
+
+  /* You must pull back the item with the half of its width and height. You can achieve this with - https://medium.com/front-end-weekly/absolute-centering-in-css-ea3a9d0ad72e */
+  transform: translate(-50%, 0);
+
+  /* margin: 0 auto; */
+
+  color: #000;
+
+  padding: 2px 9px;
+  text-align: center;
+
+
+  /* opacity: 0; */
+  /* transition: display 500ms ease-in-out; */
+  
+  /* top: 80px; */
+  /* right: -600px; */
+  /* z-index: 9999; */
+}
+
+/* .label-text-info{
+  color: white;
+  font-weight: bold;
+  font-size: 10.24px;
+  text-align: left;
+}
+.label-text-err{
+  color: rgb(187, 0, 0);
+  font-weight: bold;
+  font-size: 12.80px;
+} */
+
+/* .chess-img{
+  display: block;
+  margin: 0 auto;
+} */
+
+/* .settings-container{ */
+  /* margin-left: 400px; */
+  /* flex: 1; */
+  /* align-self: center; */
+  /* justify-content: center; */
+   /* align-items: center;      */
+  /* align-content: center;  */
+/* } */
+
+
+/* .chessboard-63f37{
+  position: relative;
+} */
+
+
+/* START ERROR MESSAGE */
+
+
+/* END ERROR MESSAGE */
+
+/* flex: 1; */
+/* flex: 0 1 auto; */
+/* .progressbar-container{
+  margin-left: 100px;
+  height: 500px;
+  background-color: rgb(159, 41, 41);
+
+  align-self: stretch;
+} */
+
+
+
+/* (height of inner div) / 2 + padding */
+/* transform-origin: 100% 0; */
+
+/* .progressbar {
+  background-color: black;
+  border-radius: 13px;
+  position: absolute;
+
+  padding: 3px;
+  transform:rotate(-90deg);
+
+  width: 300px;
+  height: 20px;
+  top: 0px;
+  right: 0px;
+} */

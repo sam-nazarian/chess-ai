@@ -1,0 +1,55 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100vh;
+
+  /* 16px*0.625 = 10px */
+  /* we do this to respect browser's font size-setting that user choise for themselves, 1rem will be equal to 10px */
+  font-size: 62.5%;
+}
+
+body {
+  /* font-family: "Lucida Grande", Tahoma, Verdana, sans-serif; */
+  font-family: 'Inter', sans-serif;
+  background: rgb(15, 15, 15);
+  background: linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 66%, rgba(52, 52, 52, 1) 100%);
+  font-weight: 400;
+  color:#fff;
+
+  /* line-height: 1; */
+  /* color: #555; */
+  /* height: 100%; */
+  /* background-repeat: no-repeat; */
+  /* background-attachment: fixed; */
+  /* font: serif; */
+}
+
+html, body {
+  /* height: 100%; */
+  overflow: hidden
+}
+
+.btn, .btn:link, .btn:visited {
+  background-color: #262524;
+  color: #999;
+  padding: 4px 10px;
+  font-weight: bold;
+  text-align: center;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #313030;
+}
+
+/* * means, select every single elm */
+*:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.8rem #666;
+}
