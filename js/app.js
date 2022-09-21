@@ -1,6 +1,6 @@
 import style from '../css/chessboard-1.0.0.css';
 import favicon from '../img/faviconHorse.jpg'
-import chessboard from './chessboard-1.0.0.js'; //doesn't matter what we name it, not using the name
+import chessboard from './chessboard-updated'; //doesn't matter what we name it, not using the name
 import {Chess} from 'chess.js'
 import generalCss from '../css/general.css'
 import mainCss from '../css/main.css'
@@ -283,7 +283,8 @@ const config = {
   onSnapEnd: onSnapEnd //when piece snap animation is complete
 }
 
-board = Chessboard('htmlBoard', config) //ChessBoard is a variable in chessboard-1.0.0.js already imported
+// const board = Chessboard('htmlBoard', config) //ChessBoard is a variable in chessboard-1.0.0.js already imported
+board = ChessBoard('htmlBoard', config) //ChessBoard is a variable in chessboard-1.0.0.js already imported
 
 fenInputSubmitDom.addEventListener('click', submitFen);
 formLoadPosDom.addEventListener('submit', submitFen)
