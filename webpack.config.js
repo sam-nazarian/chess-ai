@@ -31,10 +31,11 @@ module.exports = {
     // cssloader looks for file & turns file into module and gives over to javascript
     // style-loader will put it in html
     rules: [
-      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      // { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      { test: /\.css$/, use: ['style-loader', {loader:'css-loader',options:{sourceMap:true,url: false,},}, ] },
       { test: /\.(svg|png|jpe?g|gif)$/i, loader: 'file-loader', options: { name: '[path][name].[ext]' } },
       // { test: /\.m?js$/, exclude: /(node_modules|bower_components)/, use: { loader: 'babel-loader', options: { presets: ['@babel/preset-env'] } } },
-    ],
+    ]
   },
 
   //plugins, makes the index.html file on the dist folder, automatically will have the javascript loaded in

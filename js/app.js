@@ -1,5 +1,5 @@
 import style from '../css/chessboard-1.0.0.css';
-import favicon from '../img/faviconHorse.jpg'
+// import favicon from '../img/faviconHorse.jpg'
 import chessboard from './chessboard-updated'; //doesn't matter what we name it, not using the name
 import {Chess} from 'chess.js'
 import generalCss from '../css/general.css'
@@ -10,8 +10,15 @@ import {evaluateBoard, minimax, minimaxDefault, calcWeight} from './ai.js'
 function importAll(r) {
   return r.keys().map(r); //run the function passed in
 }
-const wikipediaPieces = importAll(require.context('../img/chesspieces/wikipedia/', false, /\.(png|jpe?g|svg)$/)); // basically does this 40 times, import k from '../img/chesspieces/wikipedia/wK.png'
-const alphaPieces = importAll(require.context('../img/chesspieces/alpha/', false, /\.(png|jpe?g|svg)$/));
+// const testImport = importAll(require.context('../img/board/', false, /\.(png|jpe?g|svg)$/));
+// const wikipediaPieces = importAll(require.context('../img/chesspieces/wikipedia/', false, /\.(png|jpe?g|svg)$/)); // basically does this 40 times, import k from '../img/chesspieces/wikipedia/wK.png'
+// const alphaPieces = importAll(require.context('../img/chesspieces/alpha/', false, /\.(png|jpe?g|svg)$/));
+importAll(require.context('../img/chesspieces/alpha/', false, /\.(png|jpe?g|svg)$/));
+importAll(require.context('../img/chesspieces/wikipedia/', false, /\.(png|jpe?g|svg)$/));
+importAll(require.context('../img/board/', false, /\.(png|jpe?g|svg)$/));
+importAll(require.context('../img/favicon', false, /\.(png|jpe?g|svg)$/));
+
+
 
 // NOTE: this example uses the chess.js library:
 // https://github.com/jhlywa/chess.js
@@ -38,8 +45,10 @@ const btnCloseErrContainerDom = document.querySelector('.btn-close-err-container
 
 
 //when highlighted, color white or black squares will turn to:
-const whiteSquareGrey = '#a9a9a9' 
-const blackSquareGrey = '#696969'
+// const whiteSquareGrey = '#a9a9a9' 
+// const blackSquareGrey = '#696969'
+const whiteSquareGrey = '#268CCC' 
+const blackSquareGrey = '#76C7E9'
 
 //done in chessboard/UI (not using chess.js in this function)
 function removeGreySquares () {
@@ -73,6 +82,8 @@ function greySquare (square) {
  * @returns {boolean} disable drag action returns false.
  */
 function onDragStart (source, piece) {
+  highlightMoves(source, piece)
+
   // do not pick up pieces if the game is over
   if (game.game_over()) return false
 
@@ -154,12 +165,43 @@ function onDrop (source, target) {
   window.setTimeout(makeRandomMove, 100) //LOWER THIS LATER
 }
 
+
 /**
  * Highlight legal moves whenever mouse enters a square
  * @param {String} square square that was entered
  * @param {String} piece The piece on that square(e.g wN), if none, then false
  * @returns 
  */
+function highlightMoves(square, piece){
+    //USE WHEN YOU ONLY WANNA USE WHITE ⬜️ , COMMENT WHEN YOU WANNA USE BOTH SIDES ⬜️⬛️
+    if (piece === false || piece.search(/^b/) !== -1 || game.game_over()) return;
+
+    // get list of possible moves for highlighted square
+    //gets an array of objects (object includes info of possible move)
+    const moves = game.moves({
+      square: square, //wihtout square it would list all possible moves, for all pieces
+      verbose: true //gives all legal possibilities of that piece
+    })
+  
+    // exit if there are no moves available for this square
+    if (moves.length === 0) return
+  
+    // highlight the square they moused over
+    greySquare(square)
+  
+    // highlight the possible squares for this piece
+    for (let i = 0; i < moves.length; i++) {
+      greySquare(moves[i].to)
+    }
+}
+
+/**
+ * Highlight legal moves whenever mouse enters a square
+ * @param {String} square square that was entered
+ * @param {String} piece The piece on that square(e.g wN), if none, then false
+ * @returns 
+ */
+/*
 function onMouseoverSquare (square, piece) {
 
   //USE WHEN YOU ONLY WANNA USE WHITE ⬜️ , COMMENT WHEN YOU WANNA USE BOTH SIDES ⬜️⬛️
@@ -183,10 +225,13 @@ function onMouseoverSquare (square, piece) {
     greySquare(moves[i].to)
   }
 }
+*/
 
+/*
 function onMouseoutSquare (square, piece) {
   removeGreySquares()
 }
+*/
 
 function onSnapEnd () {
   // console.log('White Made Move:', evaluateBoard(game, game.turn())); //after white makes a move, it's black's turn
@@ -279,8 +324,8 @@ const config = {
   pieceTheme: 'img/chesspieces/alpha/{piece}.png',
   onDragStart: onDragStart, //When a piece is picked up
   onDrop: onDrop, //When a piece is dropped
-  onMouseoverSquare: onMouseoverSquare, //run function whenver mouse enters a square
-  onMouseoutSquare: onMouseoutSquare, //when mouse leaves square
+  // onMouseoverSquare: onMouseoverSquare, //run function whenver mouse enters a square
+  // onMouseoutSquare: onMouseoutSquare, //when mouse leaves square
   onSnapEnd: onSnapEnd //when piece snap animation is complete
 }
 
