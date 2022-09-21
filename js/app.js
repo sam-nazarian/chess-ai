@@ -17,6 +17,7 @@ const alphaPieces = importAll(require.context('../img/chesspieces/alpha/', false
 // https://github.com/jhlywa/chess.js
 
 let board = null
+
 const game = new Chess() //default chess position with no parameters
 let redoArr = [];
 
@@ -380,6 +381,11 @@ function showError(text){
 
   console.log(errTimeout);
 }
+
+// Prevent scrolling while clicking board in mobile devices
+jQuery('#htmlBoard').on('scroll touchmove touchend touchstart contextmenu', function(e){
+  e.preventDefault();
+  });
 
 
 // Removed close error button

@@ -30,7 +30,7 @@ body {
 
 html, body {
   /* height: 100%; */
-  overflow: hidden
+  /* overflow: hidden */
 }
 
 .btn, .btn:link, .btn:visited {
