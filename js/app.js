@@ -183,12 +183,12 @@ function highlightMoves(square, piece){
       verbose: true //gives all legal possibilities of that piece
     })
   
-    // exit if there are no moves available for this square
-    if (moves.length === 0) return
-  
     // highlight the square they moused over
     greySquare(square)
-  
+
+    // exit if there are no moves available for this square
+    if (moves.length === 0) return
+
     // highlight the possible squares for this piece
     for (let i = 0; i < moves.length; i++) {
       greySquare(moves[i].to)

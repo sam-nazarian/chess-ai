@@ -8,14 +8,20 @@
   display: grid;
   column-gap: 6.4rem;
   row-gap: 9.6rem;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
+  /* grid-template-columns: 3fr 2fr; */
 }
 
 .chessboard-container{
-  display: grid;
-  column-gap: 0rem;
-  row-gap: 0rem;
-  grid-template-columns: min-content 1fr;
+  /* display: grid; */
+  /* column-gap: 0rem; */
+  /* row-gap: 0rem; */
+  /* grid-template-columns: min-content min-content; */
+  /* justify-items: end; */
+
+  /* since chessboard-container is a child of a grid(.main-container) move it to right of that grid parent */
+  justify-self: end;
+  display: flex;
   margin-left: 2rem;
 }
 
@@ -23,6 +29,8 @@
   /* max-width does not work with this div */
   width: 70rem;
   margin-left: 2px;
+
+  /* justify-self: end; */
 }
 
 .progressbar {

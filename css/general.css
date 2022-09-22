@@ -51,5 +51,13 @@ html, body {
 /* * means, select every single elm */
 *:focus {
   outline: none;
-  box-shadow: 0 0 0 0.8rem #666;
+  /* box-shadow: 0 0 0 0.8rem #666; */
+  /* box-shadow: 0 0 0 0.8rem #4B7399; */
+
+  /* box-shadow: 0 0 0 0.8rem #666; */
+  box-shadow: 0 0 0 0.8rem rgb(102, 102, 102,0.5);
+  /* box-shadow: 0 0 0 0.8rem rgba(51, 155, 240, 0.5)  */
+
+
+  /* #339bf0 */
 }
