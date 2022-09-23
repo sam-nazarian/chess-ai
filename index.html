@@ -1,6 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="This is a chess AI made by Saman Fathnazarian." />
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> -->
+    <!-- <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" /> -->
+
+
+    <!-- <meta name="viewport" content="width=50vw, initial-scale=1"> -->
+    <!-- <meta name="viewport" content="width=1000; user-scalable=0;" /> -->
+
+
     <title>ChessAI by Saman</title>
 
     <!-- LINK TO Fonts -->
@@ -11,6 +25,8 @@
 
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <link rel="icon" type="image/x-icon" href="img/favicon/faviconHorse.jpg" />
+
+    
 
     <!-- REPLACED BELOW USING WEBPACK IMPORTS ON APP.JS -->
     <!-- <link rel="stylesheet" href="css/chessboard-1.0.0.min.css"> -->
@@ -23,8 +39,8 @@
     </script> -->
   </head>
 
-  <body>
-    <div class="interface">
+  <body class="">
+    <div class="interface fully-center-body">
 
       <!-- class="err-container-active" -->
       <div class="err-container">
@@ -43,61 +59,70 @@
 
         <div class="settings-container">
 
-          <!-- class="winner-text-active" -->
-          <p class="winner-text">White Won!</p>
+          <div class="col-1 fully-center">
+            <!-- class="winner-text-active" -->
+            <p class="winner-text">White Won!</p>
 
-          <div class="turn-container">
-            <img class="chess-img white-king" src="img/chesspieces/alpha/wK.png" />
-            <img class="chess-img black-king hide" src="img/chesspieces/alpha/bK.png" />
-            <!-- <img class="chess-img white-king" src="img/chesspieces/wikipedia/wK.png" />
-            <img class="chess-img black-king hide" src="img/chesspieces/wikipedia/bK.png" /> -->
-            <p class="player-turn-text">Your<br />Turn</p>
+            <div class="turn-container">
+              <img class="chess-img white-king" src="img/chesspieces/alpha/wK.png" />
+              <img class="chess-img black-king hide" src="img/chesspieces/alpha/bK.png" />
+              <!-- <img class="chess-img white-king" src="img/chesspieces/wikipedia/wK.png" />
+              <img class="chess-img black-king hide" src="img/chesspieces/wikipedia/bK.png" /> -->
+              <p class="player-turn-text">Your<br />Turn</p>
+            </div>
           </div>
 
-          <form class="form-difficulty">
-            <label class="form-difficulty-text">Select amount of moves AI can look a head (difficulty):</label><br />
-            <div class="switch-field">
-              <input type="radio" id="radio-one" name="switch-one" value="1" />
-              <label for="radio-one">1</label>
-              <!-- label must come after button -->
+          <div class="col-2 fully-center">
+            <form class="form-difficulty">
+              <label class="form-difficulty-text">Select amount of moves AI can look a head (difficulty):</label><br />
+              <div class="switch-field">
+                <input type="radio" id="radio-one" name="switch-one" value="1" />
+                <label for="radio-one">1</label>
+                <!-- label must come after button -->
 
-              <input type="radio" id="radio-two" name="switch-one" value="2" />
-              <label for="radio-two">2</label>
+                <input type="radio" id="radio-two" name="switch-one" value="2" />
+                <label for="radio-two">2</label>
 
-              <input type="radio" id="radio-three" name="switch-one" value="3" checked />
-              <label for="radio-three">3</label>
+                <input type="radio" id="radio-three" name="switch-one" value="3" checked />
+                <label for="radio-three">3</label>
 
-              <input type="radio" id="radio-four" name="switch-one" value="4" />
-              <label for="radio-four">4</label>
+                <input type="radio" id="radio-four" name="switch-one" value="4" />
+                <label for="radio-four">4</label>
 
-              <!-- <input type="radio" id="radio-five" name="switch-one" value="5" />
-              <label for="radio-five">5</label> -->
+                <!-- <input type="radio" id="radio-five" name="switch-one" value="5" />
+                <label for="radio-five">5</label> -->
 
-              <!-- <input type="radio" id="radio-six" name="switch-one" value="6" />
-              <label for="radio-six">6</label>
+                <!-- <input type="radio" id="radio-six" name="switch-one" value="6" />
+                <label for="radio-six">6</label>
 
-              <input type="radio" id="radio-seven" name="switch-one" value="7" />
-              <label for="radio-seven">7</label>
+                <input type="radio" id="radio-seven" name="switch-one" value="7" />
+                <label for="radio-seven">7</label>
 
-              <input type="radio" id="radio-eight" name="switch-one" value="8" />
-              <label for="radio-eight">8</label> -->
-            </div>
-          </form>
+                <input type="radio" id="radio-eight" name="switch-one" value="8" />
+                <label for="radio-eight">8</label> -->
+              </div>
+            </form>
 
-          <form class="form-undo-redo">
-            <button class="btn-undo btn">Undo</button>
-            <button class="btn-redo btn">Redo</button>
-          </form>
+            <form class="form-undo-redo">
+              <button class="btn-undo btn">Undo</button>
+              <button class="btn-redo btn">Redo</button>
+            </form>
+          </div>
 
-          <form class="form-load-position">
-            <textarea type="text" placeholder="Paste FEN to Load a Different Position" class="fen-input"></textarea>
+          <div class="col-3 fully-center">
+            <form class="form-load-position">
+              <textarea type="text" placeholder="Paste FEN to Load a Different Position" class="fen-input"></textarea>
 
-            <br /><button type="button" class="fen-input-submit btn">Load Position</button>
-          </form>
+              <br /><button type="button" class="fen-input-submit btn">Load Position</button>
+            </form>
 
-          <button class="restart-btn btn" onClick="window.location.reload();">Restart Game</button>
+            <button class="restart-btn btn" onClick="window.location.reload();">Restart Game</button>
+          </div>
+
         </div>
+
       </div>
+
     </div>
 
   </body>

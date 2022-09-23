@@ -1,6 +1,6 @@
 .interface{
   /* used padding, instead of margin as I don't want website to be scrollable */
-  padding-top: 10rem;
+  /* padding-top: 10rem; */
   /* position: relative; */
 }
 
@@ -9,14 +9,18 @@
   column-gap: 6.4rem;
   row-gap: 9.6rem;
   grid-template-columns: 2fr 1fr;
-  /* grid-template-columns: 3fr 2fr; */
+
+  /* padding-bottom: 10rem; */
 }
+  /* grid-template-columns: 1fr; */
+  /* grid-template-columns: 3fr 2fr; */
 
 .chessboard-container{
   /* display: grid; */
-  /* column-gap: 0rem; */
-  /* row-gap: 0rem; */
-  /* grid-template-columns: min-content min-content; */
+  /* column-gap: 0; */
+  /* row-gap: 0; */
+  /* grid-template-columns: max-content auto-fill; */
+  /* grid-template-columns: max-content auto; */
   /* justify-items: end; */
 
   /* since chessboard-container is a child of a grid(.main-container) move it to right of that grid parent */
@@ -27,6 +31,9 @@
 
 #htmlBoard {
   /* max-width does not work with this div */
+  /* width: 70rem; */
+
+  /* flex: 0 1 auto; */
   width: 70rem;
   margin-left: 2px;
 
@@ -35,7 +42,7 @@
 
 .progressbar {
   /* height is streched */
-  justify-self: end;
+  /* justify-self: end; */
   background-color: #000;
   border-radius: 1.3rem;
   width: 2rem;
@@ -82,6 +89,11 @@
   justify-content: center;
   align-items: center;
 }
+
+.white-king, .black-king{
+  width: 100%
+}
+
 
 /* applies to king pic next to "your turn" button */
 .hide{
@@ -188,7 +200,7 @@
   margin: 0 auto;
   padding: 10px;
   font-weight: 700;
-  width: 300px;
+  width: 30rem;
   background-color: #262524;
   color: #999;
   border-radius: 6px;
@@ -224,7 +236,6 @@
   /* transition: display 1000ms ease-in; */
   display: inline-flex;
 }
-
 
 /* Removed close error button */
 /*

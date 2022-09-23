@@ -4,6 +4,7 @@ import chessboard from './chessboard-updated'; //doesn't matter what we name it,
 import {Chess} from 'chess.js'
 import generalCss from '../css/general.css'
 import mainCss from '../css/main.css'
+import queriesCss from '../css/queries.css'
 import {evaluateBoard, minimax, minimaxDefault, calcWeight} from './ai.js'
 
 //imoprt all images from the chesspieces folder
@@ -332,6 +333,13 @@ const config = {
 // const board = Chessboard('htmlBoard', config) //ChessBoard is a variable in chessboard-1.0.0.js already imported
 board = ChessBoard('htmlBoard', config) //ChessBoard is a variable in chessboard-1.0.0.js already imported
 
+// board.resize();
+$(window).resize(board.resize);
+// window.setInterval(function(){
+//   board.resize();
+//   console.log('board resized');
+// }, 5000);
+
 fenInputSubmitDom.addEventListener('click', submitFen);
 formLoadPosDom.addEventListener('submit', submitFen)
 
@@ -431,7 +439,6 @@ function showError(text){
 jQuery('#htmlBoard').on('scroll touchmove touchend touchstart contextmenu', function(e){
   e.preventDefault();
   });
-
 
 // Removed close error button
 /*

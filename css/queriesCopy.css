@@ -1,0 +1,45 @@
+@media (max-width: 39.375em) {
+  .main-container {
+    grid-template-columns: min-content;
+    row-gap: 0rem;
+  }
+  .interface{
+    padding-top: 2rem;
+  }
+
+  .chessboard-container{
+    margin-right: 2rem;
+  }
+
+  .settings-container {
+    /* display: grid; */
+    /* column-gap: 0rem; */
+    /* row-gap: 6rem; */
+    /* grid-template-columns: 1fr; */
+    /* grid-template-columns: 1fr; */
+    /* display: flex; */
+  }
+
+  .fen-input{
+    margin-bottom: 0.1rem;
+  }
+
+  .form-load-position{
+    margin-bottom: 4rem;
+  }
+
+  .form-undo-redo {
+    margin-bottom: 0;
+  }
+
+  .form-difficulty-text {
+    margin-bottom: 0.3rem;
+    display: inline-block;
+  }
+
+  #htmlBoard {
+    /* width: 100vw; */
+    /* width: 90%; */
+  }
+
+}

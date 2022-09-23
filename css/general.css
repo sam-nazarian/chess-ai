@@ -16,21 +16,26 @@ body {
   /* font-family: "Lucida Grande", Tahoma, Verdana, sans-serif; */
   font-family: 'Inter', sans-serif;
   background: rgb(15, 15, 15);
-  background: linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 66%, rgba(52, 52, 52, 1) 100%);
+  /* background: linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 66%, rgba(52, 52, 52, 1) 100%); */
+  background: linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 85%, rgb(30, 30, 30) 100%);
   font-weight: 400;
   color:#fff;
 
+  /* height: 100%; */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
   /* line-height: 1; */
   /* color: #555; */
-  /* height: 100%; */
-  /* background-repeat: no-repeat; */
-  /* background-attachment: fixed; */
   /* font: serif; */
 }
 
 html, body {
   /* height: 100%; */
   /* overflow: hidden */
+
+  /* max-width: 100%; */
+  /* overflow-x: hidden; */
 }
 
 .btn, .btn:link, .btn:visited {
@@ -46,6 +51,27 @@ html, body {
 
 .btn:hover {
   background: #313030;
+}
+
+.fully-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* .fully-center-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+} */
+
+.fully-center-body {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
 }
 
 /* * means, select every single elm */
