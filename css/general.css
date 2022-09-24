@@ -15,27 +15,26 @@ html {
 body {
   /* font-family: "Lucida Grande", Tahoma, Verdana, sans-serif; */
   font-family: 'Inter', sans-serif;
-  background: rgb(15, 15, 15);
+
   /* background: linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 66%, rgba(52, 52, 52, 1) 100%); */
   background: linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 85%, rgb(30, 30, 30) 100%);
+  background: -webkit-linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 85%, rgb(30, 30, 30) 100%);
+  background: -moz-linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 85%, rgb(30, 30, 30) 100%);
+  background: -o-linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 85%, rgb(30, 30, 30) 100%);
+
+  /* background-color does not overwrite background selector */
+  background-color: rgba(15, 15, 15, 1);
+
   font-weight: 400;
   color:#fff;
 
-  /* height: 100%; */
   background-repeat: no-repeat;
   background-attachment: fixed;
-
-  /* line-height: 1; */
-  /* color: #555; */
-  /* font: serif; */
 }
 
 html, body {
-  /* height: 100%; */
-  /* overflow: hidden */
-
   /* max-width: 100%; */
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
 }
 
 .btn, .btn:link, .btn:visited {
@@ -60,30 +59,15 @@ html, body {
   flex-direction: column;
 }
 
-/* .fully-center-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-} */
-
 .fully-center-body {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%)
+  transform: translate(-50%, -50%);
 }
 
 /* * means, select every single elm */
 *:focus {
   outline: none;
-  /* box-shadow: 0 0 0 0.8rem #666; */
-  /* box-shadow: 0 0 0 0.8rem #4B7399; */
-
-  /* box-shadow: 0 0 0 0.8rem #666; */
   box-shadow: 0 0 0 0.8rem rgb(102, 102, 102,0.5);
-  /* box-shadow: 0 0 0 0.8rem rgba(51, 155, 240, 0.5)  */
-
-
-  /* #339bf0 */
 }

@@ -36,6 +36,14 @@
 /* <= 891px / 55.6875em */
 @media (max-width: 56.5em){
 
+  /* .err-message {
+    white-space: nowrap;
+  } */
+
+  .err-container {
+    padding: 1.2rem 10rem;
+  }
+
   /* TODO CHANGE POSITION TO STATIC, & REMOVE ABSOLUTE */
   .fully-center-body {
     top: 51%
@@ -93,6 +101,13 @@
   /* .fully-center-body {
     top: 55%
   } */
+
+  .err-message{
+    font-size: 1.5rem;
+  }
+  .err-container {
+    padding: 1.1rem 10rem;
+  }
 
   .fully-center-body {
     position: static;
@@ -164,6 +179,13 @@
 /* <=472px 29.5em */
 @media (max-width: 29.5em) {
 
+  .err-message{
+    font-size: 1.4rem;
+  }
+  .err-container {
+    padding: 0.8rem 6rem;
+  }
+
   .restart-btn, .restart-btn:link, .restart-btn:visited{
     max-width: 20rem;
     margin-bottom: 0;
@@ -178,6 +200,14 @@
   }
 }
 
+/* <=400px 25em */
+@media (max-width: 25em) {
+
+  .err-container {
+    padding: 0.5rem 5rem;
+  }
+}
+
 /* <=324px 20.25em */
 @media (max-width: 20.25em) {
   .progressbar, .progress {
@@ -188,6 +218,8 @@
     font-size: 0.9rem;
   }
 }
+
+
 
 /* <=592px 37em */
 /* @media (max-width: 35em) {

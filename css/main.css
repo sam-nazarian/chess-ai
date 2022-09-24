@@ -215,8 +215,12 @@
   position: fixed;
   top: 0;
   left: 50%;
+
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
+
+  /* transform: translate(-50%, -50%); */
+
   z-index: 9999;
   /* color: #000; */
   font-size: 1.8rem;
@@ -231,10 +235,18 @@
   display: none;
 }
 
+.err-message{
+  font-size: 1.8rem;
+
+  /* keep text in 1 line */
+  white-space: nowrap;
+}
+
 .err-container-active {
   /* opacity: 1; */
   /* transition: display 1000ms ease-in; */
-  display: inline-flex;
+  /* display: inline-flex; */
+  display: block;
 }
 
 /* Removed close error button */
