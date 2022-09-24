@@ -1,5 +1,3 @@
-/*! chessboard.js v1.0.0 | (c) 2019 Chris Oakman | MIT License chessboardjs.com/license */
-
 .clearfix-7da63 {
   clear: both;
 }
@@ -23,23 +21,27 @@
 }
 
 .white-1e1d7 {
+  /* add image if you want to use an image instead */
   /* background-image: url('../img/board/lightWood.png'); */
-  /* background-image: url('../img/board/lightWood2.jpg'); */
-  /* color: #b58863; */
-  /* background-color: #f0d9b5; */
   
   background-color: #EAE9D2;
   color: #4D6D92;
+
+  /* alternative colors */
+  /* background-color: #f0d9b5; */
+  /* color: #b58863; */
 }
 
 .black-3c85d {
+  /* add image if you want to use an image instead */
   /* background-image: url('/img/board/darkWood.png'); */
-  /* background-image: url('/img/board/darkWood2.jpg'); */  
-  /* background-color: #b58863; */
-  /* color: #f0d9b5; */
 
   background-color: #4B7399;
   color: #ECECD7;
+
+  /* alternative colors */
+  /* background-color: #b58863; */
+  /* color: #f0d9b5; */
 }
 
 .highlight1-32417, .highlight2-9c5d2 {

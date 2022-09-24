@@ -1,67 +1,47 @@
-.interface{
-  /* used padding, instead of margin as I don't want website to be scrollable */
-  /* padding-top: 10rem; */
-  /* position: relative; */
-}
-
 .main-container{
   display: grid;
   column-gap: 6.4rem;
   row-gap: 9.6rem;
   grid-template-columns: 2fr 1fr;
-
-  /* padding-bottom: 10rem; */
 }
-  /* grid-template-columns: 1fr; */
-  /* grid-template-columns: 3fr 2fr; */
 
 .chessboard-container{
-  /* display: grid; */
-  /* column-gap: 0; */
-  /* row-gap: 0; */
-  /* grid-template-columns: max-content auto-fill; */
-  /* grid-template-columns: max-content auto; */
-  /* justify-items: end; */
-
   /* since chessboard-container is a child of a grid(.main-container) move it to right of that grid parent */
   justify-self: end;
+
   display: flex;
   margin-left: 2rem;
 }
 
 #htmlBoard {
-  /* max-width does not work with this div */
-  /* width: 70rem; */
-
-  /* flex: 0 1 auto; */
+  /* max-width or felx selectors do not work with this div */
+  /* width will be modified using media queries */
   width: 70rem;
   margin-left: 2px;
-
-  /* justify-self: end; */
 }
 
 .progressbar {
   /* height is streched */
-  /* justify-self: end; */
+
   background-color: #000;
   border-radius: 1.3rem;
   width: 2rem;
+
   /* try to only use the 180deg, 90deg, gets complex with the positioning */
   transform: rotate(180deg);
 }
 
 .progress {
+  /* Adjust height using JS */
+  /* also sets the hegiht of parent */
   transition : height 1000ms ease-out;
   background-color: #fff;
   width: 2rem;
-  /* Adjust height using JS */
-  /* also sets the hegiht of parent */
   height: 50%;
   border-radius: 1.3rem;
 }
 
 .winner-text{
-  /* margin-top: 200px; */
   text-align: center;
   font-weight: 700;
   font-size: 4.9rem;
@@ -94,7 +74,6 @@
   width: 100%
 }
 
-
 /* applies to king pic next to "your turn" button */
 .hide{
   display: none;
@@ -107,12 +86,10 @@
 
 /* START OF - FORM TO SET DIFFICULTY */
 .form-difficulty {
-	/* USE TEXT-ALIGN CENTER, TO CENTER EVERYTHING INSIDE OF FORM */
+	/* use text-align center, to center everything inside of form */
 	text-align: center;
 	line-height: 1.625;
   margin-bottom: 10px;
-  /* margin: 8px auto; */
-	/* padding: 16px; */
 }
 
 .form-difficulty-text{
@@ -120,8 +97,8 @@
 }
 
 .switch-field {
+  /* inline, so that text-align works with it */
 	display: inline-flex;
-	/* display: flex; */
 	overflow: hidden;
 }
 
@@ -147,6 +124,7 @@
 
 .switch-field label:hover {
 	cursor: pointer;
+
   /* transparancy fixes the color contrast */
   background-color: rgba(201, 201, 201, 0.576);
   color: #ccc;
@@ -167,29 +145,27 @@
 }
 /* END OF - FORM TO SET DIFFICULTY */
 
-.form-undo-redo{
+.form-undo-redo {
   text-align: center;
   margin-bottom: 35px;
 }
 
 /* flex gap doesn't work in all safari browsers, instead use margin */
-.btn-undo:first-child{
+.btn-undo:first-child {
   margin-right: 20px;
 }
 
-.form-load-position{
+.form-load-position {
   text-align: center;
   margin-bottom: 70px;
 }
 
-.fen-input{
+/* Use margin: 0 auto; for display:block; */
+.fen-input {
   background:#262524;
   color: inherit;
   text-shadow:1px 1px 0px rgba(0, 0, 0,0.3);
-  width:250px;
-  /* width: 300px; */
-  /* display:block; */
-  /* margin: 0 auto; */
+  width: 250px;
   margin-bottom: 10px;
   padding:7px;
   border-radius: 4px;
@@ -215,14 +191,9 @@
   position: fixed;
   top: 0;
   left: 50%;
-
   -webkit-transform: translateX(-50%);
   transform: translateX(-50%);
-
-  /* transform: translate(-50%, -50%); */
-
   z-index: 9999;
-  /* color: #000; */
   font-size: 1.8rem;
   font-weight: 600;
   text-align: center;
@@ -243,13 +214,12 @@
 }
 
 .err-container-active {
-  /* opacity: 1; */
-  /* transition: display 1000ms ease-in; */
+  /* use flex if you want to add close button to err-container */
   /* display: inline-flex; */
   display: block;
 }
 
-/* Removed close error button */
+/* Removed close error button (uncomment if you want to add close button to err-container) */
 /*
 .btn-close-err-container {
   margin-left: 20px;
