@@ -1,8 +1,8 @@
-import style from '../css/chessboard-1.0.0.css';
 // import favicon from '../img/faviconHorse.jpg'
 import chessboard from './chessboard-updated'; //doesn't matter what we name it, not using the name
 import {Chess} from 'chess.js'
 import generalCss from '../css/general.css'
+import style from '../css/chessboard-1.0.0.css';
 import mainCss from '../css/main.css'
 import queriesCss from '../css/queries.css'
 import {evaluateBoard, minimax, minimaxDefault, calcWeight} from './ai.js'

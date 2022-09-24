@@ -5,7 +5,8 @@
 }
 
 html {
-  height: 100vh;
+  /* not necessary (enabling this will make screen longer on mobile devices) */
+  /* height: 100vh; */
 
   /* 16px*0.625 = 10px */
   /* we do this to respect browser's font size-setting that user choise for themselves, 1rem will be equal to 10px */
@@ -40,7 +41,7 @@ html, body {
 .btn, .btn:link, .btn:visited {
   background-color: #262524;
   color: #999;
-  padding: 4px 10px;
+  padding: 0.4rem 1rem;
   font-weight: bold;
   text-align: center;
   border: 0;
@@ -69,5 +70,5 @@ html, body {
 /* * means, select every single elm */
 *:focus {
   outline: none;
-  box-shadow: 0 0 0 0.8rem rgb(102, 102, 102,0.5);
+  box-shadow: 0 0 0 8px rgb(102, 102, 102,0.5);
 }

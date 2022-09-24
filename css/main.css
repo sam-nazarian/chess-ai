@@ -17,14 +17,14 @@
   /* max-width or felx selectors do not work with this div */
   /* width will be modified using media queries */
   width: 70rem;
-  margin-left: 2px;
+  margin-left: 0.2rem;
 }
 
 .progressbar {
   /* height is streched */
 
   background-color: #000;
-  border-radius: 1.3rem;
+  border-radius: 13px;
   width: 2rem;
 
   /* try to only use the 180deg, 90deg, gets complex with the positioning */
@@ -38,7 +38,7 @@
   background-color: #fff;
   width: 2rem;
   height: 50%;
-  border-radius: 1.3rem;
+  border-radius: 13px;
 }
 
 .winner-text{
@@ -89,11 +89,11 @@
 	/* use text-align center, to center everything inside of form */
 	text-align: center;
 	line-height: 1.625;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
 }
 
 .form-difficulty-text{
-  font-size: 10.24px;
+  font-size: 1.024rem;
 }
 
 .switch-field {
@@ -112,10 +112,10 @@
 .switch-field label {
 	background-color: #262524;
   color: #999;
-	font-size: 14px;
+	font-size: 1.4rem;
 	line-height: 1;
 	text-align: center;
-	padding: 8px 16px;
+	padding: 0.8rem 1.6rem;
 	margin-right: -1px;
   border: 1px solid rgba(0, 0, 0);
 	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
@@ -147,17 +147,17 @@
 
 .form-undo-redo {
   text-align: center;
-  margin-bottom: 35px;
+  margin-bottom: 3.5rem;
 }
 
 /* flex gap doesn't work in all safari browsers, instead use margin */
 .btn-undo:first-child {
-  margin-right: 20px;
+  margin-right: 2rem;
 }
 
 .form-load-position {
   text-align: center;
-  margin-bottom: 70px;
+  margin-bottom: 7rem;
 }
 
 /* Use margin: 0 auto; for display:block; */
@@ -165,16 +165,16 @@
   background:#262524;
   color: inherit;
   text-shadow:1px 1px 0px rgba(0, 0, 0,0.3);
-  width: 250px;
-  margin-bottom: 10px;
-  padding:7px;
+  width: 25rem;
+  margin-bottom: 1rem;
+  padding: 0.7rem;
   border-radius: 4px;
 }
 
 .restart-btn, .restart-btn:link, .restart-btn:visited {
   display: block;
   margin: 0 auto;
-  padding: 10px;
+  padding: 1rem;
   font-weight: 700;
   width: 30rem;
   background-color: #262524;
@@ -200,8 +200,8 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   padding: 1.6rem 15rem;
-  -webkit-box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
-  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+  -webkit-box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
   background-color: #eb4d4b;
   display: none;
 }
@@ -222,7 +222,7 @@
 /* Removed close error button (uncomment if you want to add close button to err-container) */
 /*
 .btn-close-err-container {
-  margin-left: 20px;
+  margin-left: 2rem;
   font-size: 2rem;
   cursor:pointer;
   background-color: Transparent;
