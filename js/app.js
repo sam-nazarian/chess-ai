@@ -1,4 +1,3 @@
-// import favicon from '../img/faviconHorse.jpg'
 import chessboard from './chessboard-updated'; //doesn't matter what we name it, not using the name
 import {Chess} from 'chess.js'
 import generalCss from '../css/general.css'
@@ -11,18 +10,14 @@ import {evaluateBoard, minimax, minimaxDefault, calcWeight} from './ai.js'
 function importAll(r) {
   return r.keys().map(r); //run the function passed in
 }
-// const testImport = importAll(require.context('../img/board/', false, /\.(png|jpe?g|svg)$/));
-// const wikipediaPieces = importAll(require.context('../img/chesspieces/wikipedia/', false, /\.(png|jpe?g|svg)$/)); // basically does this 40 times, import k from '../img/chesspieces/wikipedia/wK.png'
-// const alphaPieces = importAll(require.context('../img/chesspieces/alpha/', false, /\.(png|jpe?g|svg)$/));
-importAll(require.context('../img/chesspieces/alpha/', false, /\.(png|jpe?g|svg)$/));
+
+// basically does this 40 times, import k from '../img/chesspieces/wikipedia/wK.png'
 importAll(require.context('../img/chesspieces/wikipedia/', false, /\.(png|jpe?g|svg)$/));
+importAll(require.context('../img/chesspieces/alpha/', false, /\.(png|jpe?g|svg)$/));
 importAll(require.context('../img/board/', false, /\.(png|jpe?g|svg)$/));
 importAll(require.context('../img/favicon', false, /\.(png|jpe?g|svg)$/));
 
-
-
-// NOTE: this example uses the chess.js library:
-// https://github.com/jhlywa/chess.js
+/////////////////////////////
 
 let board = null
 
@@ -46,8 +41,6 @@ const btnCloseErrContainerDom = document.querySelector('.btn-close-err-container
 
 
 //when highlighted, color white or black squares will turn to:
-// const whiteSquareGrey = '#a9a9a9' 
-// const blackSquareGrey = '#696969'
 const whiteSquareGrey = '#268CCC' 
 const blackSquareGrey = '#76C7E9'
 
@@ -63,8 +56,6 @@ function removeGreySquares () {
  */
 function greySquare (square) {
   const $square = $('#htmlBoard .square-' + square) //on hover highlights the legal moves
-
-  // console.log($square);
 
   //set background color to dark gray if black, OR light gray if white
   let background = whiteSquareGrey
@@ -88,13 +79,11 @@ function onDragStart (source, piece) {
   // do not pick up pieces if the game is over
   if (game.game_over()) return false
 
-  // console.log(game.turn());
-
   // USE WHEN YOU WANNA USE BOTH SIDES ⬜️⬛️
-  // if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
-  //     (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
-  //   return false
-  // }
+  /*if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+      (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+    return false
+  }*/
 
   //USE WHEN YOU ONLY WANNA USE WHITE ⬜️
   if (piece.search(/^b/) !== -1) return false
@@ -112,7 +101,7 @@ function makeRandomMove () {
 
   const [sumWeightBW] = calcWeight(game.fen(), {fenStr:true});
 
-  //if endgame & processeing is fast then, go 6 moves deep
+  //if endgame & processeing is fast then, go 5 moves deep
   if(sumWeightBW <= 121870 && prevPosAnalyzed<80000 && userLevel<5){
     //[maxVal, bestMove, posAnalyzed]
     resMiniMax = minimaxDefault(game, 5);
