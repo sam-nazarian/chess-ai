@@ -123,8 +123,6 @@ export function evaluateBoard(game, turn) {
 	return positionPoint;
 }
 
-//POTENTIAL UPDATE - calculate weight first seperately, then calculate position, (then add their points together in evaluateBoard()) this way k_e would be already know the weight of the position, & there would not be a need to calculate weight twice. Which would increase the speed of the AI. from (O^4) to (O^2)
-
 /**
  * Calculates positionPoint based on weight of pieces & their respective positions on the board. Used by evaluateBoard()
  * @param {Array} fenArr fen as an array, forexample "rnbqkbnr/pppp1ppp/8/4p3/8/4P3/PPPP1PPP/RNBQKBNR w KQkq e6 0 2" 
@@ -277,9 +275,12 @@ export function minimaxDefault(game, maxLevel) {
           bestMoveParam = possibleBestMove;
         }
 
-        //alpha beta proning
+        // alpha beta proning
+        // setting alpha val for next coming children(in loop).
+        // going down in recursive inherits the alpha val(from parameters), but going up doesn't inherit alpha val(from parameters) (the return can change the alpha val, but doesn't inherit from parameters)
         alpha = Math.max(alpha, evalRes);
-        if (beta <= alpha) break;
+        //alpha is only gonna get bigger, beta is only gonna get smaller, we may need a bigger val, but val only gets smaller
+        if (beta <= alpha) break; 
       }
 
       // console.log(bestMoveParam);
@@ -316,6 +317,7 @@ export function minimaxDefault(game, maxLevel) {
 
         //alpha beta proning
         beta = Math.min(beta, evalRes);
+        //We may need a smaller val, but val only gets bigger
         if (beta <= alpha) break;
       }
 
