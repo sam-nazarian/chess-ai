@@ -90,21 +90,12 @@ var pst_b = {
   k_e: pst_w['k_e'].slice().reverse(),
 };
 
-
-// var pstOpponent = { w: pst_b, b: pst_w };
-// var pstSelf = { w: pst_w, b: pst_b };
-
-
-// prevSum +=
-// weights[move.captured] +
-// pstOpponent[move.color][move.captured][to[0]][to[1]];
-
 /**
  * Evaluates the board at this point in time,
  * using the material weights and piece square tables.
  * 
  * @param {obj} game chess obj eg. game = new Chess()
- * @param {String} turn 'b'(black) or 'w'(white) but we only use this function when evaluating black as that's the computer
+ * @param {String} turn 'b'(black / computer) or 'w'(white)
  * @returns {Number} positionPoint value of position, posetive is good for white, negative is bad for black
  **/
 export function evaluateBoard(game, turn) {
@@ -132,7 +123,14 @@ export function evaluateBoard(game, turn) {
 	return positionPoint;
 }
 
+//POTENTIAL UPDATE - calculate weight first seperately, then calculate position, (then add their points together in evaluateBoard()) this way k_e would be already know the weight of the position, & there would not be a need to calculate weight twice. Which would increase the speed of the AI. from (O^4) to (O^2)
 
+/**
+ * Calculates positionPoint based on weight of pieces & their respective positions on the board. Used by evaluateBoard()
+ * @param {Array} fenArr fen as an array, forexample "rnbqkbnr/pppp1ppp/8/4p3/8/4P3/PPPP1PPP/RNBQKBNR w KQkq e6 0 2" 
+ * would be ['rnbqkbnr', 'pppp1ppp', '8', '4p3', '8', '4P3', 'PPPP1PPP', 'RNBQKBNR']
+ * @returns {number} positionPoint
+ */
 function calcWeightAndPosition(fenArr){
   const [whiteAndBlackWeightSum, difference] = calcWeight(fenArr);
   let positionPoint = difference;
@@ -146,7 +144,7 @@ function calcWeightAndPosition(fenArr){
 
       //CHAR IS WHITE
       if(char === char.toUpperCase() && isNaN(char)){
-        //TODO CHANGE FOR K_E if weight is less than a certain amount
+        //Change calculation for king (k) to king ending (k_e) if weight is less than a certain amount
         if(char === 'K' && whiteAndBlackWeightSum <= 121870) {
           positionPoint += pst_w['k_e'][i][col]
         }
@@ -181,17 +179,15 @@ function calcWeightAndPosition(fenArr){
 
 /**
  * Calculates weight of pieces that white and black have
- * @param {String || Array} fen fen str
- * @param {obj} options if fenStr = true, then convert fen to fenArr, default is false, which sends an arr instead of a string for fen
+ * @param {String | Array} fen Default is a fenArr, forexample ['rnbqkbnr', 'pppp1ppp', '8', '4p3', '8', '4P3', 'PPPP1PPP', 'RNBQKBNR'], if string is passed in, 'fenStr=true' 
+ * must be passed in the option parameter.
+ * @param {obj} options if fenStr = true, then convert fenStr to fenArr, default is false, which means an arr was sent instead of a string for fen
  * @returns [whiteAndBlackWeightSum, difference], white and black pieces weight sum, and their difference
  */
 export function calcWeight(fen, options) {
 
   let fenArr = fen; //by default assume an arr was given to fen
   if(options && options.fenStr === true) fenArr = fen.split(/([^\s]+)/)[1].split('/'); //if option 'fenStr' is given, convert fen to arr, and store it
-
-  // const fenArr = fen.split(/([^\s]+)/)[1].split('/');
-  // console.log(fenArr);
 
   let whiteWeight = 0;
   let blackWeight = 0;
@@ -211,110 +207,18 @@ export function calcWeight(fen, options) {
         blackWeight += weights[char.toLowerCase()];
       }
       
-      //THERE'S NOTHING TO SKIP AS THE NUMBER DOES NOT REPEAT
+      //there's nothing to skip as the number(in Fen) does not repeat
     }
   }
 
   const whiteAndBlackWeightSum = whiteWeight + blackWeight;
   const difference = whiteWeight - blackWeight;
 
-  // console.log('white', whiteWeight);
-  // console.log('black', blackWeight);
+  // console.log('whiteWeight', whiteWeight);
+  // console.log('blackWeight', blackWeight);
   
   return [whiteAndBlackWeightSum, difference]
 }
-
-
-// export function calcWeightTest(fen){
-// 	const fenArr = fen.split(/([^\s]+)/)[1].split('/');
-
-//   console.log(fenArr);
-
-//   const [whiteAndBlackWeightSum, difference] = calcWeightBothSides(fenArr);
-//   let positionPoint = difference;
-
-//   for(let i=0; i<fenArr.length; i++){
-//     let col = 0;
-//     for(let j=0; j<fenArr[i].length; j++){
-
-//       /** @type String*/
-//       const char = fenArr[i][j];
-
-//       //CHAR IS WHITE
-//       if(char === char.toUpperCase() && isNaN(char)){
-//         //TODO CHANGE FOR K_E if weight is less than a certain amount
-//         if(char === 'K' && whiteAndBlackWeightSum <= 121870) {
-//           positionPoint += pst_w['k_e'][i][col]
-//           console.log('iWHITE', i);
-//           console.log('colWHITE', col);
-//         }
-//         else{
-//           positionPoint += pst_w[char.toLowerCase()][i][col];
-//         }
-//       }
-
-//       //CHAR IS BLACK
-//       if(char === char.toLowerCase() && isNaN(char)){
-//         if(char === 'k' && whiteAndBlackWeightSum <= 121870) {
-//           positionPoint -= pst_b['k_e'][i][col]
-//           console.log('iBLACK', i);
-//           console.log('colBLACK', col);
-//         }
-//         else{
-//           positionPoint -= pst_b[char.toLowerCase()][i][col];
-//         }
-//       }
-
-//       //IF CHAR IS NUMBER
-//       if(parseInt(char)) {
-//         // console.log(char);
-//         col += char * 1;
-//       }else{
-//         col++;
-//       }
-
-//     }
-//   }
-
-//   return positionPoint;
-// }
-
-
-// export function calcWeightBothSidesTest(fen) {
-//   const fenArr = fen.split(/([^\s]+)/)[1].split('/');
-//   // console.log(fenArr);
-
-//   let whiteWeight = 0;
-//   let blackWeight = 0;
-
-//   for (let i = 0; i < fenArr.length; i++) {
-
-//     for (let j = 0; j < fenArr[i].length; j++) {
-//       const char = fenArr[i][j];
-
-//       if(char === char.toUpperCase() && isNaN(char)){
-//         //if it's WHITE
-//         whiteWeight += weights[char.toLowerCase()];
-//       }
-
-//       if(char === char.toLowerCase() && isNaN(char)){
-//         //if it's BLACK
-//         blackWeight += weights[char.toLowerCase()];
-//       }
-
-//       //if char is a number, skip that amount of numbers forward
-//       if(parseInt(char)) console.log(char);
-//     }
-//   }
-
-//   const whiteAndBlackWeightSum = whiteWeight + blackWeight;
-//   const difference = whiteWeight - blackWeight;
-
-//   // console.log('white', whiteWeight);
-//   // console.log('black', blackWeight);
-  
-//   return [whiteAndBlackWeightSum, difference]
-// }
 
 /**
  * acts like a namespace, that just calls minimax, with default vals, allows count to be set to 0, every time func is called
@@ -331,10 +235,12 @@ export function minimaxDefault(game, maxLevel) {
 
   /**
    * Used by AI/black to find best possible move using minimax algorithm
-   * @param {Chess obj} game 
-   * @param {boolean} isMaximizing 
-   * @param {string} bestMove 
-   * @param {number} level 
+   * @param {object} game Chess object (game = new chess())
+   * @param {boolean} isMaximizing black is attempting to maximize the positionPoint, white is maximizing the positionPoint
+   * @param {string} bestMove bestMove to make
+   * @param {number} level levels to go down
+   * 
+   * @returns {array} [maxVal, bestMove]
    */
   function minimax(game, isMaximizing, bestMoveParam, level, alpha, beta) {
     //base case
@@ -356,7 +262,7 @@ export function minimaxDefault(game, maxLevel) {
       for (let i = 0; i < possibleMoves.length; i++) {
 
         let bestMove = '';
-        if (level === maxLevel) bestMove = possibleMoves[i]; //if we just made move
+        if (level === maxLevel) bestMove = possibleMoves[i]; //if we just made move (at the top level), store name of that move, as the engine needs to make one of those moves
         if (level !== maxLevel) bestMove = bestMoveParam;
 
         //copy old game, add new random move
@@ -371,10 +277,9 @@ export function minimaxDefault(game, maxLevel) {
           bestMoveParam = possibleBestMove;
         }
 
+        //alpha beta proning
         alpha = Math.max(alpha, evalRes);
         if (beta <= alpha) break;
-
-        // maxEval = Math.max(maxEval, evalRes);
       }
 
       // console.log(bestMoveParam);
@@ -404,16 +309,14 @@ export function minimaxDefault(game, maxLevel) {
 
         const [evalRes, possibleBestMove] = minimax(copyGame, true, bestMove, level - 1, alpha, beta);
 
-
         if (evalRes < minEval) {
           minEval = evalRes;
           bestMoveParam = possibleBestMove; //this is only neccesorly for level 3(maxLevel) node as, bestMoveParam is set to 'nothing' there
         }
 
+        //alpha beta proning
         beta = Math.min(beta, evalRes);
         if (beta <= alpha) break;
-
-        // minEval = Math.min(minEval, evalRes);
       }
 
       // console.log(bestMoveParam);
@@ -422,10 +325,9 @@ export function minimaxDefault(game, maxLevel) {
 
   }
 
-
   /**
-   * 
-   * @param {obj} game GameObj
+   * Create an arr of all legal moves that is sorted based on the most iimport moves (checkmates, takes, & checks) in order respectively
+   * @param {object} game Chess object (game = new chess())
    */
   function movesOrderedByImportance(game) {
     let entireArr = game.moves();
@@ -455,130 +357,4 @@ export function minimaxDefault(game, maxLevel) {
     entireArr = arr1.concat(arr2).concat(arr3).concat(arr4);
     return entireArr;
   }
-
-}
-
-// if(level === 3) {
-//   //store best move
-// }else{
-//   //don't store best move
-// }
-
-// console.log(possibleMoves);
-// game.move(possibleMoves[randomIdx])
-
-export function evaluateBoard2(game, move, prevSum, color) {
-
-  // console.log('game',game);
-  // console.log('move',move);
-  // console.log('prevSum',prevSum);
-  // console.log('color',color);
-
-  if (game.in_checkmate()) {
-
-    // Opponent is in checkmate (good for us)
-    if (move.color === color) {
-      return 10 ** 10;
-    }
-    // Our king's in checkmate (bad for us)
-    else {
-      return -(10 ** 10);
-    }
-  }
-
-  if (game.in_draw() || game.in_threefold_repetition() || game.in_stalemate())
-  {
-    return 0;
-  }
-
-  if (game.in_check()) {
-    // Opponent is in check (good for us)
-    if (move.color === color) {
-      prevSum += 50; //posetive prevSum, good for white
-    }
-    // Our king's in check (bad for us)
-    else {
-      prevSum -= 50;
-    }
-  }
-
-  //convert it to 0-bsed so it could be used in an array
-
-  //[row][col]
-  var from = [
-    8 - parseInt(move.from[1]), //eg.e2,  row will be 8-2=6 (this is 0-based, used for arrs)
-    move.from.charCodeAt(0) - 'a'.charCodeAt(0), //eg.e to 4 (this is 0-based, used for arrs)
-  ];
-  var to = [
-    8 - parseInt(move.to[1]),
-    move.to.charCodeAt(0) - 'a'.charCodeAt(0),
-  ];
-
-  // console.log('from', from);
-  // console.log('to', to);
-
-//   console.log(move);
-  // Change endgame behavior for kings
-  if (prevSum < -1500) {
-    if (move.piece === 'k') {
-      move.piece = 'k_e'; //change piece name to k_e(will use k_e pst instead)
-    }
-    // Kings can never be captured
-    // else if (move.captured === 'k') {
-    //   move.captured = 'k_e';
-    // }
-  }
-
-  //if property 'captured' is in 'move object' eg. captured: 'p'
-  if ('captured' in move) {
-    // Opponent piece was captured (good for us)
-    if (move.color === color) {
-      prevSum +=
-        weights[move.captured] +
-        pstOpponent[move.color][move.captured][to[0]][to[1]];
-    }
-    // Our piece was captured (bad for us)
-    else {
-      prevSum -=
-        weights[move.captured] +
-        pstSelf[move.color][move.captured][to[0]][to[1]];
-    }
-  }
-
-  if (move.flags.includes('p')) {
-    // NOTE: promote to queen for simplicity
-    move.promotion = 'q';
-
-    // Our piece was promoted (good for us)
-    if (move.color === color) {
-      prevSum -=
-        weights[move.piece] + pstSelf[move.color][move.piece][from[0]][from[1]];
-      prevSum +=
-        weights[move.promotion] +
-        pstSelf[move.color][move.promotion][to[0]][to[1]];
-    }
-    // Opponent piece was promoted (bad for us)
-    else {
-      prevSum +=
-        weights[move.piece] + pstSelf[move.color][move.piece][from[0]][from[1]];
-      prevSum -=
-        weights[move.promotion] +
-        pstSelf[move.color][move.promotion][to[0]][to[1]];
-    }
-  } else {
-    // The moved piece still exists on the updated board, so we only need to update the position value
-    if (move.color !== color) {
-      prevSum += pstSelf[move.color][move.piece][from[0]][from[1]];
-      prevSum -= pstSelf[move.color][move.piece][to[0]][to[1]];
-    } else {
-      prevSum -= pstSelf[move.color][move.piece][from[0]][from[1]];
-      prevSum += pstSelf[move.color][move.piece][to[0]][to[1]];
-    }
-  }
-
-  return prevSum;
-}
-
-function sayHi(){
-    return 'Hello from AI.js🤖'
 }
