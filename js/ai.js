@@ -318,8 +318,9 @@ export function calcWeight(fen, options) {
 
 /**
  * acts like a namespace, that just calls minimax, with default vals, allows count to be set to 0, every time func is called
- * @param {obj} game 
- * @returns [maxVal, bestMove]
+ * @param {object} game 
+ * @param {number} depthAmount how many moves to look a head 
+ * @returns [maxVal, bestMove, numOfPosAnalyzed]
  */
 export function minimaxDefault(game, maxLevel) {
   let count = 0;

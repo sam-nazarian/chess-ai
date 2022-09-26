@@ -22,7 +22,11 @@ importAll(require.context('../img/favicon', false, /\.(png|jpe?g|svg)$/));
 let board = null
 
 const game = new Chess() //default chess position with no parameters
+
 let redoArr = [];
+let userLevel = 3; //set it by user (default is 3)
+let prevPosAnalyzed = 0;
+let errTimeout = 0;
 
 const progressDom = document.querySelector('.progress');
 const winnerTextDom = document.querySelector('.winner-text');
@@ -44,7 +48,9 @@ const btnCloseErrContainerDom = document.querySelector('.btn-close-err-container
 const whiteSquareGrey = '#268CCC' 
 const blackSquareGrey = '#76C7E9'
 
-//done in chessboard/UI (not using chess.js in this function)
+/**
+ * Remove highlighted gray squares (done in chessboard/UI, not using chess.js in this function)
+ */
 function removeGreySquares () {
   //all square classes have class 'square-55d63'
   $('#htmlBoard .square-55d63').css('background-color', '') //using jquery remove gray highlight of all squares
@@ -79,31 +85,27 @@ function onDragStart (source, piece) {
   // do not pick up pieces if the game is over
   if (game.game_over()) return false
 
-  // USE WHEN YOU WANNA USE BOTH SIDES ⬜️⬛️
+  // USE BELOW WHEN YOU WANNA USE BOTH SIDES ⬜️⬛️
   /*if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
       (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
     return false
   }*/
 
-  //USE WHEN YOU ONLY WANNA USE WHITE ⬜️
+  //USE BELOW WHEN YOU ONLY WANNA USE WHITE ⬜️
+  //if piece is black then don't allow picking it up
   if (piece.search(/^b/) !== -1) return false
 }
 
-
-let userLevel = 3; //set it by user
-let prevPosAnalyzed = 0;
-
 /**
- * Black making a move 
+ * Black making a move using minimaxDefault() in ai.js
  */
-function makeRandomMove () {
+function makeBlackMove () {
   let resMiniMax = [];
 
   const [sumWeightBW] = calcWeight(game.fen(), {fenStr:true});
 
   //if endgame & processeing is fast then, go 5 moves deep
   if(sumWeightBW <= 121870 && prevPosAnalyzed<80000 && userLevel<5){
-    //[maxVal, bestMove, posAnalyzed]
     resMiniMax = minimaxDefault(game, 5);
   }else{
     resMiniMax = minimaxDefault(game, userLevel);
@@ -113,23 +115,21 @@ function makeRandomMove () {
   const posAnalyzed = resMiniMax[2];
 
   prevPosAnalyzed = posAnalyzed;
-  console.log(posAnalyzed);
+  // console.log(posAnalyzed);
 
+  if(bestMove === 'nothing') return; //no move to be made
 
-
-  if(bestMove === 'nothing') return;
   game.move(bestMove)
   board.position(game.fen())
-  updateUI()
 
-  //now that black moved it's wnite's turn
+  //now that black moved, it's white's turn
+  updateUI()
 }
 
 /**
  * When a WHITE piece is dropped 
  * @param {String} source curr location of piece, eg.e2
  * @param {String} target  where piece was dropped, eg.e5
- * @returns 
  */
 function onDrop (source, target) {
   removeGreySquares()
@@ -140,40 +140,34 @@ function onDrop (source, target) {
     to: target,
     promotion: 'q' // NOTE: always promote to a queen (for simplicity)
   })
-  //evaluate the board here - so that positionPoints gets updated
 
   //if move was illegal it would have value of null, otherwise it will have an object containing info about that move
+  
   // illegal move
   if (move === null) return 'snapback' //piece will return to original/source square
 
-
-  // console.log(move);
-  // positionPoints = evaluateBoard(game, move, positionPoints, move.color)
-  // console.log(positionPoints);
-
-  // make random legal move for black
-  window.setTimeout(makeRandomMove, 100) //LOWER THIS LATER
+  // make move for black
+  //If move is castling then wait longer since, it takes longer to preform castling animation
+  if(move.san === 'O-O' || move.san === 'O-O-O') window.setTimeout(makeBlackMove, 250)
+  else window.setTimeout(makeBlackMove, 50)
 }
 
-
 /**
- * Highlight legal moves whenever mouse enters a square
+ * Highlight legal moves whenever mouse clicks a piece
  * @param {String} square square that was entered
  * @param {String} piece The piece on that square(e.g wN), if none, then false
- * @returns 
  */
 function highlightMoves(square, piece){
-    //USE WHEN YOU ONLY WANNA USE WHITE ⬜️ , COMMENT WHEN YOU WANNA USE BOTH SIDES ⬜️⬛️
+    //USE BELOW WHEN YOU ONLY WANNA USE WHITE ⬜️ , COMMENT IT WHEN YOU WANNA USE BOTH SIDES ⬜️⬛️
     if (piece === false || piece.search(/^b/) !== -1 || game.game_over()) return;
 
-    // get list of possible moves for highlighted square
-    //gets an array of objects (object includes info of possible move)
+    // get list of possible moves for highlighted square (gets an array of objects (object includes info of possible move))
     const moves = game.moves({
       square: square, //wihtout square it would list all possible moves, for all pieces
       verbose: true //gives all legal possibilities of that piece
     })
   
-    // highlight the square they moused over
+    // highlight the square user clicked
     greySquare(square)
 
     // exit if there are no moves available for this square
@@ -186,92 +180,42 @@ function highlightMoves(square, piece){
 }
 
 /**
- * Highlight legal moves whenever mouse enters a square
- * @param {String} square square that was entered
- * @param {String} piece The piece on that square(e.g wN), if none, then false
- * @returns 
+ * After white's move is completed, update UI & board position
  */
-/*
-function onMouseoverSquare (square, piece) {
-
-  //USE WHEN YOU ONLY WANNA USE WHITE ⬜️ , COMMENT WHEN YOU WANNA USE BOTH SIDES ⬜️⬛️
-  if (piece === false || piece.search(/^b/) !== -1 || game.game_over()) return;
-
-  // get list of possible moves for highlighted square
-  //gets an array of objects (object includes info of possible move)
-  const moves = game.moves({
-    square: square, //wihtout square it would list all possible moves, for all pieces
-    verbose: true //gives all legal possibilities of that piece
-  })
-
-  // exit if there are no moves available for this square
-  if (moves.length === 0) return
-
-  // highlight the square they moused over
-  greySquare(square)
-
-  // highlight the possible squares for this piece
-  for (let i = 0; i < moves.length; i++) {
-    greySquare(moves[i].to)
-  }
-}
-*/
-
-/*
-function onMouseoutSquare (square, piece) {
-  removeGreySquares()
-}
-*/
-
 function onSnapEnd () {
-  // console.log('White Made Move:', evaluateBoard(game, game.turn())); //after white makes a move, it's black's turn
+  //now that white moved, it's black's turn
   updateUI()
 
   //sets curr board(UI) position to the curr game FEN
-  //Neccesorly as makes sure UI & backend logic are at same position in moves such as enpasent
+  //Neccesorly as it makes sure UI & backend logic are at same position in moves such as enpassant
   board.position(game.fen());
+
+  //reset redo arr
+  redoArr = [];
 }
 
 /**
- * {void} 
- * updates evaluation bar based on positionPoint
- * how winner text at the end
+ * Updates evaluation bar based on positionPoint & Shows winner text at the end
  */
 function updateUI(){
 
-  // const posTestPoint = calcWeightTest(game.fen());
-  // console.log(posTestPoint);
-
-  // console.log( calcWeightBothSidesTest(game.fen()) );
-
-  // console.log(  )
-
-
-  //UPDATE UI
+  //UPDATE EVALUATION BAR
   const positionPoint = evaluateBoard(game, game.turn())
 
-  // console.log(positionPoint);
-
+  //formula to calc percentage based on max & min
   let percentPosition = (positionPoint - (-3887)) / (3887-(-3887)) * 100;
   if(percentPosition>100) percentPosition=100;
   if(percentPosition<0) percentPosition=0;
 
-  // console.log('positionPoint', positionPoint);
-  // console.log('percentPosition', percentPosition );
-
-  progressDom.style.height = `${percentPosition}%`; //formula to calc percentage based on max & min
-
-
+  progressDom.style.height = `${percentPosition}%`;
 
   //UDPATE WINNER TEXT
 	if (game.in_checkmate()) {
-    // if(winnerTextDom.classList.contains('winner-text-active')) return; //exit function if there was already a winner
 
     winnerTextDom.classList.add('winner-text-active');
 
 		if (game.turn() === 'w') winnerTextDom.innerHTML = 'Black Wins!'; //if it's checkmate & white is supposed to move (so white loses)
 		if (game.turn() === 'b') winnerTextDom.innerHTML = 'White Wins!';
-
 
     whiteKingDom.classList.add('hide')
     blackKingDom.classList.add('hide')
@@ -283,6 +227,7 @@ function updateUI(){
   if (game.in_draw() || game.in_threefold_repetition() || game.in_stalemate()) {
 
     winnerTextDom.classList.add('winner-text-active');
+
 		winnerTextDom.innerHTML = 'Draw!'; //position is equal
 
     whiteKingDom.classList.add('hide')
@@ -291,7 +236,6 @@ function updateUI(){
 
     return;
 	}
-
 
   //UPDATE THE PLAYER TURN
   if (game.turn() === 'w') {
@@ -308,82 +252,114 @@ function updateUI(){
 
 }
 
+function restartGame(){
+  game.reset();
+  redoArr = [];
+  winnerTextDom.classList.remove('winner-text-active');
+  playerTurnTextDom.classList.remove('hide');
+
+  // make sure to call updateUI() after calling restartGame()
+}
+
 const config = {
   draggable: true, //allow pieces to be dragged
   position: 'start', //position all pieces like normal chess
   pieceTheme: 'img/chesspieces/alpha/{piece}.png',
   onDragStart: onDragStart, //When a piece is picked up
   onDrop: onDrop, //When a piece is dropped
-  // onMouseoverSquare: onMouseoverSquare, //run function whenver mouse enters a square
-  // onMouseoutSquare: onMouseoutSquare, //when mouse leaves square
   onSnapEnd: onSnapEnd //when piece snap animation is complete
 }
 
-// const board = Chessboard('htmlBoard', config) //ChessBoard is a variable in chessboard-1.0.0.js already imported
-board = ChessBoard('htmlBoard', config) //ChessBoard is a variable in chessboard-1.0.0.js already imported
+board = ChessBoard('htmlBoard', config) //ChessBoard is a variable in chessboard-updated.js, already imported
 
-// board.resize();
+// Whenever window is resized, run board.size() 
 $(window).resize(board.resize);
-// window.setInterval(function(){
-//   board.resize();
-//   console.log('board resized');
-// }, 5000);
+
+// Prevent scrolling while clicking board in mobile devices
+jQuery('#htmlBoard').on('scroll touchmove touchend touchstart contextmenu', function(e){
+  e.preventDefault();
+  });
 
 fenInputSubmitDom.addEventListener('click', submitFen);
-formLoadPosDom.addEventListener('submit', submitFen)
+formLoadPosDom.addEventListener('submit', submitFen);
 
-
+/**
+ * @param {Object} e event object
+ * load the fen position on game, then sync it with view
+ */
 function submitFen(e){
   e.preventDefault();
 
+  restartGame();
+
   //load the fen position on game
-  //then sync it view
-  const ans = game.load(fenInputDom.value)
+  const load = game.load(fenInputDom.value)
   formLoadPosDom.reset();
 
-  if(ans === false){
+  if(load === false){
     showError('Invalid FEN!')
     return;
   }
 
   redoArr = [];
 
-  //if it's black's turn -> make black move
-  if(game.fen().includes('b')) window.setTimeout(makeRandomMove, 250)
-
+  // sync fen position with view
   board.position(game.fen());
+
+  updateUI();
+
+  //if it's black's turn -> make black move
+  if(!game.fen().includes('w')) window.setTimeout(makeBlackMove, 350)
+
 }
 
+/**
+ * Set userLevel based on selected form difficulty
+ */
 formDifficultyDom.addEventListener('click',(e)=>{
-  // console.log(e.target);
-  // console.log(e.target.tagName);
-
   //select correct target
   if(!e.target.value) return;
 
-  userLevel = e.target.value;
+  userLevel = e.target.value * 1; //convert to number
 })
 
+/**
+ * Undo, restore previous undo, update board position & update redoArr
+ */
 btnUndoDom.addEventListener('click',(e)=>{
   e.preventDefault();
 
-  //waits while black, makes the moves then undos, so it will always be white's turn after the undo
+  if(game.game_over() === true){
+    showError(`Can't undo, game is over!`)
+    return;
+  }
 
-  const blackUndo = game.undo(); //undos black
-  const whiteUndo = game.undo(); //undos white
-  if(!whiteUndo) {
+  //if there's nothing to undo or only half a move to undo, which would mean that black did the first move (fixes bug when loading fen position when black moves first)
+  if(game.history().length === 0 || game.history().length === 1) {
     showError('Nothing to undo!')
     return; //if it's null stop
   }
+
+  //waits while black, makes the moves then undos, so it will always be white's turn after the undo
+  const blackUndo = game.undo(); //undos black
+  const whiteUndo = game.undo(); //undos white
 
   redoArr.push([blackUndo.from, blackUndo.to,whiteUndo.from, whiteUndo.to])
 
   board.position(game.fen());
 })
 
-
+/**
+ * Redo, go to last move, update board position & update redoArr
+ */
 btnRedoDom.addEventListener('click',(e)=>{
   e.preventDefault();
+
+  if(game.game_over() === true){
+    showError(`Can't redo, game is over!`)
+    return;
+  }
+
   if(redoArr.length === 0) {
     showError('Nothing to redo!')
     return;
@@ -408,7 +384,10 @@ btnRedoDom.addEventListener('click',(e)=>{
   board.position(game.fen());
 })
 
-let errTimeout = 0;
+/**
+ * Display err using err-container popup at the top of the page
+ * @param {String} text 
+ */
 function showError(text){
 
   if(errTimeout>0) clearTimeout(errTimeout); //remove timer if it was already set below (which would have a val>0)
@@ -421,25 +400,12 @@ function showError(text){
     errContainerDom.classList.remove('err-container-active')
   }, 2000) //errTimeout will be a posetive val
 
-  console.log(errTimeout);
+  // console.log(errTimeout); //default var is 0, after setTimeout() var gets set to a value greater than 0
 }
 
-// Prevent scrolling while clicking board in mobile devices
-jQuery('#htmlBoard').on('scroll touchmove touchend touchstart contextmenu', function(e){
-  e.preventDefault();
-  });
-
-// Removed close error button
+// Removed close error button (uncomment if you want to add it)
 /*
 btnCloseErrContainerDom.addEventListener('click',(e)=>{
   errContainerDom.classList.remove('err-container-active')
 })
 */
-
-
-// function getInputValue(){
-//   // Selecting the input element and get its value 
-  
-//   // Displaying the value
-//   alert(inputVal);
-// }
