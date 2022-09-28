@@ -220,6 +220,7 @@ function onSnapEnd () {
  * @param {String} move The string of move eg. Nxe4
  */
 function resetAndPlayAudio(move){
+  // mobileFix(); //slows down too much
   resetAudios();
 
     if(move.includes('+')) checkSound.play();
@@ -475,4 +476,37 @@ function showError(text){
 btnCloseErrContainerDom.addEventListener('click',(e)=>{
   errContainerDom.classList.remove('err-container-active')
 })
+*/
+
+// Removed function which was called in resetAndPlayAudio(), however it slowed mobile devices down too much, thus it was removed
+/*
+function mobileFix(){
+  moveSound.play();
+  moveSound.pause();
+  moveSound.currentTime = 0;
+
+  captureSound.play();
+  captureSound.pause();
+  captureSound.currentTime = 0;
+
+  checkSound.play();
+  checkSound.pause();
+  checkSound.currentTime = 0;
+
+  castleSound.play();
+  castleSound.pause();
+  castleSound.currentTime = 0;
+
+  loseSound.play();
+  loseSound.pause();
+  loseSound.currentTime = 0;
+
+  winSound.play();
+  winSound.pause();
+  winSound.currentTime = 0;
+
+  startSound.play();
+  startSound.pause();
+  startSound.currentTime = 0;
+}
 */
