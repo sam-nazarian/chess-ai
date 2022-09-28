@@ -3,6 +3,10 @@
 /* <= 1138px / 71.125em */
 @media (max-width: 71.125em){
 
+  .interface{
+    margin-top: 3rem;
+  }
+
   #htmlBoard {
     width: 60vw;
   }
@@ -20,9 +24,10 @@
 /* <= 1018px / 63.625em */
 @media (max-width: 63.625em){
 
-  /* add padding to avoid any problems on mobile devices */
+  /* add padding to avoid any problems on (horizontal) mobile devices as it offsets the footer's height */
   .interface{
-    padding-top: 2.5rem;
+    margin-top: 5.5rem;
+    /* margin-top: 5rem; */
   }
 
   #htmlBoard {
@@ -64,7 +69,7 @@
   }
 
   .form-load-position {
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
   }
 
   .fen-input {
@@ -75,10 +80,18 @@
     max-width: 17rem;
   }
 
+  .copyright-container {
+    font-size: 0.85rem;
+  }
+
 }
 
 /* <= 630px 39.375em */
 @media (max-width: 39.375em) {
+
+  .interface{
+    margin-top: 1rem;
+  }
 
   .err-message{
     font-size: 1.5rem;
@@ -99,10 +112,6 @@
     align-items: center;
   }
 
-  .interface{
-    padding-top: 1rem;
-  }
-
   .main-container {
     grid-template-columns: min-content;
     row-gap: 0;
@@ -113,7 +122,6 @@
   }
 
   .chessboard-container{
-    /* margin-right: 2rem; */
     grid-template-columns: max-content 40rem;
     margin: 0;
   }
@@ -129,7 +137,11 @@
 
   .restart-btn, .restart-btn:link, .restart-btn:visited{
     max-width: 20rem;
-    margin-bottom: 3rem;
+  }
+
+  .copyright-container {
+    font-size: 0.8rem;
+    margin-top: 3rem;
   }
 
 }
@@ -159,6 +171,10 @@
 
   .notation-322f9{
     font-size: 1.2rem;
+  }
+
+  .copyright-container {
+    font-size: 0.7rem;
   }
 }
 

@@ -224,6 +224,24 @@
   display: block;
 }
 
+.copyright-container {
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #777;
+}
+
+.footer-link:link, .footer-link:visited {
+  color: #4D6D92;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.footer-link:hover, .footer-link:active {
+  color: #456283;
+}
+
 /* Removed close error button (uncomment if you want to add close button to err-container) */
 /*
 .btn-close-err-container {

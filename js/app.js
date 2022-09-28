@@ -62,6 +62,7 @@ const btnUndoDom = document.querySelector('.btn-undo');
 const btnRedoDom = document.querySelector('.btn-redo');
 const errMessageDom = document.querySelector('.err-message');
 const errContainerDom = document.querySelector('.err-container');
+const yearDom = document.querySelector('.year');
 const btnCloseErrContainerDom = document.querySelector('.btn-close-err-container');
 
 
@@ -485,6 +486,9 @@ function showError(text){
 
   // console.log(errTimeout); //default var is 0, after setTimeout() var gets set to a value greater than 0
 }
+
+//Set current year on copyright paragraph
+yearDom.textContent = new Date().getFullYear();
 
 // Removed close error button (uncomment if you want to add it)
 /*
