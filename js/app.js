@@ -11,6 +11,15 @@ function importAll(r) {
   return r.keys().map(r); //run the function passed in
 }
 
+// Import audios
+import moveFile from '../audio/move.mp3';
+import captureFile from '../audio/capture.mp3';
+import checkFile from '../audio/check.mp3';
+import castleFile from '../audio/castle.mp3';
+import loseFile from '../audio/lose.mp3';
+import winFile from '../audio/win.mp3';
+import startFile from '../audio/start.mp3';
+
 // basically does this 40 times, import k from '../img/chesspieces/wikipedia/wK.png'
 importAll(require.context('../img/chesspieces/wikipedia/', false, /\.(png|jpe?g|svg)$/));
 importAll(require.context('../img/chesspieces/alpha/', false, /\.(png|jpe?g|svg)$/));
@@ -22,6 +31,15 @@ importAll(require.context('../img/favicon', false, /\.(png|jpe?g|svg)$/));
 let board = null
 
 const game = new Chess() //default chess position with no parameters
+
+// create Audio objects
+const moveSound = new Audio(moveFile);
+const captureSound = new Audio(captureFile);
+const checkSound = new Audio(checkFile);
+const castleSound = new Audio(castleFile);
+const loseSound = new Audio(loseFile);
+const winSound = new Audio(winFile);
+const startSound = new Audio(startFile);
 
 let redoArr = [];
 let userLevel = 3; //set it by user (default is 3)
@@ -119,11 +137,12 @@ function makeBlackMove () {
 
   if(bestMove === 'nothing') return; //no move to be made
 
-  game.move(bestMove)
-  board.position(game.fen())
+  game.move(bestMove);
+  board.position(game.fen());
+  resetAndPlayAudio(bestMove);
 
   //now that black moved, it's white's turn
-  updateUI()
+  updateUI();
 }
 
 /**
@@ -146,10 +165,12 @@ function onDrop (source, target) {
   // illegal move
   if (move === null) return 'snapback' //piece will return to original/source square
 
+  resetAndPlayAudio(move.san)
+
   // make move for black
   //If move is castling then wait longer since, it takes longer to preform castling animation
   if(move.san === 'O-O' || move.san === 'O-O-O') window.setTimeout(makeBlackMove, 250)
-  else window.setTimeout(makeBlackMove, 50)
+  else window.setTimeout(makeBlackMove, 100)
 }
 
 /**
@@ -195,6 +216,40 @@ function onSnapEnd () {
 }
 
 /**
+ * Resets the audios, then plays the appropriate sound based on the move
+ * @param {String} move The string of move eg. Nxe4
+ */
+function resetAndPlayAudio(move){
+  resetAudios();
+
+    if(move.includes('+')) checkSound.play();
+    else if(move.includes('x')) captureSound.play();
+    else if(move.includes('O')) castleSound.play();
+    else moveSound.play();
+  
+}
+
+/**
+ * Resets audios, so that another audio can be called after
+ */
+function resetAudios(){
+  moveSound.pause();
+  moveSound.currentTime = 0;
+  captureSound.pause();
+  captureSound.currentTime = 0;
+  checkSound.pause();
+  checkSound.currentTime = 0;
+  castleSound.pause();
+  castleSound.currentTime = 0;
+  loseSound.pause();
+  loseSound.currentTime = 0;
+  winSound.pause();
+  winSound.currentTime = 0;
+  startSound.pause();
+  startSound.currentTime = 0;
+}
+
+/**
  * Updates evaluation bar based on positionPoint & Shows winner text at the end
  */
 function updateUI(){
@@ -214,8 +269,16 @@ function updateUI(){
 
     winnerTextDom.classList.add('winner-text-active');
 
-		if (game.turn() === 'w') winnerTextDom.innerHTML = 'Black Wins!'; //if it's checkmate & white is supposed to move (so white loses)
-		if (game.turn() === 'b') winnerTextDom.innerHTML = 'White Wins!';
+    //if it's checkmate & white is supposed to move (so white loses)
+		if (game.turn() === 'w') {
+      loseSound.play(); 
+      winnerTextDom.innerHTML = 'Black Wins!';
+    }
+
+		if (game.turn() === 'b') {
+      winSound.play();
+      winnerTextDom.innerHTML = 'White Wins!';
+    }
 
     whiteKingDom.classList.add('hide')
     blackKingDom.classList.add('hide')
@@ -225,6 +288,7 @@ function updateUI(){
 	}
 
   if (game.in_draw() || game.in_threefold_repetition() || game.in_stalemate()) {
+    winSound.play();
 
     winnerTextDom.classList.add('winner-text-active');
 
@@ -302,6 +366,9 @@ function submitFen(e){
   }
 
   redoArr = [];
+
+  resetAudios();
+  startSound.play();
 
   // sync fen position with view
   board.position(game.fen());
