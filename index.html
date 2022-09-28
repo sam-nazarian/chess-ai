@@ -4,17 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="This is a chess AI made by Saman Fathnazarian." />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> -->
-    <!-- <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" /> -->
 
-
-    <!-- <meta name="viewport" content="width=50vw, initial-scale=1"> -->
-    <!-- <meta name="viewport" content="width=1000; user-scalable=0;" /> -->
-
-
-    <title>Saman's ChessAI</title>
+    <title>SAMAN'S &mdash; CHESSAI</title>
 
     <!-- LINK TO Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +15,12 @@
     <!-- END of Link To Fonts -->
 
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <link rel="icon" type="image/x-icon" href="img/favicon/faviconHorse.jpg" />
+
+    <!-- FAVICONS -->
+    <link rel="icon" href="img/favicon/favicon-64.jpg" />
+    <link rel="apple-touch-icon" href="img/favicon/apple-touch-icon.jpg" />
+    <!-- FAVICONS FOR ANDROID -->
+    <link rel="manifest" href="manifest.webmanifest">
 
     <!-- REPLACED BELOW USING WEBPACK IMPORTS ON APP.JS -->
     <!-- <link rel="stylesheet" href="css/chessboard-1.0.0.min.css"> -->
@@ -64,6 +61,8 @@
             <div class="turn-container">
               <img class="chess-img white-king" src="img/chesspieces/alpha/wK.png" />
               <img class="chess-img black-king hide" src="img/chesspieces/alpha/bK.png" />
+
+              <!-- different king images, using wikipedia imgs -->
               <!-- <img class="chess-img white-king" src="img/chesspieces/wikipedia/wK.png" />
               <img class="chess-img black-king hide" src="img/chesspieces/wikipedia/bK.png" /> -->
               <p class="player-turn-text">Your<br />Turn</p>
@@ -125,28 +124,3 @@
 
   </body>
 </html>
-
-
-<!-- This Was Inside of .form-load-position -->
-<!-- <label class="label-text-info">Load Different Position:</label><br> -->
-<!-- <br><label class="label-text-err">FEN entered is not valid!</label> -->
-
-<!-- this was inside of body -->
-<!-- <script>
-    function getInputValue(){
-        // Selecting the input element and get its value 
-        var inputVal = document.getElementById("myInput").value;
-        
-        // Displaying the value
-        alert(inputVal);
-    }
-  </script> -->
-
-<!-- style="width: 400px" -->
-
-<!-- <script>
-    var board1 = ChessBoard('board1', {
-      position: 'start',
-      draggable: true,
-    });
-  </script> -->
