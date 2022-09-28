@@ -28,11 +28,10 @@ importAll(require.context('../img/favicon', false, /\.(png|jpe?g|svg)$/));
 
 /////////////////////////////
 
-let board = null
-
 const game = new Chess() //default chess position with no parameters
+const touchDevice = isTouchDevice();
 
-// create Audio objects
+// Create Audio Objects
 const moveSound = new Audio(moveFile);
 const captureSound = new Audio(captureFile);
 const checkSound = new Audio(checkFile);
@@ -41,11 +40,13 @@ const loseSound = new Audio(loseFile);
 const winSound = new Audio(winFile);
 const startSound = new Audio(startFile);
 
+let board = null
 let redoArr = [];
 let userLevel = 3; //set it by user (default is 3)
 let prevPosAnalyzed = 0;
 let errTimeout = 0;
 
+//DOM selectors
 const progressDom = document.querySelector('.progress');
 const winnerTextDom = document.querySelector('.winner-text');
 const playerTurnTextDom = document.querySelector('.player-turn-text');
@@ -139,7 +140,7 @@ function makeBlackMove () {
 
   game.move(bestMove);
   board.position(game.fen());
-  resetAndPlayAudio(bestMove);
+  if(!touchDevice) resetAndPlayAudio(bestMove);
 
   //now that black moved, it's white's turn
   updateUI();
@@ -165,7 +166,7 @@ function onDrop (source, target) {
   // illegal move
   if (move === null) return 'snapback' //piece will return to original/source square
 
-  resetAndPlayAudio(move.san)
+  if(!touchDevice) resetAndPlayAudio(move.san)
 
   // make move for black
   //If move is castling then wait longer since, it takes longer to preform castling animation
@@ -251,6 +252,16 @@ function resetAudios(){
 }
 
 /**
+ * returns whether or not device has touch capability
+ * @returns {boolean} true if device has touchscreen capabilities, false if it doesn't
+ */
+function isTouchDevice() {
+  return (('ontouchstart' in window) ||
+     (navigator.maxTouchPoints > 0) ||
+     (navigator.msMaxTouchPoints > 0));
+}
+
+/**
  * Updates evaluation bar based on positionPoint & Shows winner text at the end
  */
 function updateUI(){
@@ -272,12 +283,12 @@ function updateUI(){
 
     //if it's checkmate & white is supposed to move (so white loses)
 		if (game.turn() === 'w') {
-      loseSound.play(); 
+      if(!touchDevice) loseSound.play(); 
       winnerTextDom.innerHTML = 'Black Wins!';
     }
 
 		if (game.turn() === 'b') {
-      winSound.play();
+      if(!touchDevice) winSound.play();
       winnerTextDom.innerHTML = 'White Wins!';
     }
 
@@ -289,7 +300,7 @@ function updateUI(){
 	}
 
   if (game.in_draw() || game.in_threefold_repetition() || game.in_stalemate()) {
-    winSound.play();
+    if(!touchDevice) winSound.play();
 
     winnerTextDom.classList.add('winner-text-active');
 
@@ -368,8 +379,10 @@ function submitFen(e){
 
   redoArr = [];
 
-  resetAudios();
-  startSound.play();
+  if(!touchDevice) {
+    resetAudios();
+    startSound.play();
+  }
 
   // sync fen position with view
   board.position(game.fen());
