@@ -1,10 +1,10 @@
 import chessboard from './chessboard-updated'; //doesn't matter what we name it, not using the name
-import {Chess} from 'chess.js'
-import generalCss from '../css/general.css'
+import {Chess} from 'chess.js';
+import generalCss from '../css/general.css';
 import style from '../css/chessboard-1.0.0.css';
-import mainCss from '../css/main.css'
-import queriesCss from '../css/queries.css'
-import {evaluateBoard, minimax, minimaxDefault, calcWeight} from './ai.js'
+import mainCss from '../css/main.css';
+import queriesCss from '../css/queries.css';
+import {evaluateBoard, minimax, minimaxDefault, calcWeight} from './ai.js';
 
 //imoprt all images from the chesspieces folder
 function importAll(r) {
@@ -23,8 +23,10 @@ import startFile from '../audio/start.mp3';
 // basically does this 40 times, import k from '../img/chesspieces/wikipedia/wK.png'
 importAll(require.context('../img/chesspieces/wikipedia/', false, /\.(png|jpe?g|svg)$/));
 importAll(require.context('../img/chesspieces/alpha/', false, /\.(png|jpe?g|svg)$/));
-importAll(require.context('../img/board/', false, /\.(png|jpe?g|svg)$/));
+importAll(require.context('../img/chesspieces/alpha/', false, /\.(png|jpe?g|svg)$/));
+importAll(require.context('../img/turns/', false, /\.(png|jpe?g|svg)$/));
 importAll(require.context('../img/favicon', false, /\.(png|jpe?g|svg)$/));
+// importAll(require.context('../img/board/', false, /\.(png|jpe?g|svg)$/)); //import if you want to change board theme from colors to pictures
 
 /////////////////////////////
 
