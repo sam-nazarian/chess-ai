@@ -3,10 +3,6 @@
 /* <= 1138px / 71.125em */
 @media (max-width: 71.125em){
 
-  .interface{
-    margin-top: 3rem;
-  }
-
   #htmlBoard {
     width: 60vw;
   }

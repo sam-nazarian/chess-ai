@@ -1,3 +1,7 @@
+.interface{
+  margin-top: 3rem;
+}
+
 .main-container{
   display: grid;
   column-gap: 6.4rem;
