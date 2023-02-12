@@ -34,8 +34,8 @@ module.exports = {
       // { test: /\.css$/, use: ['style-loader', 'css-loader'] },
       { test: /\.css$/, use: ['style-loader', {loader:'css-loader',options:{sourceMap:true,url: false,},}, ] },
       { test: /\.(svg|png|jpe?g|gif)$/i, loader: 'file-loader', options: { name: '[path][name].[ext]' } },
-      { test: /\.mp3$/, loader: 'file-loader', }
-      // { test: /\.m?js$/, exclude: /(node_modules|bower_components)/, use: { loader: 'babel-loader', options: { presets: ['@babel/preset-env'] } } },
+      { test: /\.mp3$/, loader: 'file-loader', },
+      { test: /\.m?js$/, exclude: /(node_modules|bower_components)/, use: { loader: 'babel-loader', options: { presets: ['@babel/preset-env'] } } },
     ]
   },
 

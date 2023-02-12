@@ -6,7 +6,7 @@
     <meta name="description" content="This is a chess AI made by Saman Fathnazarian." />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>SAMAN'S &mdash; CHESSAI</title>
+    <title>Saman's ChessAI</title>
 
     <!-- LINK TO Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +20,7 @@
     <link rel="icon" href="img/favicon/favicon-64.jpg" />
     <link rel="apple-touch-icon" href="img/favicon/apple-touch-icon.jpg" />
     <!-- FAVICONS FOR ANDROID -->
-    <link rel="manifest" href="manifest.webmanifest">
+    <!-- <link rel="manifest" href="manifest.webmanifest"> -->
 
     <!-- REPLACED BELOW USING WEBPACK IMPORTS ON APP.JS -->
     <!-- <link rel="stylesheet" href="css/chessboard-1.0.0.min.css"> -->
@@ -31,95 +31,174 @@
     <!-- <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"
     integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD" crossorigin="anonymous">
     </script> -->
+
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@900&display=swap');
+
+      :root{
+        --dark-clr: #550000;
+        --light-clr: #f1d874;
+      }
+      
+      *{
+        margin: 0;
+        padding: 0;
+      }
+
+      body{
+        background: linear-gradient(to bottom, rgba(15, 15, 15, 1) 0%, rgba(25, 25, 25, 1) 85%, rgb(30, 30, 30) 100%);
+        background-color: rgba(15, 15, 15, 1);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+
+      .preloader{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .chess-icon{
+        height: 125px;
+        width: 125px;
+        border: 8px solid #333;
+        border-radius: 20px;
+        background-image: conic-gradient(var(--dark-clr) 0, var(--dark-clr) 90deg,var(--light-clr) 90deg, var(--light-clr) 180deg, var(--dark-clr) 180deg, var(--dark-clr) 270deg,var(--light-clr) 270deg, var(--light-clr) 360deg);
+        animation-name: loading;
+        animation-duration: 5s;
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes loading{
+        20% {
+          transform:rotate(90deg);
+        }
+        40%{
+          transform:rotate(180deg);
+        }
+        60%{
+          transform:rotate(270deg);
+        }
+        80%{
+          transform:rotate(360deg);
+        }
+        100%{
+          transform:rotate(360deg);
+        }
+      }
+
+      .preloader-message {
+        font-family: 'Heebo',Arial;
+        margin-top: 24px;
+        color: white;
+        font-size: 24px;
+      }
+    </style>
+
   </head>
 
   <body>
 
-    <!-- class="err-container-active" -->
-    <div class="err-container">
-      <p class="err-message">Can't undo, game is over!</p>
-      <!-- <button class="btn-close-err-container">X</button> -->
+    <div class="preloader" style="opacity: 1;">
+      <div class="chess-icon"></div>
+      <p class="preloader-message">I'm thinking...</p>
     </div>
 
-    <!-- class="fully-center-body" -->
-    <div class="interface fully-center-body">
-      <div class="main-container">
-        <div class="chessboard-container">
-          <div class="progressbar">
-            <div class="progress"></div>
-          </div>
+    </div>
 
-          <div id="htmlBoard"></div>
-        </div>
+    <div class="loaded-body" style="display: none;">
 
-        <div class="settings-container">
-
-          <div class="col-1 fully-center">
-            <!-- class="winner-text-active" -->
-            <p class="winner-text">White Won!</p>
-
-            <div class="turn-container">
-              <img class="chess-img white-king" src="img/turns/wK.png" />
-              <img class="chess-img black-king hide" src="img/turns/bK.png" />
-              <p class="player-turn-text">Your<br />Turn</p>
-            </div>
-          </div>
-
-          <div class="col-2 fully-center">
-            <form class="form-difficulty">
-              <label class="form-difficulty-text">Select amount of moves AI can look a head (difficulty):</label><br />
-              <div class="switch-field">
-                <input type="radio" id="radio-one" name="switch-one" value="1" />
-                <label for="radio-one">1</label>
-                <!-- label must come after button -->
-
-                <input type="radio" id="radio-two" name="switch-one" value="2" />
-                <label for="radio-two">2</label>
-
-                <input type="radio" id="radio-three" name="switch-one" value="3" checked />
-                <label for="radio-three">3</label>
-
-                <input type="radio" id="radio-four" name="switch-one" value="4" />
-                <label for="radio-four">4</label>
-
-                <!-- <input type="radio" id="radio-five" name="switch-one" value="5" />
-                <label for="radio-five">5</label> -->
-
-                <!-- <input type="radio" id="radio-six" name="switch-one" value="6" />
-                <label for="radio-six">6</label>
-
-                <input type="radio" id="radio-seven" name="switch-one" value="7" />
-                <label for="radio-seven">7</label>
-
-                <input type="radio" id="radio-eight" name="switch-one" value="8" />
-                <label for="radio-eight">8</label> -->
-              </div>
-            </form>
-
-            <form class="form-undo-redo">
-              <button class="btn-undo btn">Undo</button>
-              <button class="btn-redo btn">Redo</button>
-            </form>
-          </div>
-
-          <div class="col-3 fully-center">
-            <form class="form-load-position">
-              <textarea type="text" placeholder="Paste FEN to Load a Different Position" class="fen-input"></textarea>
-
-              <br /><button type="button" class="fen-input-submit btn">Load Position</button>
-            </form>
-
-            <button class="restart-btn btn" onClick="window.location.reload();">Restart Game</button>
-          </div>
-
-        </div>
-
+      <!-- class="err-container-active" -->
+      <div class="err-container">
+        <p class="err-message">Can't undo, game is over!</p>
+        <!-- <button class="btn-close-err-container">X</button> -->
       </div>
 
-      <div class="copyright-container">
-        <p class="copyright">
-          Copyright &copy; <span class="year">2030</span> by <a class="footer-link" href="https://samanfathnazarian.com" target="_blank">Saman Fathnazarian</a>. All rights reserved.
-        </p>
+      <!-- class="fully-center-body" -->
+      <div class="interface fully-center-body">
+        <div class="main-container">
+          <div class="chessboard-container">
+            <div class="progressbar">
+              <div class="progress"></div>
+            </div>
+
+            <div id="htmlBoard"></div>
+          </div>
+
+          <div class="settings-container">
+
+            <div class="col-1 fully-center">
+              <!-- class="winner-text-active" -->
+              <p class="winner-text">White Won!</p>
+
+              <div class="turn-container">
+                <img class="chess-img white-king" src="img/turns/wK.png" />
+                <img class="chess-img black-king hide" src="img/turns/bK.png" />
+                <p class="player-turn-text">Your<br />Turn</p>
+              </div>
+            </div>
+
+            <div class="col-2 fully-center">
+              <form class="form-difficulty">
+                <label class="form-difficulty-text">Select amount of moves AI can look a head (difficulty):</label><br />
+                <div class="switch-field">
+                  <input type="radio" id="radio-one" name="switch-one" value="1" />
+                  <label for="radio-one">1</label>
+                  <!-- label must come after button -->
+
+                  <input type="radio" id="radio-two" name="switch-one" value="2" />
+                  <label for="radio-two">2</label>
+
+                  <input type="radio" id="radio-three" name="switch-one" value="3" checked />
+                  <label for="radio-three">3</label>
+
+                  <input type="radio" id="radio-four" name="switch-one" value="4" />
+                  <label for="radio-four">4</label>
+
+                  <!-- <input type="radio" id="radio-five" name="switch-one" value="5" />
+                  <label for="radio-five">5</label> -->
+
+                  <!-- <input type="radio" id="radio-six" name="switch-one" value="6" />
+                  <label for="radio-six">6</label>
+
+                  <input type="radio" id="radio-seven" name="switch-one" value="7" />
+                  <label for="radio-seven">7</label>
+
+                  <input type="radio" id="radio-eight" name="switch-one" value="8" />
+                  <label for="radio-eight">8</label> -->
+                </div>
+              </form>
+
+              <form class="form-undo-redo">
+                <button class="btn-undo btn">Undo</button>
+                <button class="btn-redo btn">Redo</button>
+              </form>
+            </div>
+
+            <div class="col-3 fully-center">
+              <form class="form-load-position">
+                <textarea type="text" placeholder="Paste FEN to Load a Different Position" class="fen-input"></textarea>
+
+                <br /><button type="button" class="fen-input-submit btn">Load Position</button>
+              </form>
+
+              <button class="restart-btn btn" onClick="window.location.reload();">Restart Game</button>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="copyright-container">
+          <p class="copyright">
+            Copyright &copy; <span class="year">2030</span> by <a class="footer-link" href="https://imsaman.com" target="_blank">Saman Fathnazarian</a>. All rights reserved.
+          </p>
+        </div>
+
       </div>
 
     </div>

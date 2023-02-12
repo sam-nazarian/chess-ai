@@ -63,7 +63,11 @@ const btnRedoDom = document.querySelector('.btn-redo');
 const errMessageDom = document.querySelector('.err-message');
 const errContainerDom = document.querySelector('.err-container');
 const yearDom = document.querySelector('.year');
-const btnCloseErrContainerDom = document.querySelector('.btn-close-err-container');
+// const btnCloseErrContainerDom = document.querySelector('.btn-close-err-container');
+
+// Loader selectors
+const loadedBodyDom = document.querySelector('.loaded-body');
+const preloaderDom = document.querySelector('.preloader');
 
 
 //when highlighted, color white or black squares will turn to:
@@ -489,6 +493,14 @@ function showError(text){
 
 //Set current year on copyright paragraph
 yearDom.textContent = new Date().getFullYear();
+
+/**
+ * Hide preloader when the website loads
+ */
+window.addEventListener('load', function () {
+  loadedBodyDom.style.display = '';
+  preloaderDom.style.display = 'none';
+});
 
 // Removed close error button (uncomment if you want to add it)
 /*
